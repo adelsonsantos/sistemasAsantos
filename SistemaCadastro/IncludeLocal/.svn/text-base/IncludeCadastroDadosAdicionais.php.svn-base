@@ -1,0 +1,60 @@
+<table width="800" border="0" cellpadding="0" cellspacing="0" class="TabelaFormulario">
+    <tr>
+	    <td>
+            <table width="798" border="0" cellpadding="0" cellspacing="1">
+                <tr height="21" class="dataLabel">
+                    <td width="150">&nbsp;Num. T&iacute;tulo de Eleitor</td>
+                    <td width="150">&nbsp;Zona</td>
+                    <td width="150">&nbsp;Se&ccedil;&atilde;o</td>
+                    <td colspan="2">&nbsp;Cidade</td>
+                </tr>
+                <tr height="21" class="dataField">
+                    <td>&nbsp;<input name="txtTitulo" maxlength="20" type="text" value="<?=$TituloEleitor?>" style=" width:120px;" onKeyPress="mascaraNumero(event, this);"></td>
+                    <td>&nbsp;<input name="txtTituloZona" maxlength="20" type="text" value="<?=$TituloEleitorZona?>" style=" width:120px;" onKeyPress="mascaraNumero(event, this);"></td>
+                    <td>&nbsp;<input name="txtTituloSecao" maxlength="20" type="text" value="<?=$TituloEleitorSecao?>" style=" width:120px;" onKeyPress="mascaraNumero(event, this);"></td>
+                    <td width="50">&nbsp;<?=f_ComboEstado("cmbTituloUF", "onChange=MandaID(this.value,'AjaxTituloEleitor','estado_id')",$TituloEleitorUF)?></td>
+                    <td><div id="Titulo"><?=f_ComboMunicipio("cmbTituloCidade",$TituloEleitorUF,$TituloEleitorCidade)?></div></td>
+                </tr>
+            </table>
+
+            <table width="798" border="0" cellpadding="0" cellspacing="1">
+                <tr height="21" class="dataLabel">
+                    <td width="150">&nbsp;Num. Habilita&ccedil;&atilde;o</td>
+                    <td width="150">&nbsp;Categoria</td>
+                    <td width="150">&nbsp;Validade</td>
+                    <td width="150">&nbsp;Lente Corretiva</td>
+                    <td width="150">&nbsp;Passaporte</td>
+                  </tr>
+                <tr height="21" class="dataField">
+                     <td>&nbsp;<input name="txtHabilitacao" maxlength="20" type="text" value="<?=$Habilitacao?>" style=" width:120px;" onKeyPress="mascaraNumero(event, this);"></td>
+                    <td>&nbsp;<input name="txtHabilitacaoCategoria" maxlength="2" type="text" value="<?=$HabilitacaoCategoria?>" style=" width:30px;" onKeyPress="mascaraLetra(event, this);"></td>
+                    <td>&nbsp;<input name="txtHabilitacaoValidade" maxlength="10" type="text" value="<?=$HabilitacaoValidade?>" style=" width:120px;" OnKeyUp="mascaraData(this.value, document.Form.txtHabilitacaoValidade);"></td>
+										<td>
+											<?php if($HabilitacaoLenteCorretiva == 1) { ?>
+												&nbsp;<input name="txtHabilitacaoLenteCorretiva" type="radio" value="1" checked>&nbsp;Sim
+												&nbsp;
+												&nbsp;<input name="txtHabilitacaoLenteCorretiva" type="radio" value="0">&nbsp;Não
+											<?php } else { ?>
+												&nbsp;<input name="txtHabilitacaoLenteCorretiva" type="radio" value="1">&nbsp;Sim
+												&nbsp;
+												&nbsp;<input name="txtHabilitacaoLenteCorretiva" type="radio" value="0" checked>&nbsp;Não
+											<?php } ?>
+										</td>
+                    <td>&nbsp;<input name="txtPassaporte" maxlength="50" type="text" value="<?=$Passaporte?>" style=" width:120px;"></td>  
+                </tr>
+            </table>
+
+            <table width="798" border="0" cellpadding="0" cellspacing="1">
+                <tr height="21" class="dataLabel">
+                    <td width="200" colspan="2">&nbsp;Reservista / UF</td>
+                    <td width="598">&nbsp;Reservista Minist&eacute;rio</td>
+	            </tr>
+                <tr height="21" class="dataField">
+                    <td>&nbsp;<input name="txtReservista" maxlength="20" type="text" value="<?=$Reservista?>" style=" width:120px;"></td>
+                    <td width="50">&nbsp;<?=f_ComboEstado("cmbReservistaUF", "",$ReservistaUF)?></td>
+                    <td>&nbsp;<?=f_ComboMinisterio($ReservistaMinisterio)?></td>
+                </tr>
+             </table>
+        </td>
+    </tr>
+</table>

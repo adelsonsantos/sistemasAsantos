@@ -1,0 +1,165 @@
+<?php
+include "../Include/Inc_Configuracao.php";
+include "Classe/ClasseImprimirProcesso.php";
+?>
+<html>
+
+<style type="text/css">@import url("../css/estilo.css"); </style>
+
+<script language="javascript" src="../JavaScript/ScriptFuncao.js"></script>
+<script language="javascript" src="../JavaScript/ScriptMenu.js"></script>
+
+<script language="javascript"charset="utf-8">
+<!--
+
+ // Novas funções acresentadas por conta da Mudança de Perfil de Autorizador para Imprimir o processo e a diária.
+	 
+	 function ImprimirDiaria(codigo)
+        {
+            window.open ("SolicitacaoImprimirPDF.php?acao=imprimir&cod="+codigo);
+        }
+
+        function ImprimirProcesso(codigo)
+        {
+            window.open ("SolicitacaoProcessoPDF.php?acao=imprimir&cod="+codigo);
+        }
+// Fim das Novas funções acresentadas por conta da Mudança de Perfil de Autorizador para Imprimir o processo e a diária.  
+	 
+-->
+</script>
+
+    <body onLoad="WM_initializeToolbar();">
+
+        <form name="Form" method="post">
+
+            <table align="left" width="100%" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                    <td><?include "../Include/Inc_Topo.php"?></td>
+                </tr>
+                <tr>
+                    <td><?include "../Include/Inc_Aba.php"?></td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <table width="990" cellspacing="0" cellpadding="0" border="0">
+                            <tr>
+                                <td valign="top" align="left" width="190"><?include "../Include/Inc_Menu.php"?></td>
+                                <td valign="top" align="left">
+
+                                    <?include "../Include/Inc_Titulo.php"?>
+
+                                    <?include "../Include/Inc_Linha.php"?>
+
+                                    <table cellpadding="0" cellspacing="0" border="0" width="800">
+                                        <tr>
+                                            <td align="center" class="tabPesquisa" >
+
+                                                <table cellpadding="0" border="0" cellspacing="0" width="100%">
+                                                    <tr>
+                                                        <td><img src="../SistemaCadastro/Imagens/vazio.gif" width="1" height="3" border="0"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td valign="top" class="LinhaTexto">
+                                                            <table cellpadding="0" border="0" cellspacing="0" width="100%">
+                                                                <tr>
+                                                                    <td width="270" class="dataField">&nbsp;<input name="txtFiltro" id="txtFiltro" maxlength="100" type="text" value="<?=$RetornoFiltro?>" style=" width:265px;" onKeyPress="Javascript:if(event.keyCode == 13) Javascript:FiltrarForm(document.Form);" ></td>
+
+                                                                    <td width="75" valign="middle"><button style="width:70px; height: 18px;" onClick="Javascript:FiltrarForm(document.Form);" class="botao">Pesquisar</button></td>
+
+                                                                    <?php
+                                                                    if($RetornoFiltro!="") {
+                                                                        ?>
+                                                                    <td valign="middle"><button style="width:90px; height: 18px;" onClick="Javascript:TodosForm(document.Form);" class="botao">Exibir Todos</button></td>
+<? }
+                                                                    else {
+                                                                        ?>
+                                                                    <td>&nbsp;</td>
+                                                                    <?
+}
+                                                                    ?>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><img src="../SistemaCadastro/Imagens/vazio.gif" width="1" height="2" border="0"></td>
+                                                    </tr>													
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>                                   
+
+                                    <?include "../Include/Inc_Linha.php"?>
+
+                                    <table cellpadding="0" cellspacing="0" width="800" border="0" class="GridPaginacao">
+                                        <tr>
+                                            <td>
+                                                <table border="0" cellpadding="1" cellspacing="1" width="798">
+                                                    <tr height="20" class="GridPaginacaoRegistroCabecalho">
+                                                        <td width="100" colspan="4"></td>
+                                                        <td width="90" align="center"><a href='<?=$PaginaLocal?>.php?acao=buscar&atributo=diaria_id'><u>SD</u></a></td>
+                                                        <td width="318" align="left">&nbsp;<a href='<?=$PaginaLocal?>.php?acao=buscar&atributo=pessoa_nm'><u>Nome</u></a></td>
+                                                        <td width="130" align="center"><a href='<?=$PaginaLocal?>.php?acao=buscar&atributo=diaria_dt_criacao'><u>Data Solicita&ccedil;&atilde;o</u></a></td>
+                                                        <td width="130" align="center"><a href='<?=$PaginaLocal?>.php?acao=buscar&atributo=diaria_dt_saida'><u>Partida Prevista</u></a></td>                                                        
+                                                    </tr>
+                                                    <?
+                                                    while($linha=pg_fetch_assoc($rsConsulta)) {                                                        
+														$Codigo      = $linha['diaria_id'];
+														$Numero      = $linha['diaria_numero'];
+														$DataPartida = $linha['diaria_dt_saida'];
+														$HoraPartida = $linha['diaria_hr_saida'];
+														$DataChegada = $linha['diaria_dt_chegada'];
+														$HoraChegada = $linha['diaria_hr_chegada'];
+														$Processo    = $linha['diaria_processo'];
+														$Status      = $linha['diaria_st'];
+														$Nome        = $linha['pessoa_nm'];
+														$ACP         = $linha['diaria_unidade_custo'];
+														$imp_processo_st = $linha['imp_processo_st'];														
+													    $DataDaSolicitacao  = $linha['diaria_dt_criacao'];
+                                                        $HoraDaSolicitacao  = $linha['diaria_hr_criacao'];														
+														
+														$sqlACP = "SELECT * FROM diaria.autorizador_acp WHERE pessoa_id = " .$_SESSION['UsuarioCodigo']. " AND est_organizacional_id = ".$ACP;
+														$rsACP = pg_query(abreConexao(),$sqlACP);
+														$linhaACP = pg_fetch_assoc($rsACP);
+														
+														?>
+                                                       
+                                               <?                                                       
+                                                      if($linhaACP)
+                                                        {
+                                                           	echo "<tr height='20' bgcolor='#f2f2f2' class='GridPaginacaoLink' onMouseOver=javascript:this.style.backgroundColor='#cccccc' onMouseOut=javascript:this.style.backgroundColor='#f2f2f2'>";
+																
+															if ($imp_processo_st == 1) // esse é o atributo que vai controlar a Marcação do Box pode usar  READONLY OU DISABLED - melhor esse
+															{
+																echo "<td width='15' align='center'><input type='checkbox' class='checkbox' name='checkbox' value= ".$Codigo." checked DISABLED></td>";
+															}
+															else
+															{
+																echo "<td width='15' align='center'><input type='checkbox' class='checkbox' name='checkbox' value= ".$Codigo." DISABLED></td>";
+															}
+															echo "<td align='center'><a href='SolicitacaoConsultar.php?acao=consultar&cod=" .$Codigo."&pagina=SolicitacaoGestao'><img src='../Icones/ico_consultar.png' border='0' alt='Consultar'></a></td>";															
+															echo "<td align='center'><a href='javascript:ImprimirDiaria(" .$Codigo. ");'><img src='../Icones/ico_imprimir.png' border='0' alt='Imprimir Solicita&ccedil;&atilde;o'></a></td>";
+															echo "<td align='center'><a href='javascript:ImprimirProcesso(" .$Codigo. ");'><img src='../Icones/ico_imprimir_processo.png' border='0' alt='Imprimir Processo'></a></td>";
+															echo "<td align='center'>".$Numero."</td>";
+															echo "<td>&nbsp;".$Nome."</td>";
+															echo "<td align='center'>".f_FormataData($DataDaSolicitacao)." &agrave;s ".$HoraDaSolicitacao."</td>";
+															echo "<td align='center'>".$DataPartida." &agrave;s ".$HoraPartida."</td>";
+															echo "</tr>";													
+                                                        }													
+                                                    }
+                                                    ?>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </body>
+</html>

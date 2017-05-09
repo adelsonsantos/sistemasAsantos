@@ -1,0 +1,177 @@
+<?php
+	include "../../Include/Inc_Configuracao.php";
+
+
+	$_SESSION['DataPartida'] = "";
+	$_SESSION['HoraPartida'] = "";
+	$_SESSION['DataChegada'] = "";
+	$_SESSION['HoraChegada'] = "";
+
+	$HoraPartida 		    = $_GET['horasaida'];
+	$HoraChegada 		    = $_GET['horachegada'];
+	$DataPartida 		    = $_GET['datasaida'];
+	$DataChegada 		    = $_GET['datachegada'];
+	$ValorReferencia 	  	= str_replace(",",".",$_GET['valor']);
+	$Desconto			    = $_GET['desconto'];
+	$PercentualRecebido 	= str_replace(",",".",$_GET['perc']);
+	$ValorAnterior		  	= $_GET['ant'];
+	$Complemento        	= $_GET['complemento'];
+
+	$_SESSION['DataPartida'] = $DataPartida;
+	$_SESSION['HoraPartida'] = $HoraPartida;
+	$_SESSION['DataChegada'] = $DataChegada;
+	$_SESSION['HoraChegada'] = $HoraChegada;
+
+	$Diaria60 = 0;
+
+	if (($_SESSION['PercentualRecebido'] == $PercentualRecebido) || ($_SESSION['PercentualRecebido'] == ""))
+	{
+		//calcula a diferenca entre as horas
+		// Divide a hora
+		$HoraP = explode(":",$HoraPartida);
+		$HoraC = explode(":",$HoraChegada);
+		
+		// Divide a data
+		$DataP = explode("/", $DataPartida);
+		$DataC = explode("/", $DataChegada);
+		
+		// Transforma em segundo
+		$MinutoPartida = mktime($HoraP[0], $HoraP[1], "00", $DataP[1], $DataP[0], $DataP[2]);
+		$MinutoChegada = mktime($HoraC[0], $HoraC[1], "00", $DataC[1], $DataC[0], $DataC[2]);
+		
+		// Transforma em minutos
+		$difMinutos = ($MinutoChegada - $MinutoPartida)/60;
+	
+		// Diferença em dias
+		$difDias = $difMinutos/1440;
+	  
+		// Trunca o numero de dias .. 
+		$NumeroDia = intval($difDias);
+		
+		$DiariaResto = $difMinutos - (1440*$NumeroDia);
+		
+		//if(($NumeroDia == 0) && ($MinutoChegada > $MinutoPartida))
+		//	$DiariaResto = 0;
+		// Corrigir erro .. no sistema implantanção ..
+				
+		if (($DiariaResto > 360) && ($DiariaResto <= 720)) //se horas entre 6:00 e 12:00
+		{
+			$Percentual = ".4";
+		}
+		elseif (($DiariaResto > 720) && ($DiariaResto < 1440))//se horas entre 12:01 e 23:59
+		{	
+			$Percentual = ".6";
+			$Diaria60 = 1;
+		}
+		else	//se horas menor que 5:59 ou igual a 24:00
+		{
+			$Percentual = "";
+		}
+
+		$NumeroDiarias 	= $NumeroDia.$Percentual;
+		
+		//calculo de acordo com o roteiro
+		if (($PercentualRecebido != 0)||($PercentualRecebido != "")||($PercentualRecebido != 1))
+		{
+			$ValorReferencia = (double)($ValorReferencia) + ((double)($ValorReferencia) * (double)($PercentualRecebido));
+		}
+		elseif ($PercentualRecebido == 1)
+		{
+			$ValorReferencia = (double)($ValorReferencia) + (double)($ValorReferencia);
+		}
+
+		
+		$ValorReferencia = round($ValorReferencia);
+
+		$ValorTotal	= (double)($ValorReferencia) *  (double)($NumeroDiarias);
+			
+		if ($Desconto == "on")//se checkbox desconto 50% marcado
+		{
+			$ValorTotal = $ValorTotal/2;
+		}
+
+		$PossuiFeriado 	= f_PossuiFeriado($DataPartida,$DataChegada);
+		$PossuiFimSemana = f_PossuiFimSemana($DataPartida,$DataChegada);
+		
+		// Resolveu o problema do calculo equivocado .. 
+		$ValorAnterior	= str_replace("R$","",$ValorAnterior); 
+		$ValorAnterior	= str_replace(".","",$ValorAnterior);
+		$ValorAnterior	= str_replace(",",".",$ValorAnterior); 
+		$ValorTotal 	= str_replace(",",".",$ValorTotal);
+		//echo ($ValorTotal."<br>"); 
+		//echo ($ValorAnterior);
+		
+		$ValorComprovado = ((double)($ValorTotal)) - ((double)($ValorAnterior));
+
+		//$ValorTotal = str_replace(".",",",$ValorTotal);
+		if ($Complemento == 1)
+		{
+			$Percentual40 = "0.4";
+			$ValorDiaria60 = $ValorReferencia * (double)($Percentual40);
+
+			if ($Desconto == "on")//se checkbox desconto 50% marcado
+			{
+				$ValorDiaria60 = $ValorDiaria60/2;
+			}
+			$NumeroDiarias = $NumeroDiarias + (double)($Percentual40);
+			$ValorTotal = $ValorTotal + (double)($ValorDiaria60);
+
+			
+			$ValorComprovado = (double)($ValorTotal) - (double)($ValorAnterior);
+		}
+
+		$_SESSION['PercentualRecebido'] 	= $PercentualRecebido;
+		$_SESSION['NumeroDiarias']		  	= $NumeroDiarias;
+		$_SESSION['PossuiFeriado']		  	= $PossuiFeriado;
+		$_SESSION['PossuiFimSemana']	  	= $PossuiFimSemana;
+		$_SESSION['ValorTotal']			    = $ValorTotal;
+		
+		if (substr($ValorComprovado,0,1) == "-")
+		{
+			$ValorComprovado = (-1)*$ValorComprovado;
+			$Restituir = $ValorComprovado;
+		}
+		else
+		{
+			$Receber = $ValorComprovado;
+		}
+	}
+	else
+	{
+		$_SESSION['ErroRoteiro']= 1;
+	}
+
+	if ($NumeroDiarias <= 15)
+	{
+
+?>
+			<table width="533" cellpadding="0" cellspacing="0" border="0">
+            	<tr height="21">
+  
+            		<td width="133"><input type="text" name="txPercentualRef" style=" width:120px;" readonly value="+<?=$PercentualRecebido*100?>%&nbsp;<?=number_format($ValorReferencia, 2, ',', '.')?>" class="Oculto"></td>
+            		<td width="108"><input type="text" name="txtQtde" style=" width:57px;" readonly value="<?=$_SESSION['NumeroDiarias']?>" class="Oculto"></td>
+            		<td width="100"><input type="text" name="txtValorTotal" style=" width:75px;" class="Oculto" readonly value="<?=number_format($_SESSION['ValorTotal'], 2, ',', '.')?>"></td>
+            		<td width="104"><input type="text" name="txtValorRestituir" style=" width:75px;" class="Oculto" readonly value="<?=number_format($Restituir, 2, ',', '.')?>"></td>
+            		<td width="98"><input type="text" name="txtValorReceber" style=" width:75px;" class="Oculto" readonly value="<?=number_format($Receber, 2, ',', '.')?>"></td>
+                </tr>
+				<input type="hidden" name="txtConfDataPartida" value="<?=$_SESSION['DataPartida']?>">
+                <input type="hidden" name="txtConfHoraPartida" value="<?=$_SESSION['HoraPartida']?>">
+                <input type="hidden" name="txtConfDataChegada" value="<?=$_SESSION['DataChegada']?>">
+                <input type="hidden" name="txtConfHoraChegada" value="<?=$_SESSION['HoraChegada']?>">
+				<input type="hidden" name="PossuiFeriado" value="<?=$_SESSION['PossuiFeriado']?>">
+                <input type="hidden" name="PossuiFimSemana" value="<?=$_SESSION['PossuiFimSemana']?>">
+            	<input type="hidden" name="txNovoValorRef" value="<?=number_format($ValorReferencia, 2, ',', '.')?>" class="Oculto">
+            	<input type="hidden" name="txtNovoCalculo" value="1">
+            	<input type="hidden" name="txtDiaria60" value="<?=$Diaria60?>">
+            </table>
+
+
+
+<?
+
+        }
+        Else
+		{	echo "<font color='#ff0000'>Per&iacute;odo de viagem n&atilde;o pode ultrapassar 15 dias corridos!</font>";
+        }
+?>
+

@@ -1,0 +1,156 @@
+<?php
+include "../Include/Inc_Configuracao.php";
+include "Classe/ClasseDiaria.php";
+?>
+
+<html>
+
+<style type="text/css">@import url("../css/estilo.css"); </style>
+
+<script language="javascript" src="../JavaScript/ScriptMenu.js"></script>
+
+<script language="javascript">
+<!--
+
+	function ExcluirForm(frm, checkbox)
+	 {
+		frm.action="SolicitacaoExcluir.php?excluirMultiplo=1&acao=excluir";
+		frm.submit();
+	 }
+-->
+</script>
+
+<body onLoad="WM_initializeToolbar();">
+
+<form name="Form" method="post">
+
+<table align="left" width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tr>
+       <td><?include "../Include/Inc_Topo.php"?></td>
+    </tr>
+    <tr>
+    	<td><?include "../Include/Inc_Aba.php"?></td>
+    </tr>
+    <tr>
+    	<td>
+            <table align="left" width="990" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                    <td valign="top" align="left" width="190"><?include "../Include/Inc_Menu.php"?></td>
+                    <td valign="top" align="left">
+
+                        <?// inicio titulo da pagina ?>
+
+                        <div id="titulopagina">
+
+                        <?include "../Include/Inc_Titulo.php"?>
+
+                        </div>
+
+                        <?// fim do titulo da pagina ?>
+
+                        <?include "../Include/Inc_Linha.php"?>
+
+                        <?include "../Include/Inc_TituloExcluir.php"?>
+
+                        <?include "../Include/Inc_Linha.php"?>
+
+                        <table width="800" border="0" cellpadding="0" cellspacing="0" class="TabelaFormulario">
+                        	<tr>
+                            	<td>
+                                    <table width="798" border="0" cellpadding="0" cellspacing="1">
+                                        <tr height="20" class="GridPaginacaoRegistroCabecalho">
+                                            <td width="100" align="center">SD</td>
+                                            <td width="328" align="center">Funcion&aacute;rio</td>
+                                            <td width="100" align="center">Partida</td>
+                                            <td width="100" align="center">Chegada</td>
+                                            <td width="170 "align="center">Processo</td>
+                                        </tr>
+<?
+
+										$ExcluirCheckbox = $_GET['excluirMultiplo'];
+										$codCheckbox 	= $_POST['checkbox'];
+
+										If ($ExcluirCheckbox == 1)
+                                        {
+
+											$sqlConsulta = "SELECT * FROM diaria.diaria d, dados_unico.funcionario f, dados_unico.pessoa p WHERE (p.pessoa_id = f.pessoa_id) AND (d.diaria_beneficiario = f.pessoa_id) AND d.diaria_id IN (".$codCheckbox.") ORDER BY diaria_numero";
+											$rsConsulta = pg_query(abreConexao(),$sqlConsulta);
+
+                                            $Codigo = $codCheckbox;
+                                            while($linharsConsulta=pg_fetch_assoc($rsConsulta))
+                                            {
+                                                $Codigo		    = $linharsConsulta['diaria_id'];
+                                                $Numero		    = $linharsConsulta['diaria_numero'];
+                                                $DataPartida    = $linharsConsulta['diaria_dt_saida'];
+                                                $HoraPartida	= $linharsConsulta['diaria_hr_saida'];
+                                                $DataChegada	= $linharsConsulta['diaria_dt_chegada'];
+                                                $HoraChegada	= $linharsConsulta['diaria_hr_chegada'];
+                                                $Processo	    = $linharsConsulta['diaria_processo'];
+                                                $Status		    = $linharsConsulta['diaria_st'];
+                                                $Nome		    = $linharsConsulta['pessoa_nm'];
+
+
+
+                                                   echo "<tr height='20' bgcolor='#f2f2f2'>";
+                                                   echo "<td class='GridPaginacaoLink' align='center'>".$Numero."</td>";
+                                                   echo "<td class='GridPaginacaoLink' align='center'>".$Nome."</td>";
+                                                   echo "<td class='GridPaginacaoLink' align='center'>".$DataPartida." ".$HoraPartida."</td>";
+                                                   echo "<td class='GridPaginacaoLink' align='center'>".$DataChegada." ".$HoraChegada."</td>";
+                                                   echo "<td class='GridPaginacaoLink' align='left'>&nbsp;".$Processo."</td>";
+                                                   echo "</tr>";
+
+                                            }
+                                        }
+
+                                        Else
+                                        {
+
+                                           echo "<tr height='20' bgcolor='#f2f2f2'>";
+                                           echo "<td class='GridPaginacaoLink' align='center'>".$Numero."</td>";
+                                           echo "<td class='GridPaginacaoLink' align='left'>&nbsp;".$Nome."</td>";
+                                           echo "<td class='GridPaginacaoLink' align='center'>".$DataPartida." ".$HoraPartida."</td>";
+                                           echo "<td class='GridPaginacaoLink' align='center'>".$DataChegada. " ".$HoraChegada."</td>";
+                                           echo "<td class='GridPaginacaoLink' align='left'>&nbsp;".$Processo. "</td>";
+                                           echo "</tr>";
+
+                                        }
+    ?>
+                        				</table>
+									</td>
+								</tr>
+							</table>
+
+						<?include "../Include/Inc_Linha.php"?>
+
+                        <table border="0" cellpadding="1" cellspacing="1" width="800">
+                            <tr height="25">
+                                <td align="right">
+<?
+									If ($ExcluirCheckbox == 1)
+                                    {
+?>
+	                    				<button style="width:70px" onClick="Javascript:ExcluirForm(document.Form);" class="botao">Sim</button>&nbsp;&nbsp;
+<?
+                                    }
+                                    Else
+                                    {
+?>
+                                    	<button style="width:70px" onClick="Javascript:ExcluirForm(document.Form);" class="botao">Sim</button>&nbsp;&nbsp;
+<?
+                                    }
+?>
+                                	<button style="width:70px" onClick="Javascript:window.location.href='<?=$PaginaLocal?>Inicio.php';" class="botao">N&atilde;o</button></td>
+								</td>
+                           	</tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+	</tr>
+</table>
+<input name="txtCodigo" type="hidden" value="<?=$Codigo?>">
+</form>
+
+</body>
+</html>

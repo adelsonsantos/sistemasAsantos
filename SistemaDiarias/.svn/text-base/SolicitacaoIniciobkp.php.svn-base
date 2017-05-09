@@ -1,0 +1,184 @@
+<?php
+include"../Include/Inc_Configuracao.php";
+include "Classe/ClasseDiaria.php";
+?>
+
+<html>
+
+<style type="text/css">@import url("../css/estilo.css"); </style>
+
+<script language="javascript" src="../JavaScript/ScriptFuncao.js"></script>
+<script language="javascript" src="../JavaScript/ScriptMenu.js"></script>
+
+<script language="javascript">
+<!--
+
+	function Foco(frm)
+	{
+		frm.txtFiltro.focus();
+	}
+
+	function FiltrarForm(frm)
+	{
+
+		for(cont=0; cont < frm.elements.length; cont++)
+			frm.elements[cont].style.backgroundColor = '';
+
+		if (frm.txtFiltro.value == "")
+		{
+			alert("Digite filtro para busca.");
+			frm.txtFiltro.focus();
+			frm.txtFiltro.style.backgroundColor='#B9DCFF';
+			return false;
+		}
+
+		frm.action = "SolicitacaoInicio.php?acao=buscar";
+		frm.submit();
+	}
+
+	function TodosForm(frm)
+	{
+		frm.txtFiltro.value = "";
+		frm.action = "SolicitacaoInicio.php";
+		frm.submit();
+	}
+
+	function ImprimirDiaria(codigo)
+	 {
+		window.open ("SolicitacaoComprovacaoImprimirPDF.php?cod="+codigo);
+	 }
+
+	function ImprimirDiariaGER(codigo)
+	 {
+		window.open ("SolicitacaoImprimirGER.php?cod="+codigo);
+	 }
+
+-->
+</script>
+
+<?
+	//abre a janela da diaria recem comprovada para impressa
+
+	If ($_GET['imprimir'] == 1)
+    {	$DiariaRecebida = $_GET['cod'];
+?>
+		<body onLoad="WM_initializeToolbar();ImprimirDiaria(<?=$DiariaRecebida?>);">
+<?
+    }
+    Else
+    {
+?>
+		<body onLoad="WM_initializeToolbar();">
+<?
+	}
+?>
+
+<form name="Form" method="post">
+
+<table align="left" width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tr>
+       <td><?include "../Include/Inc_Topo.php"?></td>
+    </tr>
+    <tr>
+    	<td><?include "../Include/Inc_Aba.php"?></td>
+    </tr>
+    <tr>
+    	<td align="left">
+            <table width="990" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                    <td valign="top" align="left" width="190"><?include "../Include/Inc_Menu.php"?></td>
+                    <td valign="top" align="left">
+
+                        <?include "../Include/Inc_Titulo.php"?>
+
+                        <?include "../Include/Inc_Linha.php"?>
+
+                        <?include "../Include/Inc_Pesquisa_Sem_Filtro.php"?>
+
+                        <?include "../Include/Inc_Linha.php"?>
+
+                        <div id="Lista">
+
+                        <table cellpadding="0" cellspacing="0" width="800" border="0" class="GridPaginacao">
+                            <tr>
+                                <td>
+	                                <table cellpadding="0" cellspacing="0" width="100%" border="0" class="GridPaginacaoCabecalho">
+                                    	<tr height="21">
+                                            <td>&nbsp;<a href="<?=$PaginaLocal?>Cadastrar.php"><font color="#000099">Nova Solicita&ccedil;&atilde;o</font></a></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table border="0" cellpadding="1" cellspacing="1" width="798">
+                                        <tr height="20" class="GridPaginacaoRegistroCabecalho">
+                                            <td width="110" align="center" colspan="5">A&ccedil;&otilde;es</td>
+                                            <td width="80" align="center">SD</td>
+                                            <td width="218" align="left">&nbsp;Funcion&aacute;rio</td>
+                                            <td width="95" align="center">Partida</td>
+                                            <td width="95" align="center">Chegada</td>
+                                            <td width="100 "align="center">Processo</td>
+                                            <td width="100" align="center">Status</td>
+                                        </tr>
+<?
+                                       while($linharsConsulta=pg_fetch_assoc($rsConsulta))
+                                       {
+											$Codigo		    =$linharsConsulta['diaria_id'];
+											$Numero		    =$linharsConsulta['diaria_numero'];
+											$DataPartida    =$linharsConsulta['diaria_dt_saida'];
+											$HoraPartida	=$linharsConsulta['diaria_hr_saida'];
+											$DataChegada	=$linharsConsulta['diaria_dt_chegada'];
+											$HoraChegada	=$linharsConsulta['diaria_hr_chegada'];
+											$Processo	    =$linharsConsulta['diaria_processo'];
+											$Status		    =$linharsConsulta['diaria_st'];
+											$Nome		    =$linharsConsulta['pessoa_nm'];
+											$Beneficiario   =$linharsConsulta['diaria_beneficiario'];
+
+
+
+												$CodigoRegistro = $Codigo;
+?>
+												<?include "IncludeLocal/Inc_Status_Diaria.php"?>
+<?
+												echo "<tr height='20' bgcolor='#f2f2f2' onMouseOver=javascript:this.style.backgroundColor='#cccccc' onMouseOut=javascript:this.style.backgroundColor='#f2f2f2'>";
+?>
+												<?include "../Include/Inc_RegistroDiarias.php"?>
+
+<?
+												echo "<td class='GridPaginacaoLink' align='center'>".$Numero."</td>";
+                                                echo "<td class='GridPaginacaoLink' align='left'>&nbsp;".substr($Nome,0,30)."</td>";
+												echo "<td class='GridPaginacaoLink' align='center'>".$DataPartida." ".$HoraPartida."</td>";
+												echo "<td class='GridPaginacaoLink' align='center'>".$DataChegada." ".$HoraChegada."</td>";
+												echo "<td class='GridPaginacaoLink' align='center'>".$Processo."</td>";
+												echo "<td class='GridPaginacaoLink' align='center'><font color='#000099'>".$StatusNome."</font></td>";
+												echo "</tr>";
+
+
+												If (($StatusNome == "Devolvida") || ($StatusNome == "Devolvida (Comprovada) "))
+                                                {
+
+													echo "<tr height='20' bgcolor='#f2f2f2'>";
+													echo "<td class='GridPaginacaoLink'><img src='../icones/ico_aviso.gif' alt='Alerta' border='0'></td>";
+													echo "<td class='GridPaginacaoLink' colspan='10'>&nbsp;&nbsp;&nbsp;<font color='#000099'>&nbsp;".$MotivoDevolucao.": ".$labelDevolucao."</font></td>";
+													echo "</t4>";
+
+                                                }
+                                       }
+
+?>
+                                     </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+	</tr>
+</table>
+
+</form>
+
+</body>
+</html>

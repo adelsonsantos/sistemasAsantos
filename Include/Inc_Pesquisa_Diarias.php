@@ -1,0 +1,81 @@
+
+<script language="javascript">
+
+	function Redirect(frm)
+	{
+		frm.action = "<?=$PaginaLocal?>Inicio.php?filtro="+frm.cmbStatus.value;
+		frm.submit();
+	}
+
+</script>
+
+<table cellpadding="0" cellspacing="0" border="0" width="800">
+    <tr>
+        <td align="center" class="tabPesquisa" >
+
+            <table cellpadding="0" border="0" cellspacing="0" width="100%">
+                <tr>
+                    <td><img src="../SistemaCadastro/Imagens/vazio.gif" width="1" height="3" border="0"></td>
+                </tr>
+                <tr>
+                    <td valign="top" class="LinhaTexto">
+                            <table cellpadding="0" border="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td width="270" class="dataField">&nbsp;<input name="txtFiltro" maxlength="100" type="text" value="<?=$RetornoFiltro?>" style=" width:265px;"></td>
+                                    <td width="75" valign="middle"><button style="width:70px; height: 18px;" onClick="Javascript:FiltrarForm(document.Form);" class="botao">Pesquisar</button></td>
+<? if($RetornoFiltro !="")
+   {
+
+?>
+                                        <td valign="middle"><button style="width:90px; height: 18px;" onClick="Javascript:TodosForm(document.Form);" class="botao">Exibir Todos</button></td>
+<?}
+else
+{
+?>
+                                        <td>&nbsp;</td>
+<?}
+
+?>
+									<td class="dataLinha" align="right">Ver Status
+<?
+
+
+										if ($numFiltro == "" )
+                                        {   $strAtivo   = "";
+											$strInativo = "";
+											$strTodos   = "Selected";
+                                        }
+										ElseIf ($numFiltro == 0)
+										{	$strAtivo   = "Selected";
+											$strInativo = "";
+											$strTodos   = "";
+                                        }
+										Elseif ($numFiltro == 1)
+										{	$strAtivo   = "";
+											$strInativo = "Selected";
+											$strTodos   = "";
+
+                                        }
+
+
+										echo  "<select name='cmbStatus' onchange='Redirect(document.Form);'>";
+										echo "<option value='' " .$strTodos. ">Todos</option>";
+										echo "<option value='0' ".$strAtivo. ">Ativo</option>";
+										echo "<option value='1' ".$strInativo. ">Inativo</option>";
+										echo "</select>";
+?>
+                                    </td>
+                               </tr>
+                            </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td><img src="../SistemaCadastro/Imagens/vazio.gif" width="1" height="2" border="0"></td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+</table>

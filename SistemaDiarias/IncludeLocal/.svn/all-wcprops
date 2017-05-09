@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/IncludeLocal
+END
+Inc_Regra_BloqueioAjax.php
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/IncludeLocal/Inc_Regra_BloqueioAjax.php
+END
+AlterarComprovacaoDiaria.php
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/IncludeLocal/AlterarComprovacaoDiaria.php
+END
+Inc_Status_Diaria_ConsultaGlobal.php
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/IncludeLocal/Inc_Status_Diaria_ConsultaGlobal.php
+END
+ExecucaoFinanceiroDiariasAgrupadas.php
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/IncludeLocal/ExecucaoFinanceiroDiariasAgrupadas.php
+END
+EmpenhoDiariasAgrupadas.php
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/IncludeLocal/EmpenhoDiariasAgrupadas.php
+END
+Inc_Status_Diaria.php
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/IncludeLocal/Inc_Status_Diaria.php
+END
+Inc_Dados_Resumo_Comprovacao.php
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/IncludeLocal/Inc_Dados_Resumo_Comprovacao.php
+END
+In_Altera_Comprovacao.php
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/IncludeLocal/In_Altera_Comprovacao.php
+END
+Inc_Regra_Bloqueio.php
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/IncludeLocal/Inc_Regra_Bloqueio.php
+END

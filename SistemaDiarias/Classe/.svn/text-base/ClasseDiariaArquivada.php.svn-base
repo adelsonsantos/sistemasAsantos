@@ -1,0 +1,24 @@
+<?php
+
+	if ($_GET['pagina'] == "")
+	{ 
+		$PaginaLocal = "SolicitacaoArquivada";
+	}
+	else 
+	{
+		$PaginaLocal = $_GET['pagina'];		
+	}	
+	If (($AcaoSistema == "buscar")|| ($AcaoSistema == ""))
+	{
+
+		If ($RetornoFiltro != "")
+		{
+			$sqlConsulta = "SELECT * FROM diaria.diaria d, dados_unico.funcionario f, dados_unico.pessoa p WHERE (p.pessoa_id = f.pessoa_id) AND (d.diaria_beneficiario = f.pessoa_id) AND (diaria_beneficiario = " .$_SESSION['UsuarioCodigo']. " OR diaria_solicitante = " .$_SESSION['UsuarioCodigo']. ") AND diaria_excluida = 0 AND (diaria_st = 7) AND (pessoa_nm ILIKE '%" .$RetornoFiltro. "%' OR diaria_numero ILIKE '%" .$RetornoFiltro. "%') ORDER BY diaria_numero";
+		}
+		Else
+		{	$sqlConsulta = "SELECT * FROM diaria.diaria d, dados_unico.funcionario f, dados_unico.pessoa p WHERE (p.pessoa_id = f.pessoa_id) AND (d.diaria_beneficiario = f.pessoa_id) AND (diaria_beneficiario = " .$_SESSION['UsuarioCodigo']. " OR diaria_solicitante = " .$_SESSION['UsuarioCodigo']. ") AND diaria_excluida = 0 AND (diaria_st = 7) ORDER BY diaria_numero";
+		}
+		$rsConsulta = pg_query(abreConexao(),$sqlConsulta);
+
+	}
+?>

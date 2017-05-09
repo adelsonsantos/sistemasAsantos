@@ -1,0 +1,38 @@
+<?php
+include "../Include/Inc_Configuracao.php";
+
+
+	$_SESSION['Sistema'] = $_GET['sistema'];
+
+
+
+	$sqlConsulta = "SELECT * FROM seguranca.tipo_usuario tp, seguranca.usuario_tipo_usuario utu WHERE (tp.tipo_usuario_id = utu.tipo_usuario_id) AND sistema_id = " .$_SESSION['Sistema']. " AND pessoa_id = ".$_SESSION['UsuarioCodigo'];
+    $rsConsulta =pg_query(abreConexao(),$sqlConsulta);
+	$linha=pg_fetch_assoc($rsConsulta);
+    If ($linha)
+    {
+        $_SESSION['TipoUsuario'] = $linha['tipo_usuario_id'];
+		If ($linha['tipo_usuario_ds']== "Administrador")
+        {
+			$_SESSION['Administrador'] = 1;
+
+        }
+        Else
+		{	$_SESSION['Administrador'] = 0;
+        }
+    }
+
+
+
+
+?>
+<html>
+<head>
+	<title>Agência de Defesa Agropecuária da Bahia - ADAB</title>
+	
+</head>
+<frameset border="0" rows="0,*">
+    <frame NAME="topo" src="../paginaVazia.html" NORESIZE>
+    <frame NAME="corpo" src="DiariasInicio.php" NORESIZE>
+</frameset><noframes></noframes>
+</html>

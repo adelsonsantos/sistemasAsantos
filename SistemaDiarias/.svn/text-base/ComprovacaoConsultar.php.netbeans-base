@@ -1,0 +1,430 @@
+<?php
+include "../Include/Inc_Configuracao.php";
+include "Classe/ClasseDiariaConsulta.php";
+?>
+
+<html>
+
+<style type="text/css">@import url("../css/estilo.css"); </style>
+<style type="text/css">@import url("../css/dhtmlgoodies_calendar.css"); </style>
+
+<script language="javascript" src="../JavaScript/ScriptMenu.js"></script>
+
+<body onLoad="WM_initializeToolbar();">
+
+<form name="Form" method="post">
+
+<table align="left" width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tr>
+       <td><?include "../Include/Inc_Topo.php"?></td>
+    </tr>
+    <tr>
+    	<td><?include "../Include/Inc_Aba.php"?></td>
+    </tr>
+    <tr>
+    	<td>
+            <table align="left" width="990" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                    <td valign="top" align="left" width="190"><?include "../Include/Inc_Menu.php"?></td>
+                    <td valign="top" align="left">
+
+                        <?include "../Include/Inc_Titulo.php"?>
+
+						<?include "../Include/Inc_Linha.php"?>
+
+                        <table width="800" border="0" cellpadding="0" cellspacing="0" class="TabelaFormulario">
+                        	<tr>
+                            	<td>
+                                    <table width="798" border="0" cellpadding="0" cellspacing="1">
+                                        <tr height="21" class="dataLabel">
+                                            <td width="159" align="center">N&uacute;mero SD</td>
+                                            <td width="159" align="center">Solicitada em</td>
+                                            <td width="159" align="center">Comprovada em</td>
+                                            <td width="159" align="center">Processo</td>
+                                            <td width="159" align="center">Status</td>
+                                        </tr>
+                                        <tr height="21" class="dataField">
+                                            <td align="center"><?=$Numero?></td>
+                                            <td align="center"><?=($DataCriacao). " " .$HoraCriacao?></td>
+                                            <td align="center"><?=($DataComprovacao)." " .$HoraComprovacao?></td>
+                                            <td align="center"><?=$Processo?></td>
+											<?include "IncludeLocal/Inc_Status_Diaria.php"?>
+										 <td align="center"><font color="#000099"><?=$StatusNome?></font></td>
+                                        </tr>
+                                    </table>
+
+								</td>
+							</tr>
+						</table>
+                        
+						<?include "../Include/Inc_Linha.php"?>
+
+                        <table width="800" border="0" cellpadding="0" cellspacing="0" class="TabelaFormulario">
+                        	<tr>
+                            	<td>
+                                    <table width="798" border="0" cellpadding="0" cellspacing="1">
+                                        <tr height="21" class="dataLabel">
+                                            <td width="159" align="center">&nbsp;Nº Empenho</td>
+                                            <td width="159" align="center">&nbsp;Data Empenho</td>
+                                            <td width="159" align="center">&nbsp;Data Liquida&ccedil;&atilde;o</td>
+                                            <td width="159" align="center">&nbsp;Hora Liquida&ccedil;&atilde;o</td>
+                                            <td width="159" align="center">&nbsp;Data Execu&ccedil;&atilde;o</td>
+                                        </tr>
+                                        <tr height="21" class="dataField">
+                                            <td align="center"><?=$Empenho?></td>
+                                          
+                                            <td align="center"><?=($DataEmpenho)?></td>
+                                             
+                                            <td align="center"><?=($DataLiquidacao)?></td>
+                                            <td align="center"><?=$HoraLiquidacao?></td>
+                                            
+                                            <td align="center"><?=($DataExecucao)?></td>
+                                        </tr>
+                                    </table>
+
+								</td>
+							</tr>
+						</table>
+
+                        <?include "../Include/Inc_Linha.php"?>
+
+                        <table width="800" border="0" cellpadding="0" cellspacing="0" class="TabelaFormulario">
+                        	<tr>
+                            	<td>
+                                    <table width="798" border="0" cellpadding="0" cellspacing="1">
+                                        <tr height="21" class="dataLabel">
+                                            <td width="50%">&nbsp;Solicitante</td>
+                                            <td width="50%">&nbsp;Benefici&aacute;rio</td>
+                                        </tr>
+                                        <tr height="21" class="dataField">
+                                            <td>&nbsp;<?=f_ConsultaNomeFuncionario($Solicitante)?></td>
+                                            <td>&nbsp;<?=f_ConsultaNomeFuncionario($Beneficiario)?></td>
+                                        </tr>
+                                        <tr height="21" class="dataTitulo">
+                                            <td colspan="2">&nbsp;Roteiro</td>
+                                        </tr>
+                                        <tr height="21" class="dataLabel">
+                                            <td>&nbsp;Origem</td>
+                                            <td>&nbsp;Destino</td>
+                                        </tr>
+<?
+
+										$sqlRoteiro = "SELECT roteiro_comprovacao_origem, roteiro_comprovacao_destino FROM diaria.roteiro_comprovacao WHERE diaria_id = ".$Codigo;
+										
+                                        $rsRoteiro = pg_query(abreConexao(),$sqlRoteiro);
+
+                                       while($linharsRoteiro=pg_fetch_assoc($rsRoteiro))
+                                       {	$sqlRoteiroOrigem = "SELECT * FROM dados_unico.municipio WHERE municipio_cd = ".$linharsRoteiro['roteiro_comprovacao_origem'];
+                                            $rsRoteiroOrigem = pg_query(abreConexao(),$sqlRoteiroOrigem);
+                                            $linharsRoteiroOrigem=pg_fetch_assoc($rsRoteiroOrigem);
+
+                                            $sqlRoteiroDestino = "SELECT * FROM dados_unico.municipio WHERE municipio_cd = " .$linharsRoteiro['roteiro_comprovacao_destino'];
+                                            $rsRoteiroDestino = pg_query(abreConexao(),$sqlRoteiroDestino);
+                                            $linharsRoteiroDestino=pg_fetch_assoc($rsRoteiroDestino);
+                                            echo "<tr class='dataField' height='21'>";
+                                            echo "<td>&nbsp;" .$linharsRoteiroOrigem['estado_uf']." - " .$linharsRoteiroOrigem['municipio_ds']."</td>";
+                                            echo "<td>&nbsp;" .$linharsRoteiroDestino['estado_uf']. " - " .$linharsRoteiroDestino['municipio_ds']. "</td>";
+                                            echo "</tr>";
+
+                                       }
+
+
+?>
+                                    </table>
+								</td>
+							</tr>
+						</table>
+
+                        <?include "../Include/Inc_Linha.php"?>
+
+                        <table width="800" border="0" cellpadding="0" cellspacing="0" class="TabelaFormulario">
+                        	<tr>
+                            	<td>
+                                    <table width="798" border="0" cellpadding="0" cellspacing="1">
+                                        <tr height="21">
+                                            <td colspan="8" class="dataLabel">&nbsp;Complemento do Roteiro</td>
+                                        </tr>
+                                        <tr height="21" class="dataField">
+                                            <td colspan="8">&nbsp;<?=$RoteiroComplemento?></td>
+                                        </tr>
+                                    </table>
+								</td>
+							</tr>
+						</table>
+
+                        <?include "../Include/Inc_Linha.php"?>
+
+                        <table width="800" border="0" cellpadding="0" cellspacing="0" class="TabelaFormulario">
+                        	<tr>
+                            	<td>
+                                    <table width="798" border="0" cellpadding="0" cellspacing="1">
+                                       <tr height="21" class="dataTitulo">
+                                            <td width="399" colspan="8">&nbsp;Dados da Solicitação</td>
+                                        </tr>
+                                        <tr height="21" class="dataTitulo">
+                                            <td width="359" colspan="3">&nbsp;Partida Prevista</td>
+                                            <td width="359" colspan="3">&nbsp;Chegada Prevista</td>
+                                            <td width="160" colspan="2">&nbsp;Quantidade e Valor Previsto</td>
+                                        </tr>
+                                        <tr height="21" class="dataLabel">
+                                            <td width="80">&nbsp;Data</td>
+                                            <td width="80">&nbsp;Hora</td>
+                                            <td width="139">&nbsp;Dia da Semana</td>
+                                            <td width="80">&nbsp;Data</td>
+                                            <td width="80">&nbsp;Hora</td>
+                                            <td width="139">&nbsp;Dia da Semana</td>
+                                            <td width="80">&nbsp;Qtde Di&aacute;rias</td>
+                                            <td width="120">&nbsp;Valor Total</td>
+                                        </tr>
+                                        <tr height="21" class="dataField">
+                                            <td width="80">&nbsp;<?=$DataPartida?></td>
+                                            <td width="80">&nbsp;<?=$HoraPartida?></td>
+                                            <td width="139">&nbsp;<?=diasemana($DataPartida)?></td>
+                                            <td width="80">&nbsp;<?=$DataChegada?></td>
+                                            <td width="80">&nbsp;<?=$HoraChegada?></td>
+                                            <td width="139">&nbsp;<?=diasemana($DataChegada)?></td>
+                                            <td width="80">&nbsp;<?=$Qtde?></td>
+                                            <td width="120">&nbsp;<?=$Valor?></td>
+                                        </tr>
+									</table>
+                                    <table width="798" border="0" cellpadding="0" cellspacing="1">
+                                       <tr height="21" class="dataTitulo">
+                                            <td width="399" colspan="6">&nbsp;Dados da Comprovação</td>
+                                        </tr>
+                                        <tr height="21" class="dataTitulo">
+                                            <td width="399" colspan="3">&nbsp;Partida Realizada</td>
+                                            <td width="399" colspan="3">&nbsp;Chegada Realizada</td>
+                                        </tr>
+                                        <tr height="21" class="dataLabel">
+                                            <td width="100">&nbsp;Data</td>
+                                            <td width="100">&nbsp;Hora</td>
+                                            <td width="199">&nbsp;Dia da Semana</td>
+                                            <td width="100">&nbsp;Data</td>
+                                            <td width="100">&nbsp;Hora</td>
+                                            <td width="199">&nbsp;Dia da Semana</td>
+                                        </tr>
+                                        <tr height="21" class="dataField">
+                                            <td width="100">&nbsp;<?=$DataPartidaEfetiva?></td>
+                                            <td width="100">&nbsp;<?=$HoraPartidaEfetiva?></td>
+                                            <td width="199">&nbsp;<?=diasemana($DataPartidaEfetiva)?></td>
+                                            <td width="100">&nbsp;<?=$DataChegadaEfetiva?></td>
+                                            <td width="100">&nbsp;<?=$HoraChegadaEfetiva?></td>
+                                            <td width="199">&nbsp;<?=diasemana($DataChegadaEfetiva)?></td>
+                                        </tr>
+									</table>
+
+    						        <table width="798" border="0" cellpadding="0" cellspacing="1">
+                                        <tr height="21" class="dataLabel">
+                                            <td width="100">&nbsp;Redu&ccedil;&atilde;o 50%</td>
+                                            <td width="166">&nbsp;Valor Refer&ecirc;ncia (Descri&ccedil;&atilde;o)</td>
+                                            <td width="133">&nbsp;Valor do Roteiro</td>
+                                            <td width="99">&nbsp;Qtde Di&aacute;rais</td>
+                                            <td width="100">&nbsp;Valor Total</td>
+                                            <td width="100">&nbsp;A Restituir</td>
+                                            <td width="100">&nbsp;A Receber</td>
+                                        </tr>
+                                        <tr height="21" class="dataField">
+                                            <td width="100">&nbsp;<?=$Desconto?></td>
+                                            <td width="166"><?=f_ValorReferencia($Beneficiario)?></td>
+											<td width="133">&nbsp;<?=$ValorRef?></td>
+                                            <? $linha=pg_fetch_assoc($rsConsulta) ?>
+                                            <td width="99">&nbsp;<?=$linhaConsulta['diaria_comprovacao_qtde']?></td>
+                                                        <td width="100">&nbsp;<?=$linhaConsulta['diaria_comprovacao_valor']?></td>
+<?														
+														if ($diaria_comprovacao_saldo_tipo == "D")
+                                                        {
+															echo "<td width=100>R$ ".number_format($diaria_comprovacao_saldo, 2, ',', '.')."</td>";
+															echo "<td width=100>R$ 0,00</td>";
+                                                        }
+														else
+														{	
+															echo "<td width=100>R$ 0,00</td>";
+															echo "<td width=100>R$ ".number_format($diaria_comprovacao_saldo, 2, ',', '.')."</td>";
+                                                        }
+
+?>
+                                             </td>
+                                        </tr>
+									</table>
+
+
+									<?  If ($Complemento == "1")
+                                        {
+                                    ?>
+
+
+    						        <table width="798" border="0" cellpadding="0" cellspacing="1">
+                                        <tr class="dataLabel" height="21">
+                                            <td>&nbsp;Justificativa do Complemento&nbsp;(Conforme Art. 4&deg; par&aacute;grafo 2&deg; do DECRETO N&deg; 5.910 de Outubro de 1996.)</td>
+                                        </tr>
+                                        <tr height="21" class="dataField">
+                                            <td>&nbsp;<?=$ComplementoJustificativa?></td>
+                                        </tr>
+                                    </table>
+
+									<? } ?>
+
+                                    <? If ($JustificativaFeriado != "")
+                                       {
+                                    ?>
+
+                                    <table width="798" border="0" cellpadding="0" cellspacing="1">
+                                        <tr height="21">
+                                            <td class="dataLabel">&nbsp;Justificativa do Feriado</td>
+                                        </tr>
+                                        <tr height="21" class="dataField">
+                                            <td>&nbsp;<?=$JustificativaFeriado?></td>
+                                        </tr>
+                                    </table>
+
+									<? } ?>
+
+                                    <? If ($JustificativaFimSemana != "")
+                                       {
+                                    ?>
+
+    						        <table width="798" border="0" cellpadding="0" cellspacing="1">
+                                        <tr height="21">
+                                            <td class="dataLabel">&nbsp;Justificativa do Fim de Semana</td>
+                                        </tr>
+                                        <tr height="21" class="dataField">
+                                            <td>&nbsp;<?=$JustificativaFimSemana?></td>
+                                        </tr>
+                                    </table>
+
+									<? } ?>
+ 								</td>
+                        	</tr>
+                        </table>
+
+                        <?include "../Include/Inc_Linha.php"?>
+
+                        <table width="800" border="0" cellpadding="0" cellspacing="0" class="TabelaFormulario">
+                        	<tr>
+                            	<td>
+                                    <table width="798" border="0" cellpadding="0" cellspacing="1">
+                                        <tr height="21">
+                                            <td class="dataLabel" width="320">&nbsp;Meio de Transporte</td>
+                                            <td class="dataLabel" width="478">&nbsp;Meio de Transporte Observa&ccedil;&atilde;o</td>
+                                        </tr>
+                                        <tr height="21">
+                                            <td class="dataField">&nbsp;<?=f_ExibeMeioTransporte($MeioTransporte)?></td>
+                                            <td class="dataField">&nbsp;<?=$TransporteObservacao?></td>
+                                        </tr>
+                                    </table>
+
+                                    <table width="798" border="0" cellpadding="0" cellspacing="1">
+                                        <tr height="21">
+                                            <td class="dataLabel" width="320">&nbsp;Motivo</td>
+                                            <td class="dataLabel" width="478">&nbsp;Sub-Motivo</td>
+                                        </tr>
+                                        <tr height="21">
+                                            <td class="dataField">&nbsp;<?=f_ExibeMotivo($Motivo)?></td>
+                                            <td class="dataField">&nbsp;<?=f_ExibeSubMotivo($SubMotivo)?></td>
+                                        </tr>
+                                    </table>
+
+                                    <table width="798" border="0" cellpadding="0" cellspacing="1">
+                                        <tr height="21">
+                                            <td class="dataLabel">&nbsp;Descri&ccedil;&atilde;o</td>
+                                        </tr>
+                                        <tr height="21">
+                                            <td class="dataField">&nbsp;<?=$Descricao?></td>
+                                        </tr>
+                                    </table>
+
+                                    <table width="798" border="0" cellpadding="0" cellspacing="1">
+                                        <tr height="21">
+                                            <td class="dataLabel">&nbsp;Unidade de Custo</td>
+                                        </tr>
+                                        <tr height="21">
+                                            <td class="dataField">&nbsp;<?=f_ExibeUnidadeCusto($UnidadeCusto)?></td>
+                                        </tr>
+                                        <tr height="21">
+                                            <td class="dataLabel">&nbsp;Projeto</td>
+                                        </tr>
+                                        <tr height="21">
+                                            <td class="dataField">&nbsp;<?=f_ExibeProjeto($Projeto)?></td>
+                                        </tr>
+                                        <tr height="21">
+                                            <td class="dataLabel">&nbsp;A&ccedil;&atilde;o</td>
+                                        </tr>
+                                        <tr height="21">
+                                            <td class="dataField">&nbsp;<?=f_ExibeAcao($Acao)?></td>
+                                        </tr>
+                                        <tr height="21">
+                                            <td class="dataLabel">&nbsp;Territ&oacute;rio</td>
+                                        </tr>
+                                        <tr height="21">
+                                            <td class="dataField">&nbsp;<?=f_ExibeTerritorio($Territorio)?></td>
+                                        </tr>
+                                        <tr height="21">
+                                            <td class="dataLabel">&nbsp;Fonte</td>
+                                        </tr>
+                                        <tr height="21">
+                                            <td class="dataField">&nbsp;<?=f_ExibeFonte($Fonte)?></td>
+                                        </tr>
+                                    </table>
+
+ 								</td>
+                        	</tr>
+                        </table>
+
+                        <?include "../Include/Inc_Linha.php"?>
+
+                        <table width="800" border="0" cellpadding="0" cellspacing="0" class="TabelaFormulario">
+                        	<tr>
+                            	<td>
+
+                                    <table width="798" border="0" cellpadding="0" cellspacing="1">
+                                        <tr height="21">
+                                            <td class="dataLabel">&nbsp;Resumo</td>
+                                        </tr>
+										<tr height="210"><td valign="top" class="dataField"><textarea name="teste" class="RealmenteInvisivel2" readonly cols="149" rows="14"><?=$Resumo?></textarea></td></tr>
+                                    </table>
+
+
+ 								</td>
+                        	</tr>
+                        </table>
+          			  	<?include "../Include/Inc_Linha.php"?>
+						<?php include("tabelaHistorico.php"); ?>
+                        <input name="txtCodigo" type="hidden" value="<?=$Codigo?>">
+
+						<?include "../Include/Inc_Linha.php"?>
+
+<?
+						If ($MensagemErroBD != "")
+                        {
+
+							echo "<table border='0' cellpadding='0' cellspacing='0' width='100%'>";
+							echo "<tr>";
+							echo "<td class='MensagemErro'>".$MensagemErroBD."</td>";
+							echo "</tr>";
+							echo "<tr>";
+							echo "<td><img src='../images/vazio.gif' width='1' height='10' border='0'></td>";
+							echo "</tr>";
+							echo "</table>";
+                        }
+						
+?>
+
+                        <table border="0" cellpadding="1" cellspacing="1" width="800">
+                            <tr height="25">
+                                <td align="right">
+                                    <button style="width:70px" onClick="Javascript:window.location.href='<?=$PaginaLocal?>inicio.php';" name="btnConsultar" class="botao">Voltar</button>
+                               </td>
+                           </tr>
+                        </table>
+                        <br>
+                    </td>
+                </tr>
+            </table>
+        </td>
+	</tr>
+</table>
+
+</form>
+
+</body>
+</html>

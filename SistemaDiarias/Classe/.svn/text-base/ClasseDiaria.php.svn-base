@@ -1,0 +1,420 @@
+<?php
+
+include "conecta.php";
+
+//define o nome da pagina local para facilitar nos links
+if ($_GET['pagina'] == "") {
+    $PaginaLocal = "Solicitacao";
+} else {
+    $PaginaLocal = $_GET['pagina'];
+}
+
+//controla a visibilidade do botao consultar
+$_SESSION['BotaoConsultar'] = 1;
+$_SESSION['ArrayContador'] = 0;
+
+$AlterarRoteiro = 1;
+$AlterouCalculo = 0;
+
+$DiariaCalculada = 0;
+$HoraCriacao = date("H:i:s");
+/*
+  '**********************************************************************
+  '  Consulta o usuário para verificar se tem direito a solicitar diária
+  '**********************************************************************
+ *
+ */
+$sqlConsulta = "SELECT  usuario_diaria FROM seguranca.usuario where pessoa_id = " . $_SESSION['UsuarioCodigo'];
+
+
+$rsConsulta = pg_query(abreConexao(), $sqlConsulta);
+$linha = pg_fetch_assoc($rsConsulta);
+If ($linha) {
+    $AcessoSolicitaDiaria = $linha['usuario_diaria'];
+}
+If (($AcaoSistema == "buscar") || ($AcaoSistema == "")) {
+    If ($RetornoFiltro != "") {
+        $sqlConsulta = "SELECT * FROM diaria.diaria d, dados_unico.funcionario f, dados_unico.pessoa p WHERE (p.pessoa_id = f.pessoa_id) AND (d.diaria_beneficiario = f.pessoa_id) AND (diaria_beneficiario = " . $_SESSION['UsuarioCodigo'] . " OR diaria_solicitante = " . $_SESSION['UsuarioCodigo'] . ") AND diaria_excluida = 0 AND (diaria_st <> 7) AND (pessoa_nm ILIKE '%" . $RetornoFiltro . "%' OR diaria_numero ILIKE '%" . $RetornoFiltro . "%') ORDER BY diaria_dt_saida DESC, diaria_hr_saida ASC";
+     
+    } Else {
+        $sqlConsulta = "SELECT * FROM diaria.diaria d, dados_unico.funcionario f, dados_unico.pessoa p WHERE (p.pessoa_id = f.pessoa_id) AND (d.diaria_beneficiario = f.pessoa_id) AND (diaria_beneficiario = " . $_SESSION['UsuarioCodigo'] . " OR diaria_solicitante = " . $_SESSION['UsuarioCodigo'] . ") AND diaria_excluida = 0 AND (diaria_st <> 7) ORDER BY diaria_dt_saida DESC, diaria_hr_saida ASC";
+    }
+    
+   
+    
+    $rsConsulta = pg_query(abreConexao(), $sqlConsulta);
+} ElseIf ($AcaoSistema == "incluir") {
+    //pega numeracao de diaria
+    $sqlConsulta    = "SELECT diaria_numero FROM diaria.diaria_numero";
+    $rsConsulta     = pg_query(abreConexao(), $sqlConsulta);
+    $linha          = pg_fetch_assoc($rsConsulta);
+    $Numero         = $linha['diaria_numero'];
+    $Solicitante    = $_SESSION['UsuarioCodigo'];
+    $Beneficiario   = $_POST['cmbBeneficiario'];
+    $DataPartida    = $_POST['txtDataPartida'];
+    $HoraPartida    = $_POST['txtHoraPartida'];
+    $DataChegada    = $_POST['txtDataChegada'];
+    $HoraChegada    = $_POST['txtHoraChegada'];
+    $ValorRef                   = $_POST['txNovoValorRef'];
+    $Qtde                       = $_POST['txtQtde'];
+    $Valor                      = $_POST['txtValorTotal'];
+    $JustificativaFeriado       = strtoupper(trim($_POST['txtJustificativaFeriado']));
+    $JustificativaFimSemana     = strtoupper(trim($_POST['txtJustificativaFimSemana']));
+    $MeioTransporte             = $_POST['cmbMeioTransporte'];
+    $TransporteObservacao       = strtoupper(trim($_POST['txtMeioTransporteObservacao']));
+    $RoteiroComplemento         = strtoupper(trim($_POST['txtRoteiroComplemento']));
+    $Motivo                     = $_POST['cmbMotivoDiaria'];
+    $SubMotivo                  = $_POST['cmbSubMotivoDiaria'];
+    $Descricao                  = strtoupper(trim($_POST['txtDescricao']));
+    $UnidadeCusto               = $_POST['cmbUnidadeCusto'];
+    $Projeto                    = $_POST['cmbProjeto'];
+    $Acao                       = $_POST['cmbAcao'];
+    $Territorio                 = $_POST['cmbTerritorio'];
+    $Fonte                      = $_POST['cmbFonte'];
+    $Diaria_local_solicitacao   = $_POST['radio_diaria_local_solicitacao']; // Atributo Novo Colocado por Erinaldo em 19/02/2011
+    $Id_coordenadoria           = $_POST['combo_diaria_local_solicitacao']; // Atributo Novo Colocado por Erinaldo em 19/02/2011
+    $DataViagemPartida          = $_POST['txtDataPartida'];  // Atributo Novo Colocado por Erinaldo em 22/02/2011
+    $DataViagemChegada          = $_POST['txtDataChegada'];  // Atributo Novo Colocado por Erinaldo em 22/02/2011	
+    $id_beneficiario            = $_POST['cmbBeneficiario']; // Atributo Novo Colocado por Erinaldo em 22/02/2011	
+
+    if ($Id_coordenadoria == "[-------Selecione-------]") {
+        $Id_coordenadoria = 0;
+    }
+
+    If ($_POST['chkDesconto'] == "on") {
+        $Desconto = "S";
+    } Else {
+        $Desconto = "N";
+    }
+
+    //verifica se ja existe o numero da diaria
+    $sqlConsulta = "SELECT diaria_numero FROM diaria.diaria WHERE diaria_numero = '" . $Numero . "'";
+    $rsConsulta = pg_query(abreConexao(), $sqlConsulta);
+
+    //cria padrao de numeracao 2008XXXXXX
+    $NovoNumero = $Numero + 1;
+    $Tamanho = strlen($Numero);
+    $TamanhoZero = 5 - $Tamanho;
+
+    For ($i = 1; $i <= $TamanhoZero; $i++) {
+        $Numero = "0" . $Numero;
+    }
+
+    $Numero = date("Y") . $Numero;
+    //fim do criar padrao
+
+    If (pg_fetch_row($rsConsulta) == 0) {
+        //inicia transação no banco
+        $ValorRef = "R$ " . $ValorRef;
+        $Valor = "R$ " . $Valor;
+
+        $Date = date("Y-m-d");
+        $BeginTrans = "BEGIN WORK";
+        pg_query(abreConexao(), $BeginTrans);
+        $Time = date("H:i:s");
+
+        // Procura por uma diária com o mesmo periodo ou dentro do periodo solicitado
+        $existe_viagem = 10;
+        
+//Consulta Original 
+//        $sql = "SELECT * FROM diaria.diaria as D1
+//		WHERE D1.diaria_id NOT IN (SELECT D2.diaria_id FROM diaria.diaria as D2 
+//		WHERE D2.diaria_beneficiario = $id_beneficiario AND ('$DataViagemPartida' >= D2.data_viagem_chegada OR
+//		'$DataViagemChegada' <= D2.data_viagem_saida)) AND D1.diaria_beneficiario = $id_beneficiario AND diaria_excluida = 0 ";
+
+                  $sql ="SELECT D2.diaria_id,D2.data_viagem_chegada ,diaria_hr_chegada
+                    FROM diaria.diaria as D2
+                    WHERE D2.diaria_beneficiario = $id_beneficiario and D2.data_viagem_saida 
+                    between '$DataViagemPartida' and '$DataViagemChegada' or D2.data_viagem_chegada between '$DataViagemPartida' and '$DataViagemChegada' 
+                    AND diaria_excluida = 0"; 
+      
+        $consulta = executar_SQL($sql);
+       if ( pg_num_rows($consulta) !=0) {
+            $existe_viagem = 1;
+    
+            $linha = pg_fetch_assoc($consulta);
+            $dataChegadaBD = $linha['data_viagem_chegada'];
+            $horaChegadaBD = $linha['diaria_hr_chegada'];
+            //verifica  se a data da nova viagem � igual a data da antiga partida
+            //e se hora da partida � depois da hora da chegada.
+            
+            if($dataChegadaBD == $DataViagemPartida)
+            {
+                if($horaChegadaBD < $HoraPartida)
+                {
+                    $existe_viagem = 0;
+                }
+            }
+        } 
+        else {
+            $existe_viagem = 0;
+        }
+
+        // Verifica se existe uma diária com o mesmo periodo ou dentro do periodo solicitado		
+        if ($existe_viagem == 0) {
+            libera_consulta($consulta); // Libera a consulta
+            // Executa a Inserção na Tabela diaria      
+            if ($Diaria_local_solicitacao == "Coordenadoria") {
+                $Diaria_st = 100;
+                $sqlInsere = "INSERT INTO diaria.diaria (diaria_numero, diaria_solicitante, diaria_beneficiario, diaria_dt_saida, diaria_hr_saida,diaria_dt_chegada, diaria_hr_chegada, diaria_valor_ref, diaria_desconto, diaria_qtde, diaria_valor, diaria_justificativa_feriado, diaria_justificativa_fds, meio_transporte_id, diaria_transporte_obs, diaria_descricao, diaria_unidade_custo,projeto_cd, acao_cd, territorio_cd, fonte_cd,diaria_st,diaria_dt_criacao, diaria_hr_criacao, diaria_roteiro_complemento, diaria_local_solicitacao,id_coordenadoria,data_viagem_saida, data_viagem_chegada)
+						VALUES ('$Numero','$Solicitante','$Beneficiario','$DataPartida','$HoraPartida','$DataChegada','$HoraChegada','$ValorRef','$Desconto','$Qtde','$Valor','$JustificativaFeriado','$JustificativaFimSemana',$MeioTransporte,'$TransporteObservacao', '$Descricao',$UnidadeCusto,$Projeto,$Acao,$Territorio,'$Fonte',$Diaria_st,'$Date','$Time','$RoteiroComplemento','$Diaria_local_solicitacao',$Id_coordenadoria,'$DataViagemPartida','$DataViagemChegada')";
+            } else {
+                $Diaria_st = 0;
+                $sqlInsere = "INSERT INTO diaria.diaria (diaria_numero, diaria_solicitante, diaria_beneficiario, diaria_dt_saida, diaria_hr_saida,diaria_dt_chegada, diaria_hr_chegada, diaria_valor_ref, diaria_desconto, diaria_qtde, diaria_valor, diaria_justificativa_feriado, diaria_justificativa_fds, meio_transporte_id, diaria_transporte_obs, diaria_descricao, diaria_unidade_custo,projeto_cd, acao_cd, territorio_cd, fonte_cd,diaria_st,diaria_dt_criacao, diaria_hr_criacao, diaria_roteiro_complemento, diaria_local_solicitacao,id_coordenadoria,data_viagem_saida, data_viagem_chegada)
+						VALUES ('$Numero','$Solicitante','$Beneficiario','$DataPartida','$HoraPartida','$DataChegada','$HoraChegada','$ValorRef','$Desconto','$Qtde','$Valor','$JustificativaFeriado','$JustificativaFimSemana',$MeioTransporte,'$TransporteObservacao', '$Descricao',$UnidadeCusto,$Projeto,$Acao,$Territorio,'$Fonte',$Diaria_st,'$Date','$Time','$RoteiroComplemento','$Diaria_local_solicitacao',$Id_coordenadoria,'$DataViagemPartida','$DataViagemChegada')";
+            }
+
+            pg_query(abreConexao(), $sqlInsere);
+            // Fim da Inserção na Tabela Diária			
+            $sqlCodigoDiaria = "SELECT  last_value  FROM diaria.seq_diaria";
+
+            $rsCodigo = pg_query(abreConexao(), $sqlCodigoDiaria);
+            $ultimoValorSeqDiaria = pg_fetch_assoc($rsCodigo);
+
+            $sqlInsere = "INSERT INTO diaria.diaria_motivo (diaria_id, motivo_id, sub_motivo_id) VALUES (" . $ultimoValorSeqDiaria['last_value'] . ", " . $Motivo . ", " . $SubMotivo . ")";
+
+            pg_query(abreConexao(), $sqlInsere);
+
+            For ($i = 1; $i <= $_SESSION['ContadorDestino']; $i++) {
+                $sqlInsere = "INSERT INTO diaria.roteiro(diaria_id, roteiro_origem, roteiro_destino) VALUES (" . $ultimoValorSeqDiaria['last_value'] . ", " . $_SESSION['ViagemOrigem'][$i] . ", " . $_SESSION['ViagemDestino'][$i] . ")";
+                pg_query(abreConexao(), $sqlInsere);
+            }
+            /*
+              ' ********************************************************************
+              ' Bloqueia o acesso ao sistema de diária apos a solicitação
+              '*********************************************************************
+             */
+            $sqlAltera = "UPDATE seguranca.usuario SET usuario_diaria=0  WHERE pessoa_id= " . $Beneficiario;
+
+            pg_query(abreConexao(), $sqlAltera);
+            /*
+              ' ********************************************************************
+              ' Registra o Numero da Diária que foi autorizada para o usuário.
+              '*********************************************************************
+             */
+
+            $sqlConsulta = "select max(diaria_liberacao_id)as total from diaria.diaria_liberacao WHERE diaria_beneficiario= " . $Beneficiario;
+            $rsConsulta = pg_query(abreConexao(), $sqlConsulta);
+            $linha2 = pg_fetch_assoc($rsConsulta);
+            If ($linha2['total'] > 0) {
+                $NumeroLiberacao = $linha2['total'];
+            }
+            else
+                $NumeroLiberacao = 0;
+            $sqlAltera = "UPDATE diaria.diaria_liberacao SET diaria_id=" . $Numero . "  WHERE diaria_beneficiario= " . $Beneficiario . "and diaria_liberacao_id =" . $NumeroLiberacao;
+
+            pg_query(abreConexao(), $sqlAltera);
+
+            //altera o numero da proxima diaria
+            $sqlAltera = "UPDATE diaria.diaria_numero SET diaria_numero = " . $NovoNumero;
+            pg_query(abreConexao(), $sqlAltera);
+
+            If ($Err != 0) {
+                $RollbackTrans = "ROLLBACK";
+                pg_query(abreConexao(), $RollbackTrans);
+                echo $Err;
+            } Else {
+                $CommitTrans = "COMMIT";
+                pg_query(abreConexao(), $CommitTrans);
+            }
+            echo "<script>alert(\"Di\u00E1ria Solicitada com Sucesso.!!!\");</script>";
+        }
+     else{   // Fim Se já existe uma diária com o mesmo periodo ou dentro do periodo solicitado
+         
+            libera_consulta($consulta);
+            
+            echo "<script>alert(\"Voc\u00EA n\u00E3o pode Solicitar uma Di\u00E1ria para o periodo solicitado, j\u00E1 existe uma di\u00E1ria dentro do perfil informado!!!\");</script>";
+            echo "<script>window.location = 'SolicitacaoInicio.php';</script>";
+            exit;
+        }
+        echo "<script>window.location = 'SolicitacaoInicio.php';</script>";
+    } Else {
+        $MensagemErroBD = "N&Uacute;MERO DE DI&AElig;RIA J&AElig; EXISTE, CONTACTE O ADMINISTRADOR.";
+    }
+} // Fim do Ação Sistema "INCLUIR" 
+ElseIf ($AcaoSistema == "consultar") {
+    If ($Codigo == "") {
+        $Codigo = $_GET['cod'];
+    }
+    $AlterarRoteiro = $_GET['alterarRoteiro'];
+    If ($AlterarRoteiro == "") {
+        $AlterarRoteiro = 0;
+    }
+    $AlterouCalculo = $_GET['recalcular'];
+    If ($AlterouCalculo == "") {
+        $AlterouCalculo = 1;
+    }
+    $DiariaCalculada = 1;
+    $sqlConsulta = "SELECT * FROM diaria.diaria d, dados_unico.funcionario f, dados_unico.pessoa p, diaria.diaria_motivo dm WHERE (d.diaria_id = dm.diaria_id) AND (p.pessoa_id = f.pessoa_id) AND (d.diaria_beneficiario = f.pessoa_id) AND d.diaria_id = " . $Codigo;
+
+    $rsConsulta = pg_query(abreConexao(), $sqlConsulta);
+    $linha = pg_fetch_assoc($rsConsulta);
+
+    If ($linha) {
+        $Numero         = $linha['diaria_numero'];
+        $Solicitante    = $linha['diaria_solicitante'];
+        $Beneficiario   = $linha['diaria_beneficiario'];
+        $DataPartida    = $linha['diaria_dt_saida'];
+        $Nome           = $linha['pessoa_nm'];
+
+        $HoraPartida = $linha['diaria_hr_saida'];
+        $DataChegada = $linha['diaria_dt_chegada'];
+        $HoraChegada = $linha['diaria_hr_chegada'];
+
+        $DiaSemanaPartida = diasemana($DataPartida);
+        $DiaSemanaChegada = diasemana($DataChegada);
+
+        $JustificativaFimSemana = $linha['diaria_justificativa_fds'];
+        $JustificativaFeriado   = $linha['diaria_justificativa_feriado'];
+        $MeioTransporte         = $linha['meio_transporte_id'];
+        $TransporteObservacao   = $linha['diaria_transporte_obs'];
+        $RoteiroComplemento     = $linha['diaria_roteiro_complemento'];
+
+        $Desconto           = $linha['diaria_desconto'];
+        $Qtde               = $linha['diaria_qtde'];
+        $Valor              = $linha['diaria_valor'];
+        $ValorRef           = $linha['diaria_valor_ref'];
+        $Motivo             = $linha['motivo_id'];
+        $SubMotivo          = $linha['sub_motivo_id'];
+        $Descricao          = $linha['diaria_descricao'];
+        $UnidadeCusto       = $linha['diaria_unidade_custo'];
+        $Projeto            = $linha['projeto_cd'];
+        $Acao               = $linha['acao_cd'];
+        $Territorio         = $linha['territorio_cd'];
+        $Fonte              = $linha['fonte_cd'];
+        $Status             = $linha['diaria_st'];
+        $DataCriacao        = $linha['diaria_dt_criacao'];
+        $HoraCriacao        = $linha['diaria_hr_criacao'];
+        $Processo           = $linha['diaria_processo'];
+        $Empenho            = $linha['diaria_empenho'];
+        $DataEmpenho        = $linha['diaria_dt_empenho'];
+        $DiariaComprovada   = $linha['diaria_comprovada'];
+        $diaria_devolvida   = $linha['diaria_devolvida'];
+        $diaria_excluida    = $linha['diaria_excluida'];
+        If ($Desconto == "N") {
+            $Desconto = "Não";
+            $DescontoMarcado = "";
+        } Else {
+            $Desconto = "Sim";
+            $DescontoMarcado = "checked";
+        }
+        If ($AlterarRoteiro == 0) {
+            $sqlRoteiro = "SELECT roteiro_origem, roteiro_destino FROM diaria.roteiro WHERE diaria_id = " . $Codigo;
+            $rsRoteiro = pg_query(abreConexao(), $sqlRoteiro);
+            $qtdDeRegistro = pg_fetch_row($rsRoteiro);
+            $Contador = count($qtdDeRegistro);
+            $i = 1;
+            while ($linha4 = pg_fetch_assoc($rsRoteiro)) {
+                $sqlRoteiroOrigem = "SELECT * FROM dados_unico.municipio WHERE municipio_cd = " . $linha4['roteiro_origem'];
+                $rsRoteiroOrigem = pg_query(abreConexao(), $sqlRoteiroOrigem);
+
+                $sqlRoteiroDestino = "SELECT * FROM dados_unico.municipio WHERE municipio_cd = " . $linha4['roteiro_destino'];
+                $rsRoteiroDestino = pg_query(abreConexao(), $sqlRoteiroDestino);
+
+                $linha5 = pg_fetch_assoc($rsRoteiroDestino);
+                $linha6 = pg_fetch_assoc($rsRoteiroOrigem);
+                If ($i == 1) {
+                    $Inicio = $linha6['municipio_ds'] . "(" . $linha6['estado_uf'] . ")" . " / " . $linha5['municipio_ds'] . "(" . $linha5['estado_uf'] . ")";
+                } Elseif (($i != 1) && ($i < $Contador)) {
+                    $Meio = " / " . $linha6['municipio_ds'] . "(" . $linha6['estado_uf'] . ")" . " / " . $linha5['municipio_ds'] . "(" . $linha5['estado_uf'] . ")";
+                } Elseif ($i == $Contador) {
+                    $Final = " / " . $linha5['municipio_ds'] . "(" . $linha5['estado_uf'] . ")";
+                }
+
+                $i = $i + 1;
+            }
+
+            $Roteiro = $Inicio . $Meio . $Final;
+        }
+    }
+}
+/*  Ação Alterar */ ElseIf ($AcaoSistema == "alterar") {
+
+    $Codigo = $_POST['txtCodigo'];
+
+    $sql = "SELECT diaria_st FROM diaria.diaria WHERE diaria_id = " . $Codigo;
+    $rs = pg_query(abreConexao(), $sql);
+    $linha = pg_fetch_assoc($rs);
+    If ($linha['diaria_st'] == 0) {
+        $DataPartida            = $_POST['txtDataPartida'];
+        $HoraPartida            = $_POST['txtHoraPartida'];
+        $DataChegada            = $_POST['txtDataChegada'];
+        $HoraChegada            = $_POST['txtHoraChegada'];
+        $ValorRef               = $_POST['txNovoValorRef'];
+        $Qtde                   = $_POST['txtQtde'];
+        $Valor                  = $_POST['txtValorTotal'];
+        $JustificativaFeriado   = strtoupper(trim($_POST['txtJustificativaFeriado']));
+        $JustificativaFimSemana = strtoupper(trim($_POST['txtJustificativaFimSemana']));
+        $MeioTransporte         = $_POST['cmbMeioTransporte'];
+        $TransporteObservacao   = strtoupper(trim($_POST['txtMeioTransporteObservacao']));
+        $Motivo                 = $_POST['cmbMotivoDiaria'];
+        $SubMotivo              = $_POST['cmbSubMotivoDiaria'];
+        $Descricao              = strtoupper(trim($_POST['txtDescricao']));
+        $RoteiroComplemento     = strtoupper(trim($_POST['txtRoteiroComplemento']));
+        $UnidadeCusto           = $_POST['cmbUnidadeCusto'];
+        $Projeto                = $_POST['cmbProjeto'];
+        $Acao                   = $_POST['cmbAcao'];
+        $Territorio             = $_POST['cmbTerritorio'];
+        $Fonte                  = $_POST['cmbFonte'];
+        $NovoCalculo            = $_POST['txtNovoCalculo'];
+        $DataViagemPartida      = $_POST['txtDataPartida'];  // Atributo Novo Colocado por Erinaldo em 02/05/2011
+        $DataViagemChegada      = $_POST['txtDataChegada'];  // Atributo Novo Colocado por Erinaldo em 02/05/2011
+        $id_beneficiario        = $_POST['cmbBeneficiario'];
+        
+        // Testa se já existe diária para o período para o qual esta diária foi alterada
+        $sqlTesteSeExiste = "SELECT * FROM diaria.diaria as D1
+		WHERE D1.diaria_id NOT IN (SELECT D2.diaria_id FROM diaria.diaria as D2 
+		WHERE D2.diaria_beneficiario = $id_beneficiario AND ('$DataViagemPartida' >= D2.data_viagem_chegada OR
+		'$DataViagemChegada' <= D2.data_viagem_saida)) AND D1.diaria_beneficiario = $id_beneficiario AND diaria_excluida = 0 AND D1.diaria_id <> $Codigo";
+
+        $consulta = executar_SQL($sqlTesteSeExiste);
+        if (verifica_resultado($consulta)) {
+            libera_consulta($consulta);
+            echo "<script>alert('Voc\u00EA n\u00E3o pode solicitar uma Di\u00E1ria para o periodo solicitado, j\u00E1 existe uma di\u00E1ria dentro do perfil informado.!!!');</script>";
+            echo "<script>window.location = 'SolicitacaoInicio.php';</script>";
+            exit;
+        }
+        libera_consulta($consulta);
+        If ($_POST['chkDesconto'] == "on") {
+            $Desconto = "S";
+        } Else {
+            $Desconto = "N";
+        }
+
+        $sqlAltera = "UPDATE diaria.diaria SET data_viagem_saida= '$DataViagemPartida', data_viagem_chegada = '$DataViagemChegada', diaria_dt_saida = '" . $DataPartida . "', diaria_hr_saida = '" . $HoraPartida . "',diaria_dt_chegada = '" . $DataChegada . "',diaria_hr_chegada = '" . $HoraChegada . "',diaria_justificativa_feriado = '" . $JustificativaFeriado . "',diaria_justificativa_fds = '" . $JustificativaFimSemana . "',meio_transporte_id = " . $MeioTransporte . ", diaria_transporte_obs = '" . $TransporteObservacao . "',diaria_descricao = '" . $Descricao . "', diaria_unidade_custo = " . $UnidadeCusto . ", projeto_cd = " . $Projeto . ", acao_cd = " . $Acao . ", territorio_cd = " . $Territorio . ", fonte_cd = '" . $Fonte . "', diaria_roteiro_complemento = '" . $RoteiroComplemento . "', diaria_devolvida = 0 WHERE diaria_id = " . $Codigo;
+        pg_query(abreConexao(), $sqlAltera);
+
+        $sqlAltera = "UPDATE diaria.diaria_motivo SET motivo_id = " . $Motivo . ", sub_motivo_id = " . $SubMotivo . " WHERE diaria_id = " . $Codigo;
+        pg_query(abreConexao(), $sqlAltera);
+        If ($NovoCalculo == 1) {
+            $sqlAltera = "UPDATE diaria.diaria SET diaria_valor_ref = '" . $ValorRef . "',diaria_desconto = '" . $Desconto . "',diaria_qtde = '" . $Qtde . "', diaria_valor = '" . $Valor . "' WHERE diaria_id = " . $Codigo;
+            pg_query(abreConexao(), $sqlAltera);
+        }
+
+        If ($_SESSION['ContadorDestino'] != "") {
+            $sqlDelete = "DELETE FROM diaria.roteiro WHERE diaria_id = " . $Codigo;
+            pg_query(abreConexao(), $sqlDelete);
+
+            For ($e = 1; $e <= $_SESSION['ContadorDestino']; $e++) {
+                $sqlInsere = "INSERT INTO diaria.roteiro (diaria_id, roteiro_origem, roteiro_destino)  VALUES (" . $Codigo . ", " . $_SESSION['ViagemOrigem'][$e] . ", " . $_SESSION['ViagemDestino'][$e] . ")";
+                pg_query(abreConexao(), $sqlInsere);
+            }
+        }
+        f_InsereLogDiaria($_SESSION['UsuarioCodigo'], $Codigo, "Alterou a diaria.");
+        echo "<script>alert(\"Di\u00E1ria Alterada com Sucesso.!!!\");</script>";
+        echo "<script>window.location = 'SolicitacaoInicio.php ';</script>";
+    } Else {
+        $MensagemErroBD = "N&Atilde;O FOI PERMITIDA A EDI&Ccedil;&Atilde;O DA DI&Aacute;RIA..";
+    }
+}
+//Ação Excluir
+ElseIf ($AcaoSistema == "excluir") {
+    $Codigo = $_POST['txtCodigo'];
+    $vazio = 'null';
+    $sqlDeleta = "UPDATE diaria.diaria SET diaria_excluida = 1,  data_viagem_saida = $vazio, data_viagem_chegada = $vazio WHERE diaria_id IN ('" . $Codigo . "')";
+
+    pg_query(abreConexao(), $sqlDeleta);
+    echo "<script>alert(\"Di\u00E1ria Exclu\u00EDda com Sucesso.!!!\");</script>";
+    echo "<script>window.location = 'SolicitacaoInicio.php ';</script>";
+}
+?>

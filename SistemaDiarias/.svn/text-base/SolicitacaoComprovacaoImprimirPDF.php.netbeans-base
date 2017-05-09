@@ -1,0 +1,517 @@
+<?php
+
+include "../Include/Inc_Configuracao.php";
+include "Classe/ClasseDiariaImpressao.php";
+include "fpdf.php";
+
+$pdf=new FPDF();
+$pdf->SetFont('Times','B',16);
+$pdf->Open();
+$pdf->AddPage();
+
+
+//cabecalho
+$pdf->Cell (55,24,"",1,0,"C");
+$pdf->SETX (65);
+$pdf->Cell (135,12,("Comprovação de Diárias"),1,1,"C");
+$pdf->SETXY (65, 22);
+$pdf->SetFont ("Times", "B",9);
+$pdf->write (5, ("Área Beneficiária:"));
+$pdf->SETX (65);
+$pdf->SetFont ("Times", "",8);
+$pdf->MultiCell (90,12,"",1,0);
+$pdf->SETXY (65, 26);
+$pdf->MultiCell (90,4,$UnidadeCustoNome,0,1);
+$pdf->SETXY (155, 22);
+$pdf->SetFont ("Times", "B",9);
+$pdf->write (5, ("Nº Diária:"));
+$pdf->SetFont ("Times","",8);
+$pdf->SETXY (155, 22);
+$pdf->Cell (45,12,"",1,1);
+$pdf->SETXY (172, 18.5);
+$pdf->Cell (45,12,$Numero,0,1);
+
+$pdf->image ("logo.jpg",14,18,40);
+
+//Nome BeneficiÃ¡rio
+$pdf->Rect (10, 35, 145, 10,"D");
+$pdf->SETXY (10, 35);
+$pdf->SetFont ("Times", "B",9);
+$pdf->Cell (145,5,"Nome:",0,0);
+$pdf->SETXY (10, 39);
+$pdf->SetFont( "Times", "",8);
+$pdf->Cell (145,5,$BeneficiarioNome,0,0);
+
+ //Matrilula
+$pdf->Rect (155, 35, 45, 10 , "D");
+$pdf->SetFont ("Times", "B",9);
+$pdf->SETXY (155, 35);
+$pdf->Cell (35,5, ("Matrícula:"),0,0);
+$pdf->SETXY( 172, 35);
+$pdf->SetFont ("Times", "",8);
+$pdf->Cell (35,5,$Matricula,0,0);
+
+//LotaÃ§Ã£o
+$pdf->Rect( 10, 46, 145, 5 , "D");
+$pdf->SETXY (10, 46);
+$pdf->SetFont( "Times", "B",9);
+$pdf->Cell (145,5, ("Lotação:"),0,0);
+$pdf->SETXY (23, 46);
+$pdf->SetFont ("Times", "",8);
+$pdf->Cell (145,5,$EstruturaAtuacaoNome,0,0);
+
+// Empenho
+$pdf->Rect (155, 46, 45, 5 , "D");
+$pdf->SetFont ("Times", "B",9);
+$pdf->SETXY (155, 46);
+$pdf->Cell (46,5,"Empenho:",0,0);
+$pdf->SETXY (172, 46);
+$pdf->SetFont ("Times", "",8);
+$pdf->Cell (45,5,$Empenho,0,0);
+
+
+//Cargo/FuncÃ£o
+$pdf->Rect (10, 52, 145, 5 , "D");
+$pdf->SETXY (10, 52);
+$pdf->SetFont ("Times", "B",9);
+$pdf->Cell (145,5, ("Cargo/Função: "),0,0);
+$pdf->SETXY (32, 52);
+$pdf->SetFont ("Times", "",8);
+$pdf->Cell (145,5,utf8_decode($CargoNome),0,0);
+
+//Processo
+$pdf->Rect (155, 52, 45, 5 , "D");
+$pdf->SetFont ("Times", "B",9);
+$pdf->SETXY (155, 52);
+$pdf->Cell (52,5,"Processo:",0,0);
+$pdf->SETXY (172, 52);
+$pdf->SetFont ("Times", "",8);
+$pdf->Cell (45,5,$Processo,0,0);
+
+
+//CPF
+$pdf->Rect (10, 58, 60, 5 , "D");
+$pdf->SETXY (10, 58);
+$pdf->SetFont( "Times", "B",9);
+$pdf->Cell (60,5,"CPF:",0,0);
+$pdf->SETXY (18, 58);
+$pdf->SetFont ("Times", "",8);
+$pdf->Cell (60,5,$CPF,0,0);
+
+
+//Dados BancÃ¡rios
+$pdf->Rect (70, 58, 130, 5 , "D");
+$pdf->SetFont( "Times", "B",9);
+$pdf->SETXY (70, 58);
+$pdf->Cell (130,5, ("Dados Bancários:"),0,0);
+$pdf->SETXY (95, 58);
+$pdf->SetFont ("Times", "",8 );
+$pdf->Cell (130,5,"Bco.".$Banco." - Ag. ".$Agencia." - CC.".$Conta,0,0);
+
+
+//Dados ACP
+$pdf->SETXY (10, 64);
+$pdf->MultiCell( 190,5,"",1,0);
+$pdf->SetFont ("Times", "B",9);
+$pdf->SETXY (10, 64);
+$pdf->Cell (190,5,"ACP:",0,0);
+$pdf->SETXY (19, 64);
+$pdf->SetFont ("Times", "",8);
+$pdf->Cell (190,5,$UnidadeCustoNumero." - ".$UnidadeCustoNome,0,0);
+
+
+
+//Partida Prevista
+$pdf->Rect (10, 70, 46, 4 , "D");
+$pdf->SETXY( 10, 71);
+$pdf->SetFont ("Times", "B",9);
+$pdf->MultiCell (46,3,"Partida Prevista",0,"C",0);
+$pdf->SETXY (10, 75);
+$pdf->Rect (10, 74, 26, 10 , "D");
+$pdf->SetFont ("Times", "",8);
+$pdf->MultiCell (25,5,$DataPartida,0,"C",0);
+$pdf->SETXY (10, 78);
+$pdf->MultiCell (25,5,$DiaSemanaPartida,0,"C",0);
+
+//Horas
+$pdf->Rect (36, 74, 20, 10 , "D");
+$pdf->SETXY( 36, 76);
+$pdf->SetFont ("Times", "",8);
+$pdf->MultiCell (21,5,$HoraPartida,0,"C",0);
+
+
+
+//Chegada Prevista
+$pdf->Rect (56, 70, 46, 4 , "D");
+$pdf->SETXY (56, 71);
+$pdf->SetFont ("Times", "B",9);
+$pdf->MultiCell (46,3,"Chegada Prevista",0,"C",0);
+$pdf->SETXY (56, 75);
+$pdf->Rect (56, 74, 25, 10 , "D");
+$pdf->SetFont ("Times", "",8);
+$pdf->MultiCell (26,5,$DataChegada,0,"C",0);
+$pdf->SETXY (56, 78);
+$pdf->MultiCell (26,5,$DiaSemanaChegada,0,"C",0);
+
+//Horas
+$pdf->Rect (81, 74, 21, 10 , "D");
+$pdf->SETXY (81, 76);
+$pdf->SetFont( "Times", "",8);
+$pdf->MultiCell (21,5,$HoraChegada,0,"C",0);
+
+
+
+
+//Partida Efetiva
+$pdf->Rect (10, 85, 46, 4 , "D");
+$pdf->SETXY (10, 86);
+$pdf->SetFont ("Times", "B",9);
+$pdf->MultiCell (45,3,"Partida Efetiva",0,"C",0);
+
+$pdf->SETXY (10, 89);
+$pdf->Rect (10, 89, 26, 10 , "D");
+$pdf->SetFont( "Times", "",8);
+$pdf->MultiCell (25,7,$diaria_comprovacao_dt_saida,0,"C",0);
+
+$pdf->SETXY(10, 93);
+$pdf->MultiCell (25,5,diasemana($diaria_comprovacao_dt_saida),0,"C",0); 
+
+$pdf->Rect (36, 89, 20, 10 , "D");
+$pdf->SETXY (36, 91);
+$pdf->SetFont ("Times", "",8);
+$pdf->MultiCell (22,5,$linharsComprovacao['diaria_comprovacao_hr_saida'],0,"C",0);
+
+
+//chegada Efetiva
+$pdf->Rect(56, 85, 46, 4 , "D");
+$pdf->SETXY (56, 85);
+$pdf->SetFont ("Times", "B",9);
+$pdf->MultiCell (45,4,"Chegada Efetiva",0,"C",0);
+
+$pdf->SETXY (56, 89);
+$pdf->Rect (56, 89, 25, 10 , "D");
+$pdf->SetFont ("Times", "",8);
+$pdf->MultiCell (25,7,$diaria_comprovacao_dt_chegada,0,"C",0);
+
+$pdf->SETXY (58, 93);
+$pdf->MultiCell (22,5,diasemana($diaria_comprovacao_dt_chegada),0,"C",0); 
+
+$pdf->Rect (81, 89, 21, 10 , "D");
+$pdf->SETXY (81, 91);
+$pdf->SetFont ("Times", "",8);
+$pdf->MultiCell (22,5,$linharsComprovacao['diaria_comprovacao_hr_chegada'],0,"C",0);
+
+
+
+//DiÃ¡ria Percebidas
+$pdf->SETXY (102, 70);
+$pdf->Rect (102, 70, 98, 4 , "D");
+$pdf->SETXY (102, 70);
+$pdf->SetFont ("Times", "B",9);
+$pdf->MultiCell (95,3, ("Diária Percebidas"),0,"C",0);
+
+
+//Qtde
+$pdf->SETXY (102, 74);
+$pdf->Rect (102, 74, 20, 10 , "D");
+$pdf->SetFont ("Times", "B",9);
+$pdf->MultiCell (20,5,"Qtde",0,"C",0);
+
+$pdf->SetFont ("Times", "",8);
+$pdf->SETXY (102, 78);
+$pdf->MultiCell (20,5,$Qtde,0,"C",0);
+
+
+//Valor UnitÃ¡rio
+$pdf->SETXY (122, 74);
+$pdf->Rect (122, 74, 27, 10 , "D");
+
+$pdf->SetFont ("Times", "B",9);
+$pdf->MultiCell(27,5, "Valor Total",0,"C",0);
+
+$pdf->SetFont ("Times", "",8);
+$pdf->SETXY (122,78);
+$pdf->MultiCell (27,5,$Valor,0,"C",0);
+
+//Valor Total
+$pdf->SETXY (149, 74);
+$pdf->Rect (149, 74, 27, 10 , "D");
+
+$pdf->SetFont ("Times", "B",9);
+$pdf->MultiCell (27,5,("Valor Unitário"),0,"C",0);
+
+$pdf->SetFont ("Times", "",8);
+$pdf->SETXY (149, 78);
+$pdf->MultiCell (27,5,$ValorRef,0,"C",0);
+
+//Novo
+$pdf->SETXY (176, 74);
+$pdf->Rect (176, 74, 24, 10 , "D");
+
+$pdf->SetFont ("Times", "B",9);
+$pdf->MultiCell (22,5,"",0,"C",0);
+
+$pdf->SetFont ("Times", "",8);
+$pdf->SETXY (176, 78);
+$pdf->MultiCell (22,5,"",0,"C",0);
+
+
+
+//DiÃ¡ria Utilizadas
+$pdf->SETXY (102, 85);
+$pdf->Rect (102, 85, 47, 4 , "D");
+$pdf->SETXY (101, 86);
+$pdf->SetFont ("Times", "B",9);
+$pdf->MultiCell (47,3, ("Diária Utilizadas"),0,"C",0);
+
+
+
+//Qtde
+$pdf->SETXY (102, 89);
+$pdf->Rect (102, 89, 20, 10 , "D");
+$pdf->SetFont( "Times", "B",9);
+$pdf->MultiCell (20,5,"Qtde",0,"C",0);
+$pdf->SetFont ("Times", "",8);
+$pdf->SETXY (102, 93);
+$pdf->MultiCell (20,5,$QtdeComprovacao,0,"C",0);
+
+
+//Valor Total
+$pdf->SETXY (122, 89);
+$pdf->Rect (122, 89, 27, 10 , "D");
+$pdf->SetFont ("Times", "B",9);
+$pdf->MultiCell (27,5,"Valor Total",0,"C",0);
+$pdf->SetFont ("Times", "",8);
+$pdf->SETXY (122, 93);
+$pdf->MultiCell (27,5,$ValorComprovacao,0,"C",0);
+
+
+//DiÃ¡ria Utilizadas
+$pdf->SETXY (149,85);
+$pdf->Rect (149, 85, 51, 4 , "D");
+$pdf->SETXY (149, 86);
+$pdf->SetFont ("Times", "B",9);
+$pdf->MultiCell (51,3,"Saldo",0,"C",0);
+
+
+
+//A Receber
+$pdf->SETXY (149, 89);
+$pdf->Rect (149, 89, 27, 10 , "D");
+$pdf->SetFont( "Times", "B",9);
+$pdf->MultiCell (27,5,"A Receber",0,"C",0);
+$pdf->SetFont ("Times", "",8);
+$pdf->SETXY (149, 93);
+$pdf->MultiCell (27,5,number_format($SaldoReceber, 2, ',', '.'),0,"C",0);
+
+
+//A Restituir
+$pdf->SETXY (176, 89);
+$pdf->Rect (176, 89, 24, 10 , "D");
+$pdf->SetFont ("Times", "B",9);
+$pdf->MultiCell (22,5,"A Restituir",0,"C",0);
+$pdf->SetFont ("Times", "",8);
+$pdf->SETXY (176, 93);
+$pdf->MultiCell (24,5,number_format($SaldoPagar, 2, ',', '.'),0,"C",0);
+
+
+//Projeto
+$pdf->Rect (10, 100, 190, 5 , "D");
+$pdf->SETXY (10, 100);
+$pdf->SetFont ("Times", "B",9);
+$pdf->Cell (60,5,"Projeto:",0,0);
+$pdf->SETXY (23, 100);
+$pdf->SetFont ("Times", "",8);
+$pdf->Cell (190,5,("Projeto ".$Projeto." Produto ".$Acao." Território ".$Territorio." Fonte ".$Fonte),0,0);
+
+
+$sqlRoteiro = "SELECT roteiro_comprovacao_origem, roteiro_comprovacao_destino FROM diaria.roteiro_comprovacao WHERE diaria_id = ".$Codigo;
+
+$rsRoteiro = pg_query(abreConexao(),$sqlRoteiro);
+
+$qtdDeRegistro= pg_num_rows($rsRoteiro);
+$Contador = $qtdDeRegistro;
+$i =1;
+$RoteiroComprovacao = "";
+$Meio = "";
+
+While($linharsRoteiro = pg_fetch_assoc($rsRoteiro))
+{
+  
+   $sqlRoteiroOrigem 		= "SELECT * FROM dados_unico.municipio WHERE municipio_cd = ".$linharsRoteiro['roteiro_comprovacao_origem'];
+    $rsRoteiroOrigem 		= pg_query(abreConexao(),$sqlRoteiroOrigem);
+    $linharsRoteiroOrigem	= pg_fetch_assoc($rsRoteiroOrigem);
+
+    $sqlRoteiroDestino 		= "SELECT * FROM dados_unico.municipio WHERE municipio_cd = ".$linharsRoteiro['roteiro_comprovacao_destino'];
+    $rsRoteiroDestino 		= pg_query(abreConexao(),$sqlRoteiroDestino);
+    $linharsRoteiroDestino	= pg_fetch_assoc($rsRoteiroDestino);
+
+    If ($i == 1)
+    {
+        $Inicio = $linharsRoteiroOrigem['municipio_ds']." - (".$linharsRoteiroOrigem['estado_uf'].")" . " / ".$linharsRoteiroDestino['municipio_ds']." - (" .$linharsRoteiroDestino['estado_uf'].")";
+    }
+    Elseif ($i != 1)// && ($i < $Contador))
+    {  $Meio = $Meio." / ".$linharsRoteiroDestino['municipio_ds']. " - (".$linharsRoteiroDestino['estado_uf']. ")";
+
+    }
+    Elseif ($i == $Contador)
+    {
+        $Final = " / ".$linharsRoteiroDestino['municipio_ds']." - (".$linharsRoteiroDestino['estado_uf']. ")";
+    }
+
+    $i++;
+
+}
+$RoteiroComprovacao = $Inicio.$Meio.$Final;
+
+//Roteiro
+
+$pdf->Rect (10, 105, 190, 8 , "D");
+$pdf->SETXY (10, 105);
+$pdf->SetFont ("Times", "B",9);
+$pdf->Cell (60,4,"Destino:",0,0);
+$pdf->SETXY (23, 105);
+$pdf->SetFont ("Times", "",7);
+$pdf->MultiCell (170,4,utf8_decode($RoteiroComprovacao),0,1);
+
+
+//Motivo da Viagem
+
+$pdf->Rect (10, 113, 190, 13 , "D");
+$pdf->SETXY (10, 113);
+$pdf->SetFont ("Times", "B",9);
+$pdf->Cell (60,4,"Motivo da Viagem:",0,0);
+$pdf->SETXY (10, 116);
+$pdf->SetFont ("Times", "",7);
+$pdf->MultiCell (160,3,utf8_decode($Descricao),0,1);
+
+
+//Justificativa do Fim de Semana e Feriado
+
+$pdf->Rect (10, 127, 190, 16 , "D");
+$pdf->SETXY (10, 127);
+$pdf->SetFont ("Times", "B",9);
+$pdf->Cell (60,5,"Justificativa do Fim de Semana e Feriado:",0,0);
+$pdf->SETXY (10, 131);
+$pdf->SetFont ("Times", "",8);
+$pdf->MultiCell (190,3,utf8_decode($JustificativaFimSemana.$JustificativaFeriado),0,1);
+
+ 
+If ($Complemento == "1")
+{
+	//Justificativa do Fim de Semana e Feriado
+
+	$pdf->Rect (10, 143, 190, 9 , "D");
+	$pdf->SETXY (10, 143);
+	$pdf->SetFont ("Times", "B",9);
+	$pdf->Cell (190,5,("Justificativa do Complemento (Conforme Art. 4º parágrafo 2º do DECRETO Nº 5.910 de Outubro de 1996.)"),0,0);
+	$pdf->SETXY (10, 147);
+	$pdf->SetFont ("Times", "",8);
+	$pdf->Cell (190,5,utf8_decode($ComplementoJustificativa),0,0);
+
+	//RelatÃ³rio
+
+	$pdf->Rect (10, 153, 190, 5 , "D");
+	$pdf->SETXY (95, 153);
+	$pdf->SetFont( "Times", "B",9);
+	$pdf->Cell (60,5, ("Relatório de Atividades:"),0,0);
+	$pdf->SETXY (10, 158);
+	$pdf->SetFont ("Times", "",7);
+	//Quebra de linha 
+	$Resumo = str_replace("\n", "*", "$Resumo");
+	$SliptedResumo = preg_split('[\*]',  utf8_decode($Resumo), -1, PREG_SPLIT_OFFSET_CAPTURE);
+    $tamanhoDaLinha = 50;
+	foreach($SliptedResumo as $Res)
+	{
+	 $pdf->MultiCell (190,5,$Res[0],0,1);
+	}
+	 $pdf->Rect (10, 153, 190, 80 , "D");
+	
+	
+}
+else
+{
+
+	//RelatÃ³rio
+
+	$pdf->Rect (10, 143, 190, 5 , "D");
+	$pdf->SETXY (90, 143);
+	$pdf->SetFont ("Times", "B",9);
+	$pdf->Cell (60,5, ("Relatório de Atividades:"),0,0);
+	$pdf->SETXY (10, 149);
+	$pdf->SetFont ("Times", "",7);
+	//Quebra de linha 
+	$Resumo = str_replace("\n", "*", "$Resumo");
+	$SliptedResumo = preg_split('[\*]', utf8_decode($Resumo), -1, PREG_SPLIT_OFFSET_CAPTURE);
+    $tamanhoDaLinha = 50;
+	foreach($SliptedResumo as $Res)
+	{
+	 $pdf->MultiCell (190,3,$Res[0],0,1);
+	}
+	 $pdf->Rect (10, 143, 190, 88 , "D");
+
+}
+
+
+//RelatÃ³rio
+
+$pdf->Rect (10, 232, 63, 5 , "D");
+$pdf->SETXY (30, 232);
+$pdf->SetFont( "Times", "B",9);
+$pdf->Cell (60,5, "Beneficiário",0,0);
+$pdf->SETXY (10, 238);
+$pdf->Cell (63,26,"",1,0);
+
+
+//RelatÃ³rio
+
+$pdf->Rect (73, 232, 63, 5 , "D");
+$pdf->SETXY (90, 232);
+$pdf->SetFont ("Times", "B",9);
+$pdf->Cell (60,5,"Dirigente da Unidade",0,0);
+$pdf->SETXY (73, 238);
+$pdf->Cell (63,26,"",1,0);
+
+
+//RelatÃ³rio
+
+$pdf->Rect (136, 232, 64, 5 , "D");
+$pdf->SETXY (160, 232);
+$pdf->SetFont ("Times", "B",9);
+$pdf->Cell (61,5,"Diretor",0,0);
+$pdf->SETXY (136, 238);
+$pdf->Cell (64,26," ",1,1);
+
+
+/*$pdf->Rect (10, 232, 95, 5 , "D");
+$pdf->SETXY (41, 232);
+$pdf->SetFont( "Times", "B",9);
+$pdf->Cell (60,5, utf8_decode("Dirigente da Unidade"),0,0);
+$pdf->SETXY (10, 238);
+$pdf->Cell (95,23,"",1,0);
+
+$pdf->Rect (105, 232, 95, 5 , "D");
+$pdf->SETXY (143, 232);
+$pdf->SetFont ("Times", "B",9);
+$pdf->Cell (60,5,"Diretor",0,0);
+$pdf->SETXY (105, 238);
+$pdf->Cell (95,23,"",1,1);*/
+
+// Datas
+$pdf->SetFont ("Times", "B",8);
+$pdf->Cell (33,4,("Data da Solicitação       :"),0,0);
+$pdf->SetFont ("Times", "",8);
+$pdf->Cell (33,4,$DataCriacao . " - " . $HoraCriacao,0,1);
+$pdf->SetFont ("Times", "B",8);
+$pdf->Cell (33,4,("Data da Comprovação :"),0,0);
+$pdf->SetFont ("Times", "",8);
+$pdf->Cell (33,4,$DataDaComprovacao . " - " . $HoraDaComprovacao,0,1);
+$pdf->SetFont ("Times", "B",8);
+$pdf->Cell (33,4,("Data da Impressão       :"),0,0);
+$pdf->SetFont ("Times", "",8);
+$pdf->Cell (33,4,date("d/m/Y - H:i:s"),0,1);
+
+$pdf->Close();
+$pdf->Output();
+?>
+

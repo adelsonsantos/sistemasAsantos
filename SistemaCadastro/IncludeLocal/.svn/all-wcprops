@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/IncludeLocal
+END
+IncludeCadastroEndereco.php
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/IncludeLocal/IncludeCadastroEndereco.php
+END
+IncludeCadastroInformacoesOrganizacionais.php
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/IncludeLocal/IncludeCadastroInformacoesOrganizacionais.php
+END
+IncludeCadastroContato.php
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/IncludeLocal/IncludeCadastroContato.php
+END
+IncludeCadastroJuridicaDadosBasicos.php
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/IncludeLocal/IncludeCadastroJuridicaDadosBasicos.php
+END
+IncludeCadastroInformacoesOrganizacionaisValidacao.php
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/IncludeLocal/IncludeCadastroInformacoesOrganizacionaisValidacao.php
+END
+IncludeCadastroTerceirizadoInformacoesOrganizacionais.php
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/IncludeLocal/IncludeCadastroTerceirizadoInformacoesOrganizacionais.php
+END
+IncludeCadastroDadosAdicionais.php
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/IncludeLocal/IncludeCadastroDadosAdicionais.php
+END
+IncludeCadastroDadosBasicos.php
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/IncludeLocal/IncludeCadastroDadosBasicos.php
+END
+IncludeCadastroJuridicaContato.php
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/IncludeLocal/IncludeCadastroJuridicaContato.php
+END

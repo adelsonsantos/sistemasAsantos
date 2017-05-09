@@ -1,0 +1,366 @@
+<?php
+include "../Include/Inc_Configuracao.php";
+include "../Include/Inc_JavaScript.php";
+include "Classe/ClasseDiariaFinanceiroExecucao.php";
+?>
+<html>
+
+    <style type="text/css">@import url("../css/estilo.css"); </style>
+    <style type="text/css">@import url("../css/dhtmlgoodies_calendar.css"); </style>
+
+    <script language="javascript" src="../JavaScript/ScriptFuncao.js"></script>
+    <script language="javascript" src="../JavaScript/ScriptMenu.js"></script>
+    <script language="javascript" src="../JavaScript/dhtmlgoodies_calendar.js"></script>
+
+    <style type="text/css"> 
+
+        .transparencia 
+        { 
+            position: fixed !important; 
+            position: absolute; 
+            top: 0px; 
+            left: 2px; 
+            z-index: 10; 
+            width: 101.3%; 
+            height: 100%; 
+            opacity: 0.6; 
+            color: #000000; 
+            background-color: B3ACB3;
+            /*        #E0E0E0;    */
+
+        } 
+
+        *.transparencia 
+        { 
+            filter: alpha(opacity = 60); 
+        } 
+    </style>
+ <script language="javascript" charset="utf-8">
+        function  div()
+        {
+            document.getElementById("div1").style.visibility='visible';
+        }
+        
+        function GravarForm(frm)
+        {
+          
+            for(cont=0; cont < frm.elements.length; cont++)
+                frm.elements[cont].style.backgroundColor = '';
+
+            if (frm.txtData.value == "")
+            {
+                alert("Digite a DATA da Execu&ccedil;&atilde;o.");
+                frm.txtData.focus();
+                frm.txtData.style.backgroundColor='#B9DCFF';
+                return false;
+            }
+		
+            if (frm.txtDataPreLiquidar.value == "")
+            {
+                alert("Digite a DATA da Pr&eacute;-Liquida&ccedil;&atilde;o.");
+                frm.txtData.focus();
+                frm.txtData.style.backgroundColor='#B9DCFF';
+                return false;
+            }
+		
+            if (frm.txtDataLiquidar.value == "")
+            {
+                alert("Digite a DATA da Liquida&ccedil;&atilde;o.");
+                frm.txtData.focus();
+                frm.txtData.style.backgroundColor='#B9DCFF';
+                return false;
+            }
+		
+            if (frm.txtHoraPreLiquidar.value == "")
+            {
+                alert("Digite a HORA da Pré-Liquidação.");
+                frm.txtData.focus();
+                frm.txtData.style.backgroundColor='#B9DCFF';
+                return false;
+            }
+		
+            if (frm.txtHoraLiquidar.value == "")
+            {
+                alert("Digite a HORA da Liquidação.");
+                frm.txtData.focus();
+                frm.txtData.style.backgroundColor='#B9DCFF';
+                return false;
+            }
+		
+            dataPreLiquidar = frm.txtDataPreLiquidar.value;
+            dataLiquidar    = frm.txtDataLiquidar.value;
+            dataExecutar    = frm.txtData.value;
+            dataEmpenho     = frm.txtDataEmpenho.value;
+		
+            dataPreLiquidarBD = dataPreLiquidar.substring(6,10) + dataPreLiquidar.substring(3,5) + dataPreLiquidar.substring(0,2);
+            dataLiquidarBD    = dataLiquidar.substring(6,10)    + dataLiquidar.substring(3,5)    + dataLiquidar.substring(0,2);
+            dataExecutarBD    = dataExecutar.substring(6,10)    + dataExecutar.substring(3,5)    + dataExecutar.substring(0,2);
+            dataEmpenhoBD     = dataEmpenho.substring(6,10)     + dataEmpenho.substring(3,5)     + dataEmpenho.substring(0,2);
+		
+		
+		
+            // Validação da data de Pré-Liquidação
+            if ( dataPreLiquidarBD < dataEmpenhoBD )
+            {
+                alert("Data da PRÉ-LIQUIDAÇÃO menor que a DATA DO EMPENHO");
+                frm.txtDataObrigacao.style.backgroundColor='#B9DCFF';
+                return false;
+            }
+
+            // Validação da data de Liquidação
+            data_form    = frm.txtDataLiquidar.value;
+            data_form_bd = data_form.substring(6,10) + data_form.substring(3,5) + data_form.substring(0,2);
+		
+            if ( dataLiquidarBD < dataEmpenhoBD )
+            {
+                alert("Data da LIQUIDAÇÃO menor que a DATA DO EMPENHO");
+                frm.txtDataObrigacao.style.backgroundColor='#B9DCFF';
+                return false;
+            }
+
+
+            /* Validação da data de execução */
+            if ( dataExecutarBD < dataLiquidarBD )
+            {
+                alert("Data da EXECUÇÃO menor que a DATA DA LIQUIDAÇÃO");
+                frm.txtDataObrigacao.style.backgroundColor='#B9DCFF';
+                return false;
+            }
+             document.getElementById("div1").style.visibility='hidden';
+            frm.action = "SolicitacaoExecutar.php?acao=executar";
+            frm.submit();
+           
+        }
+
+    </script>
+
+    <body onLoad="WM_initializeToolbar();">
+
+        <form name="Form" method="post">
+            <div id="div1" class="transparencia" style="visibility: hidden;" >
+                <center>
+                    <div style="margin-top: 20%;">
+                        <img src="../Imagens/257.gif" alt="preloading-javascript"   border="0" >
+                    </div>
+                </center>
+            </div>
+            <table align="left" width="100%" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                    <td><? include "../Include/Inc_Topo.php" ?></td>
+                </tr>
+                <tr>
+                    <td><? include "../Include/Inc_Aba.php" ?></td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <table width="990" cellspacing="0" cellpadding="0" border="0">
+                            <tr>
+                                <td valign="top" align="left" width="190"><? include "../Include/Inc_Menu.php" ?></td>
+                                <td valign="top" align="left">
+
+                                    <table cellpadding="0" cellspacing="0" border="0" width="800">
+                                        <tr>
+                                            <td align="center" class="tabPesquisa" >
+
+                                                <table cellpadding="0" border="0" cellspacing="0" width="100%">
+                                                    <tr>
+                                                        <td><img src="../SistemaCadastro/Imagens/vazio.gif" width="1" height="3" border="0"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td valign="top" class="LinhaTexto">&nbsp;&nbsp;<b>Confirma execu&ccedil;&atilde;o da solicita&ccedil;&atilde;o abaixo?</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><img src="../SistemaCadastro/Imagens/vazio.gif" width="1" height="2" border="0"></td>
+                                                    </tr>
+                                                </table>
+
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                    <? include "../Include/Inc_Linha.php" ?>
+
+                                    <table width="800" border="0" cellpadding="0" cellspacing="0" class="TabelaFormulario">
+                                        <tr>
+                                            <td>
+                                                <table width="798" border="0" cellpadding="0" cellspacing="1">
+                                                    <tr height="21" class="dataLabel">
+                                                        <td width="80" align="center">&nbsp;N&uacute;mero SD</td>
+                                                        <td width="110" align="center">&nbsp;Solicitada em</td>
+                                                        <td width="110" align="center">&nbsp;Nº Empenho</td>
+                                                        <td width="110" align="center">&nbsp;Data Empenho</td>
+                                                        <td width="158" align="center">&nbsp;Processo</td>
+                                                        <td width="230">&nbsp;Status</td>
+                                                    </tr>
+                                                    <tr height="21" class="dataField">
+
+                                                        <?php
+                                                        if ($Diaria_agrupada == 0) {
+                                                            echo "<td align=\"center\">$Numero</td>";
+                                                        } else {
+                                                            echo "<td align=\"center\">$Diaria_Super_SD</td>";
+                                                        }
+                                                        ?>
+<!--                                                        <td align="center"><?= $Numero ?></td>-->
+
+                                                        <td>&nbsp;<?=$DataCriacao." " . $HoraCriacao ?></td>
+                                                        <td align="center"><?= $Empenho ?></td>
+                                                        <td align="center"><?= $DataEmpenho ?></td>
+                                                        <td align="center"><?= $Processo ?></td>
+                                                        <? include "IncludeLocal/Inc_Status_Diaria.php" ?>
+                                                        <td>&nbsp;<font color="#ff0000"><?= $StatusNome ?></font></td>
+                                                    </tr>
+                                                </table>
+
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                    <br>
+
+                                    <table width="800" border="0" cellpadding="0" cellspacing="0" class="TabelaFormulario">
+                                        <tr>
+                                            <td>
+                                                <table width="798" border="0" cellpadding="0" cellspacing="1">
+                                                    <tr height="21" class="dataLabel">
+                                                        <td width="400">&nbsp;Benefici&aacute;rio</td>
+                                                        <td width="200">&nbsp;Matr&iacute;cula</td>
+                                                        <td width="198">&nbsp;CPF</td>
+                                                    </tr>
+                                                    <tr height="21" class="dataField">
+                                                        <td>&nbsp;<?= f_ConsultaNomeFuncionario($Beneficiario) ?></td>
+                                                        <td>&nbsp;<?= $Matricula ?> </td>
+                                                        <td>&nbsp;<?= $CPF ?> </td>
+                                                    </tr>
+                                                    <tr height="21" class="dataLabel">
+                                                        <td width="400">&nbsp;Banco</td>
+                                                        <td width="200">&nbsp;Ag&ecirc;ncia</td>
+                                                        <td width="198">&nbsp;Conta</td>
+                                                    </tr>
+                                                    <tr height="21" class="dataField">
+                                                        <? $linharsBanco = pg_fetch_assoc($rsBanco); ?>
+                                                        <td>&nbsp;<?= $linharsBanco['banco_cd'] ?> - <?= $linharsBanco['banco_ds'] ?></td>
+                                                        <td>&nbsp;<?= $linharsBanco['dados_bancarios_agencia'] ?> </td>
+                                                        <td>&nbsp;<?= $linharsBanco['dados_bancarios_conta'] ?></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                    <br>
+
+
+                                    <table width="800" border="0" cellpadding="0" cellspacing="0" class="TabelaFormulario">
+                                        <tr>
+                                            <td>
+
+                                                <table width="798" border="0" cellpadding="0" cellspacing="1">
+                                                    <tr height="21" class="dataLabel">
+                                                        <td width="312">&nbsp;Valor Refer&ecirc;ncia</td>
+                                                        <td width="85">&nbsp;Redu&ccedil;&atilde;o 50%</td>
+                                                        <td width="102">&nbsp;Qtde Di&aacute;rais</td>
+                                                        <td width="98">&nbsp;Valor Total</td>
+                                                        <td>&nbsp;</td>
+                                                    </tr>
+                                                    <tr height="21" class="dataField">
+                                                        <td width="312">&nbsp;<?= $ValorRef ?></td>
+                                                        <td width="85">&nbsp;<?= $Desconto ?></td>
+                                                        <td>&nbsp;<?= $Qtde ?></td>
+                                                        <td>&nbsp;<?= $Valor ?></td>
+                                                        <td>&nbsp;</td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                    <br>
+
+                                    <table width="800" border="0" cellpadding="0" cellspacing="0" class="TabelaFormulario">
+                                        <tr>
+                                            <td>
+                                                <table width="798" border="0" cellpadding="0" cellspacing="1">
+                                                    <tr class="dataTitulo" height="21">
+                                                        <td width="33%" colspan="2">&nbsp;Pr&eacute;-Liquida&ccedil;&atilde;o</td>
+                                                        <td width="34%" colspan="2">&nbsp;Liquida&ccedil;&atilde;o</td>
+                                                        <td width="33%" colspan="2">&nbsp;Execu&ccedil;&atilde;o</td>
+                                                    </tr>
+
+                                                    <tr class="dataLabel" height="21">
+                                                        <td width="16%">&nbsp;Data</td>
+                                                        <td width="16%">&nbsp;Hora</td>
+                                                        <td width="16%">&nbsp;Data</td>
+                                                        <td width="16%">&nbsp;Hora</td>
+                                                        <td width="16%">&nbsp;Data</td>
+                                                        <td width="16%">&nbsp;</td>
+                                                    </tr>
+
+                                                    <tr class="dataField">
+                                                        <!-- Pré-liquidação -->
+                                                        <td>
+                                                            &nbsp;<input type="text" name="txtDataPreLiquidar" value="<?php echo date("d/m/Y"); ?>" maxlength="20" style="width:95px;" readonly>&nbsp;*
+                                                            <a href="#" onClick="javascript:displayCalendar(txtDataPreLiquidar,'dd/mm/yyyy',this);">
+                                                                <img src="../Icones/ico_calendario.gif" border="0" align="Mostrar CalendÃ¡rio" width="18" height="18">
+                                                            </a>
+                                                        </td>
+                                                        <td>&nbsp;<input class="hora" type="text" name="txtHoraPreLiquidar" value="<?php echo date("H:i"); ?>" maxlength="20" style="width:95px;">&nbsp;*</td>
+                                                        <!-- Liquidação -->
+                                                        <td>
+                                                            &nbsp;<input type="text" name="txtDataLiquidar" value="<?php echo date("d/m/Y"); ?>" maxlength="20" style="width:95px;" readonly>&nbsp;*
+                                                            <a href="#" onClick="javascript:displayCalendar(txtDataLiquidar,'dd/mm/yyyy',this);">
+                                                                <img src="../Icones/ico_calendario.gif" border="0" align="Mostrar CalendÃ¡rio" width="18" height="18">
+                                                            </a>
+                                                        </td>
+                                                        <td>&nbsp;<input class="hora" type="text" name="txtHoraLiquidar" value="<?php echo date("H:i"); ?>" maxlength="20" style="width:95px;">&nbsp;*</td>
+                                                        <!-- Execução -->
+                                                        <td>
+                                                            &nbsp;<input type="text" name="txtData" value="<?php echo date("d/m/Y"); ?>" maxlength="20" style="width:95px;" readonly>&nbsp;*
+                                                            <a href="#" onClick="javascript:displayCalendar(txtData,'dd/mm/yyyy',this);">
+                                                                <img src="../Icones/ico_calendario.gif" border="0" align="Mostrar CalendÃ¡rio" width="18" height="18">
+                                                            </a>
+                                                        </td>
+                                                        <td>&nbsp;</td>
+                                                    </tr>
+
+
+
+
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                    <table width="798" border="0" cellpadding="0" cellspacing="1">
+                                        <tr height="21">
+                                            <td class="dataLinha">(*) Campo obrigat&oacute;rio</td>
+                                        </tr>
+                                    </table>
+
+                                    <table border="0" cellpadding="1" cellspacing="1" width="800">
+                                        <tr height="25">
+                                            <td align="right">
+                                                <button style="width:70px" onClick="Javascript: div(); GravarForm(document.Form);" name="btnGravar" class="botao">Gravar</button>&nbsp;&nbsp;&nbsp;
+                                                <button style="width:70px" onClick="Javascript:history.back(-1);" name="btnConsultar" class="botao">Voltar</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                </td>
+                            </tr>
+                        </table>
+                        <?
+                        $rsConsulta = pg_query(abreConexao(), $sqlConsulta);
+                        $linharsConsulta = pg_fetch_assoc($rsConsulta);
+                        ?>
+                        <input type="hidden" name="txtCodigo" value="<?= $linharsConsulta['diaria_id'] ?>">
+                        <input type="hidden" name="txtDataObrigacao" value="<?= $DataObrigacao ?>">
+                        <input type="hidden" name="txtDataEmpenho" value="<?= $DataEmpenho ?>">
+                    </td>
+                </tr>
+            </table>
+
+        </form>
+
+    </body>
+</html>

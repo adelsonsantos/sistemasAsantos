@@ -1,0 +1,4 @@
+<?php
+include "../../Include/Inc_Configuracao.php";
+f_ComboMunicipio("cmbEnderecoMunicipio",$_GET['estado_id'],"");
+?>

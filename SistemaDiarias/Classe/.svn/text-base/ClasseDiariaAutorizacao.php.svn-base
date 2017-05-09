@@ -1,0 +1,59 @@
+<?php
+		//define o nome da pagina local para facilitar nos links
+		
+		if ($_GET['pagina'] == "")
+		{ 
+			$PaginaLocal = "SolicitacaoAutorizacao";
+		}
+		else 
+		{
+			$PaginaLocal = $_GET['pagina'];		
+		}	
+
+		//controla a visibilidade do botao consultar
+		$_SESSION['BotaoConsultar'] = 0;
+		$_SESSION['OrigemPagina']= "SolicitacaoAutorizacao";
+
+		
+		$Roteiro = $_GET['roteiro'];
+
+		if (($AcaoSistema == "buscar")|| ($AcaoSistema == ""))
+		{
+			if ($RetornoFiltro != "")
+			{  
+				//$sqlConsulta = "SELECT * FROM diaria.diaria d, dados_unico.funcionario f, dados_unico.pessoa p WHERE (p.pessoa_id = f.pessoa_id) AND (d.diaria_beneficiario = f.pessoa_id) AND diaria_st = 0 AND diaria_cancelada = 0 AND diaria_excluida = 0 AND (pessoa_nm ILIKE '%" .$RetornoFiltro. "%' OR diaria_numero ILIKE '%" .$RetornoFiltro. "%') ORDER BY diaria_dt_saida DESC, diaria_hr_saida ASC";
+				$sqlConsulta = "SELECT * FROM diaria.diaria d, dados_unico.funcionario f, dados_unico.pessoa p WHERE (p.pessoa_id = f.pessoa_id) AND (d.diaria_beneficiario = f.pessoa_id) AND diaria_st = 0 AND diaria_cancelada = 0 AND diaria_excluida = 0 AND diaria_devolvida = 0 AND (pessoa_nm ILIKE '%" .$RetornoFiltro. "%' OR diaria_numero ILIKE '%" .$RetornoFiltro. "%') ORDER BY diaria_dt_saida DESC, diaria_hr_saida ASC";
+			} else{	
+				//$sqlConsulta = "SELECT * FROM diaria.diaria d, dados_unico.funcionario f, dados_unico.pessoa p WHERE (p.pessoa_id = f.pessoa_id) AND (d.diaria_beneficiario = f.pessoa_id) AND diaria_st = 0 AND diaria_excluida = 0 AND diaria_cancelada = 0 ORDER BY diaria_dt_saida DESC, diaria_hr_saida ASC";
+				$sqlConsulta = "SELECT * FROM diaria.diaria d, dados_unico.funcionario f, dados_unico.pessoa p WHERE (p.pessoa_id = f.pessoa_id) AND (d.diaria_beneficiario = f.pessoa_id) AND diaria_st = 0 AND diaria_excluida = 0 AND diaria_cancelada = 0 AND diaria_devolvida = 0 ORDER BY diaria_dt_saida DESC, diaria_hr_saida ASC";
+			}
+			
+			if ($_GET['atributo']!='')
+			{						
+				//$sqlConsulta = "SELECT * FROM diaria.diaria d, dados_unico.funcionario f, dados_unico.pessoa p WHERE (p.pessoa_id = f.pessoa_id) AND (d.diaria_beneficiario = f.pessoa_id) AND diaria_st = 0 AND diaria_excluida = 0 AND diaria_cancelada = 0 AND (pessoa_nm ILIKE '%" .$RetornoFiltro."%' OR diaria_numero ILIKE '%" .$RetornoFiltro. "%') ORDER BY ".$_GET['atributo']." DESC";
+				$sqlConsulta = "SELECT * FROM diaria.diaria d, dados_unico.funcionario f, dados_unico.pessoa p WHERE (p.pessoa_id = f.pessoa_id) AND (d.diaria_beneficiario = f.pessoa_id) AND diaria_st = 0 AND diaria_excluida = 0 AND diaria_cancelada = 0 AND diaria_devolvida = 0 AND (pessoa_nm ILIKE '%" .$RetornoFiltro."%' OR diaria_numero ILIKE '%" .$RetornoFiltro. "%') ORDER BY extract(month From  ".$_GET['atributo'].") DESC , extract(day  From ".$_GET['atributo'].") ASC "; 
+				$rsConsulta = pg_query(abreConexao(),$sqlConsulta);		
+			}		
+  		    //	echo $sqlConsulta; EXIT(); 			
+			$rsConsulta = pg_query(abreConexao(),$sqlConsulta);
+		}
+
+		ElseIf ($AcaoSistema == "autorizar")
+        {
+                    $Date=date("Y-m-d");
+					$Codigo = $_GET['cod'];
+                    $Time=date("H:i:s");
+					$sqlAltera = "UPDATE diaria.diaria SET diaria_st = 1 WHERE diaria_id IN (" .$Codigo. ")";
+					pg_query(abreConexao(),$sqlAltera);
+
+					$sqlConsulta = "SELECT funcionario_id FROM dados_unico.funcionario WHERE pessoa_id = " .$_SESSION['UsuarioCodigo'];
+					$rsConsulta = pg_query(abreConexao(),$sqlConsulta);
+                    $linha=pg_fetch_assoc($rsConsulta);
+					$sqlInsere = "INSERT INTO diaria.diaria_autorizacao (diaria_id, diaria_autorizacao_func, diaria_autorizacao_func_exec, diaria_autorizacao_dt, diaria_autorizacao_hr) VALUES (" .$Codigo. ", " .$linha['funcionario_id'].", 1, '" .$Date."', '" .$Time. "')";
+
+					pg_query(abreConexao(),$sqlInsere);
+
+                    echo "<script>alert(\"Diária Autorizada com Sucesso.!!!\");</script>";	
+					echo "<script>window.location = 'SolicitacaoAutorizacaoInicio.php ';</script>";
+        }
+?>

@@ -1,0 +1,123 @@
+<?php
+include "../Include/Inc_Configuracao.php";
+include "../Include/conecta.php";
+?>
+<html>
+
+<style type="text/css">@import url("../css/estilo.css"); </style>
+<style type="text/css">@import url("../css/dhtmlgoodies_calendar.css"); </style>
+
+<script language="javascript" src="../JavaScript/ScriptFuncao.js"></script>
+<script language="javascript" src="../JavaScript/ScriptMenu.js"></script>
+<script language="javascript" src="../JavaScript/dhtmlgoodies_calendar.js"></script>
+<script language=javascript src="funcoes.js"> </script>
+
+<script language="javascript" charset="utf-8">
+<!--
+
+	function Foco(frm)
+	{
+		frm.cmbContrato.focus();
+	}
+
+
+	function GerarRelatorio(frm)
+	{
+		var i
+	
+	
+		/*if (frm.combo_coordenadoria.value == "")
+		{
+			alert("Selecione a Coordenadoria!");
+			frm.combo_coordenadoria.focus();
+			frm.combo_coordenadoria.style.backgroundColor='#B9DCFF';
+			return false;
+		}
+		*/
+			frm.action = "RelatorioDiariaCoordenadoriaPDF.php";
+			frm.submit();
+	}
+-->
+</script>
+
+
+<body onLoad="WM_initializeToolbar();">
+
+
+<form name="Form" method="post">
+
+<table align="left" width="100%" cellspacing="0" cellpadding="0" border="0">
+	<tr>
+		<td><?include "../Include/Inc_Topo.php"?></td>
+	</tr>
+	<tr>
+		<td><?include "../Include/Inc_Aba.php"?></td>
+	</tr>
+	<tr>
+		<td align="left">
+			<table width="990" cellspacing="0" cellpadding="0" border="0">
+				<tr>
+					<td valign="top" align="left" width="190"><?include "../Include/Inc_Menu.php"?></td>
+					<td valign="top" align="left">
+
+						<?include "../Include/Inc_Titulo.php"?>
+
+						<?include "../Include/Inc_Linha.php"?>
+
+						<table cellpadding="0" cellspacing="0" width="800" border="0" class="GridPaginacao">
+							<tr>
+								<td>
+									<table border="0" cellpadding="1" cellspacing="1" width="798">
+										<tr height="20">
+											<td width="150" class="dataLabel">	
+											&nbsp;Escolha o Relatório:
+											</td>
+											
+										<td width="75" class="dataField">
+												<INPUT id="todos"         TYPE=RADIO NAME="radio_tipo_relat" VALUE="coord" onClick="HabTipoRelatorioDiaria()" />Nome Coordenadoria
+												<INPUT id="coordenadoria" TYPE=RADIO NAME="radio_tipo_relat" VALUE="todos" onClick="HabTipoRelatorioDiaria()" />Todas
+											<LABEL  id="campo_coordenadoria" style="display:none">
+												<SELECT name="combo_coordenadoria">
+													<OPTION SELECTED>[-------Selecione-------]
+													<?php 
+														$sql = "select id_coordenadoria, nome From diaria.coordenadoria order by nome asc";
+														$consulta = executar_SQL($sql);		
+														if(verifica_resultado($consulta)){			
+															while($tupla = retorna_linha($consulta)){
+																$idCoordenadoria = $tupla["id_coordenadoria"];
+																$nomeCoordenadoria = $tupla["nome"];
+																echo "<OPTION value=\"$idCoordenadoria\">$nomeCoordenadoria";				
+															}	
+														}	
+													?>
+												</SELECT>
+											</LABEL>												
+										</td>									
+											
+								   <!-- Chama o calendário  <td width="" class="dataField"><a href="#" onClick="javascript:displayCalendar(txtDataComprova,'dd/mm/yyyy',this);"><img src="../Icones/ico_calendario.gif" border="0" align="Mostrar Calend&acute;rio" width="18" height="18"></a></td> -->
+									 </tr>
+									</table>
+
+								</td>
+							</tr>
+						</table>
+
+						<table border="0" cellpadding="1" cellspacing="1" width="800">
+							<tr height="25">
+								<td align="right">
+									<button style="width:100px" onClick="Javascript:GerarRelatorio(document.Form);" name="btnGravar" class="botao">Gerar Relatório</button>
+								</td>
+							</tr>
+						</table>
+
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+</form>
+
+</body>
+</html>

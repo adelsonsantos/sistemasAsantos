@@ -1,0 +1,1102 @@
+<?php
+include "../Include/Inc_Configuracao.php";
+include "../Include/Inc_JavaScript.php";
+include "Classe/ClasseDiaria.php";
+include "conecta.php";
+
+$sql_ = "SELECT tipo_usuario_id FROM seguranca.usuario_tipo_usuario
+			WHERE pessoa_id=" . $_SESSION['UsuarioCodigo'];
+$Consulta = pg_query(abreConexao(), $sql_);
+$tupla = pg_fetch_assoc($Consulta);
+$tipoUsuario = $tupla['tipo_usuario_id'];
+
+if ($tipoUsuario == 4) {
+    header("Location: Login.php?erro=1");
+}
+
+$_SESSION['ContadorDestino'] = "";
+$_SESSION['RelacaoViagem'] = "";
+$_SESSION['ViagemOrigem'] = "";
+$_SESSION['ViagemDestino'] = "";
+$_SESSION['PossuiRoteiro'] = "";
+$_SESSION['PercentualRecebido'] = "";
+$_SESSION['ErroRoteiro'] = "";
+$_SESSION['NumeroDiarias'] = "";
+$_SESSION['PossuiFeriado'] = "";
+$_SESSION['PossuiFimSemana'] = "";
+$_SESSION['ValorTotal'] = "";
+$_SESSION['ValorPercentual'] = "";
+$_SESSION['Origem'] = "";
+
+if ($Beneficiario == "") {
+    $Beneficiario = $_SESSION['UsuarioCodigo'];
+}
+// Testa se é uma nova solicitação ou edição.
+// Caso seja nova solicitação, é zerado qualquer data retornada para evitar erros de calculo de valores.
+// Caso seja edição, os valores são mantidos
+if ($PaginaLocal == "Solicitacao" && $diaria_devolvida != "1") {
+    /*  Erinaldo colocou isso aqui em 30/08/2011 */
+    if ($DataPartida != "") {
+        $DataPartida = "";
+        $DataChegada = "";
+    }
+    /*  Erinaldo colocou isso aqui em 30/08/2011 */
+    if ($HoraChegada != "" || $HoraPartida != "") {
+        $HoraChegada = "";
+        $HoraPartida = "";
+    }
+}
+?>
+
+<html>
+
+    <style type="text/css">@import url("../css/estilo.css"); </style>
+    <style type="text/css">@import url("../css/dhtmlgoodies_calendar.css"); </style>
+
+    <script language="javascript" src="../JavaScript/ScriptFuncao.js"></script>
+    <script language="javascript" src="../JavaScript/ScriptMenu.js"></script>
+    <script language="javascript" src="../JavaScript/ScriptAjax.js"></script>
+    <script language="javascript" src="../JavaScript/dhtmlgoodies_calendar.js"></script>
+    <script language="javascript" src="JavaScript/Diaria.js"></script>
+
+    <script language=javascript src="funcoes.js"> </script>
+    <script language="javascript">
+        <!--
+        var feriado = false;
+        var final_de_semana = false;
+	
+        function Foco(frm)
+        {
+            frm.cmbBeneficiario.focus();
+		
+            if (frm.txtCodigo.value != "")
+            {
+                document.getElementById("QtdeDiariaAlterar").style.display = '';
+            }
+
+
+        }
+        function PedeNovoCalculo(frm)
+        {  
+            frm.txtAlterouCalculo.value = 0;
+            document.getElementById("MostrarResumoBloqueio").style.display = 'none';
+            VerificabloqueiaDiaria();
+        }
+        function LimparDados(frm)
+        {
+            frm.action = "SolicitacaoCadastrar.php";
+            frm.submit();
+        }
+        function AlterarRoteiro(frm)
+        {
+            frm.action = "SolicitacaoCadastrar.php?alterarRoteiro=1&acao=consultar&cod=<?= $Codigo ?>&recalcular=0";
+            frm.submit();
+        }
+        function GravarForm(frm)
+        {
+            for(cont=0; cont < frm.elements.length; cont++)
+                frm.elements[cont].style.backgroundColor = '';
+
+            hora         = (frm.txtHoraCriacao.value.substring(0,2));
+            minuto       = (frm.txtHoraCriacao.value.substring(3,5));
+            horaAcesso   = (frm.txthorasAcesso.value.substring(0,2));
+            minutoAcesso = (frm.txthorasAcesso.value.substring(3,5));
+            if (frm.txtBloqueio == null)
+            {
+
+            }
+            else
+            {
+                if (frm.txtBloqueio.value == "1")
+                {
+                    alert("BENEFICI\u00C1RIO BLOQUEADO.");
+                    return false;
+                }
+            }
+
+            /* Teste retirado em 15/09/2011 a pedido de Marcelo
+                     if ((frm.txtDataAtual.value == frm.txtDataPartida.value) && ((horaAcesso >= 16 ) && (minutoAcesso > 00)) )
+                    {  
+                            alert ( "Caro usu\u00E1rio, voc\u00EA est\u00E1 solicitando uma di\u00E1ria para o mesmo dia \n e sua solicita\u00E7\u00E3o sendo feita \u00E0s "+ hora+":"+minuto+". \n Isto impossibilita o processamento da diária. Sugerimos que todas as diárias\n devam ser planejadas e solicitada com uma antecedência de mínimo 5 dias.");
+                      return false;
+                    }*/		
+		
+            /* Código Alterado por Erinaldo em 19/02/2011 para resolver problema da pré-aprovação */
+            if ((!document.getElementById('sede').checked) && (!document.getElementById('coordenadoria').checked))  {
+                alert("Escolha o Local de Solicita\u00E7\u00E3o da Di\u00E1ria.");
+                document.getElementById("formaba1").style.display = '';
+                document.getElementById("formaba2").style.display = 'none';
+                document.getElementById("aba1_on").style.display = '';
+                document.getElementById("aba1_off").style.display = 'none';
+                document.getElementById("aba2_on").style.display = 'none';
+                document.getElementById("aba2_off").style.display = '';
+                frm.radio_diaria_local_solicitacao.focus();
+                frm.radio_diaria_local_solicitacao.style.backgroundColor='#B9DCFF';
+                return false;		
+            }
+		
+            if ((document.getElementById('coordenadoria').checked) && (frm.combo_diaria_local_solicitacao.value == "")){
+						
+                alert("Escolha a Coordenadoria.");
+                document.getElementById("formaba1").style.display = '';
+                document.getElementById("formaba2").style.display = 'none';
+                document.getElementById("aba1_on").style.display = '';
+                document.getElementById("aba1_off").style.display = 'none';
+                document.getElementById("aba2_on").style.display = 'none';
+                document.getElementById("aba2_off").style.display = '';
+                frm.combo_diaria_local_solicitacao.focus();
+                frm.combo_diaria_local_solicitacao.style.backgroundColor='#B9DCFF';
+                return false;			
+            }				
+		
+            /*  Fim da alteração feita por Erinaldo em 19/02/2011 */		
+		
+            if (frm.txtAlterouCalculo.value == "0")
+            {
+                alert("Calcule a DI\u00C1RIA.");
+                return false;
+            }
+
+            /* AlteraÃ§Ã£o Rodolfo 17/09/2008
+             */
+            if ((horaAcesso >= 17 ) && (minutoAcesso > 30))
+            {
+                alert("A SOLICITA\u00C7\u00C3O DE DI\u00C1RIA foi emitida ap\u00F3s as 17:30. \n Seu processamento ser\u00E1 realizado no pr\u00F3ximo dia \u00FAtil.");
+            }
+
+            if (frm.txtHoraCriacao.value == "0")
+            {
+                alert("Escolha o BENEFICI\u00C1RIO.");
+                document.getElementById("formaba1").style.display = '';
+                document.getElementById("formaba2").style.display = 'none';
+                document.getElementById("aba1_on").style.display = '';
+                document.getElementById("aba1_off").style.display = 'none';
+                document.getElementById("aba2_on").style.display = 'none';
+                document.getElementById("aba2_off").style.display = '';
+                frm.cmbBeneficiario.focus();
+                frm.cmbBeneficiario.style.backgroundColor='#B9DCFF';
+                return false;
+            }		
+		
+            if (frm.cmbBeneficiario.value == "0")
+            {
+                alert("Escolha o BENEFICI\u00C1RIO.");
+                document.getElementById("formaba1").style.display = '';
+                document.getElementById("formaba2").style.display = 'none';
+                document.getElementById("aba1_on").style.display = '';
+                document.getElementById("aba1_off").style.display = 'none';
+                document.getElementById("aba2_on").style.display = 'none';
+                document.getElementById("aba2_off").style.display = '';
+                frm.cmbBeneficiario.focus();
+                frm.cmbBeneficiario.style.backgroundColor='#B9DCFF';
+                return false;
+            }
+
+            if (frm.txtDataPartida.value == "")
+            {
+                alert("Digite a DATA DE PARTIDA.");
+                document.getElementById("formaba1").style.display = '';
+                document.getElementById("formaba2").style.display = 'none';
+                document.getElementById("aba1_on").style.display = '';
+                document.getElementById("aba1_off").style.display = 'none';
+                document.getElementById("aba2_on").style.display = 'none';
+                document.getElementById("aba2_off").style.display = '';
+                frm.txtDataPartida.focus();
+                frm.txtDataPartida.style.backgroundColor='#B9DCFF';
+                return false;
+            }
+
+            if (frm.Calculo.value == "0")
+            {
+                if (frm.txtDataPartida.value != frm.txtConfDataPartida.value)
+                {
+                    alert("A DATA DE PARTIDA calculada \u00E9 diferente da DATA DE PARTIDA informada.");
+                    document.getElementById("formaba1").style.display = '';
+                    document.getElementById("formaba2").style.display = 'none';
+                    document.getElementById("aba1_on").style.display = '';
+                    document.getElementById("aba1_off").style.display = 'none';
+                    document.getElementById("aba2_on").style.display = 'none';
+                    document.getElementById("aba2_off").style.display = '';
+                    frm.txtDataPartida.focus();
+                    frm.txtDataPartida.style.backgroundColor='#B9DCFF';
+                    return false;
+                }
+            }
+
+            if (frm.txtHoraPartida.value == "")
+            {
+                alert("Digite a HORA DE PARTIDA.");
+                document.getElementById("formaba1").style.display = '';
+                document.getElementById("formaba2").style.display = 'none';
+                document.getElementById("aba1_on").style.display = '';
+                document.getElementById("aba1_off").style.display = 'none';
+                document.getElementById("aba2_on").style.display = 'none';
+                document.getElementById("aba2_off").style.display = '';
+                frm.txtHoraPartida.focus();
+                frm.txtHoraPartida.style.backgroundColor='#B9DCFF';
+                return false;
+            }
+
+            if (frm.Calculo.value == "0")
+            {
+                if (frm.txtHoraPartida.value != frm.txtConfHoraPartida.value)
+                {
+                    alert("A HORA DE PARTIDA calculada \u00E9 diferente da HORA DE PARTIDA informada.");
+                    document.getElementById("formaba1").style.display = '';
+                    document.getElementById("formaba2").style.display = 'none';
+                    document.getElementById("aba1_on").style.display = '';
+                    document.getElementById("aba1_off").style.display = 'none';
+                    document.getElementById("aba2_on").style.display = 'none';
+                    document.getElementById("aba2_off").style.display = '';
+                    frm.txtHoraPartida.focus();
+                    frm.txtHoraPartida.style.backgroundColor='#B9DCFF';
+                    return false;
+                }
+            }
+
+            if (frm.txtDataChegada.value == "")
+            {
+                alert("Digite a DATA DE CHEGADA.");
+                document.getElementById("formaba1").style.display = '';
+                document.getElementById("formaba2").style.display = 'none';
+                document.getElementById("aba1_on").style.display = '';
+                document.getElementById("aba1_off").style.display = 'none';
+                document.getElementById("aba2_on").style.display = 'none';
+                document.getElementById("aba2_off").style.display = '';
+                frm.txtDataChegada.focus();
+                frm.txtDataChegada.style.backgroundColor='#B9DCFF';
+                return false;
+            }
+
+            if (frm.Calculo.value == "0")
+            {
+                if (frm.txtDataChegada.value != frm.txtConfDataChegada.value)
+                {
+                    alert("A DATA DE CHEGADA calculada \u00E9 diferente da DATA DE CHEGADA informada.");
+                    document.getElementById("formaba1").style.display = '';
+                    document.getElementById("formaba2").style.display = 'none';
+                    document.getElementById("aba1_on").style.display = '';
+                    document.getElementById("aba1_off").style.display = 'none';
+                    document.getElementById("aba2_on").style.display = 'none';
+                    document.getElementById("aba2_off").style.display = '';
+                    frm.txtDataChegada.focus();
+                    frm.txtDataChegada.style.backgroundColor='#B9DCFF';
+                    return false;
+                }
+            }
+
+            if (frm.txtHoraChegada.value == "")
+            {
+                alert("Digite a HORA DE CHEGADA.");
+                document.getElementById("formaba1").style.display = '';
+                document.getElementById("formaba2").style.display = 'none';
+                document.getElementById("aba1_on").style.display = '';
+                document.getElementById("aba1_off").style.display = 'none';
+                document.getElementById("aba2_on").style.display = 'none';
+                document.getElementById("aba2_off").style.display = '';
+                frm.txtHoraChegada.focus();
+                frm.txtHoraChegada.style.backgroundColor='#B9DCFF';
+                return false;
+            }
+
+            if (frm.Calculo.value == "0")
+            {
+                if (frm.txtHoraChegada.value != frm.txtConfHoraChegada.value)
+                {
+                    alert("A HORA DE CHEGADA calculada \u00E9 diferente da HORA DE CHEGADA informada.");
+                    document.getElementById("formaba1").style.display = '';
+                    document.getElementById("formaba2").style.display = 'none';
+                    document.getElementById("aba1_on").style.display = '';
+                    document.getElementById("aba1_off").style.display = 'none';
+                    document.getElementById("aba2_on").style.display = 'none';
+                    document.getElementById("aba2_off").style.display = '';
+                    frm.txtHoraChegada.focus();
+                    frm.txtHoraChegada.style.backgroundColor='#B9DCFF';
+                    return false;
+                }
+            }
+
+            if (frm.Calculo.value == "0")
+            {
+                alert("Calcule a Di\u00E1ria.");
+                return false;
+            }
+
+            if (feriado && frm.txtJustificativaFeriado.value == "")
+            {
+                alert("Digite a JUSTIFICATIVA DO FERIADO.");
+                document.getElementById("formaba1").style.display = '';
+                document.getElementById("formaba2").style.display = 'none';
+                document.getElementById("aba1_on").style.display = '';
+                document.getElementById("aba1_off").style.display = 'none';
+                document.getElementById("aba2_on").style.display = 'none';
+                document.getElementById("aba2_off").style.display = '';
+                frm.txtJustificativaFeriado.focus();
+                frm.txtJustificativaFeriado.style.backgroundColor='#B9DCFF';
+                return false;
+            }
+
+            if (final_de_semana && frm.txtJustificativaFimSemana.value == "")
+            {
+                alert("Digite a JUSTIFICATIVA DO FIM DE SEMANA.");
+                document.getElementById("formaba1").style.display = '';
+                document.getElementById("formaba2").style.display = 'none';
+                document.getElementById("aba1_on").style.display = '';
+                document.getElementById("aba1_off").style.display = 'none';
+                document.getElementById("aba2_on").style.display = 'none';
+                document.getElementById("aba2_off").style.display = '';
+                frm.txtJustificativaFimSemana.focus();
+                frm.txtJustificativaFimSemana.style.backgroundColor='#B9DCFF';
+                return false;
+            }
+
+            if (frm.cmbMeioTransporte.value == "0")
+            {
+                alert("Escolha o MEIO DE TRANSPORTE.");
+                document.getElementById("formaba1").style.display = 'none';
+                document.getElementById("formaba2").style.display = '';
+                document.getElementById("aba1_on").style.display = 'none';
+                document.getElementById("aba1_off").style.display = '';
+                document.getElementById("aba2_on").style.display = '';
+                document.getElementById("aba2_off").style.display = 'none';
+                frm.cmbMeioTransporte.focus();
+                frm.cmbMeioTransporte.style.backgroundColor='#B9DCFF';
+                return false;
+            }
+
+            if (frm.cmbMotivoDiaria.value == "0")
+            {
+                alert("Escolha o MOTIVO.");
+                document.getElementById("formaba1").style.display = 'none';
+                document.getElementById("formaba2").style.display = '';
+                document.getElementById("aba1_on").style.display = 'none';
+                document.getElementById("aba1_off").style.display = '';
+                document.getElementById("aba2_on").style.display = '';
+                document.getElementById("aba2_off").style.display = 'none';
+                frm.cmbMotivoDiaria.focus();
+                frm.cmbMotivoDiaria.style.backgroundColor='#B9DCFF';
+                return false;
+            }
+
+            if (frm.txtDescricao.value == "")
+            {
+                alert("Digite a DESCRI\u00C7\u00C3O.");
+                document.getElementById("formaba1").style.display = 'none';
+                document.getElementById("formaba2").style.display = '';
+                document.getElementById("aba1_on").style.display = 'none';
+                document.getElementById("aba1_off").style.display = '';
+                document.getElementById("aba2_on").style.display = '';
+                document.getElementById("aba2_off").style.display = 'none';
+                frm.txtDescricao.focus();
+                frm.txtDescricao.style.backgroundColor='#B9DCFF';
+                return false;
+            }
+
+            if (frm.cmbUnidadeCusto.value == "0")
+            {
+                alert("Escolha a UNIDADE DE CUSTO.");
+                document.getElementById("formaba1").style.display = 'none';
+                document.getElementById("formaba2").style.display = '';
+                document.getElementById("aba1_on").style.display = 'none';
+                document.getElementById("aba1_off").style.display = '';
+                document.getElementById("aba2_on").style.display = '';
+                document.getElementById("aba2_off").style.display = 'none';
+                frm.cmbUnidadeCusto.focus();
+                frm.cmbUnidadeCusto.style.backgroundColor='#B9DCFF';
+                return false;
+            }
+
+            if (frm.cmbProjeto.value == "0")
+            {
+                alert("Escolha o PROJETO.");
+                document.getElementById("formaba1").style.display = 'none';
+                document.getElementById("formaba2").style.display = '';
+                document.getElementById("aba1_on").style.display = 'none';
+                document.getElementById("aba1_off").style.display = '';
+                document.getElementById("aba2_on").style.display = '';
+                document.getElementById("aba2_off").style.display = 'none';
+                frm.cmbProjeto.focus();
+                frm.cmbProjeto.style.backgroundColor='#B9DCFF';
+                return false;
+            }
+
+            if (frm.cmbAcao.value == "0")
+            {
+                alert("Escolha o PRODUTO.");
+                document.getElementById("formaba1").style.display = 'none';
+                document.getElementById("formaba2").style.display = '';
+                document.getElementById("aba1_on").style.display = 'none';
+                document.getElementById("aba1_off").style.display = '';
+                document.getElementById("aba2_on").style.display = '';
+                document.getElementById("aba2_off").style.display = 'none';
+                frm.cmbAcao.focus();
+                frm.cmbAcao.style.backgroundColor='#B9DCFF';
+                return false;
+            }
+
+            if (frm.cmbTerritorio.value == "0")
+            {
+                alert("Escolha o TERRIT\u00D3RIO.");
+                document.getElementById("formaba1").style.display = 'none';
+                document.getElementById("formaba2").style.display = '';
+                document.getElementById("aba1_on").style.display = 'none';
+                document.getElementById("aba1_off").style.display = '';
+                document.getElementById("aba2_on").style.display = '';
+                document.getElementById("aba2_off").style.display = 'none';
+                frm.cmbTerritorio.focus();
+                frm.cmbTerritorio.style.backgroundColor='#B9DCFF';
+                return false;
+            }
+
+            if (frm.cmbFonte.value == "0")
+            {
+                alert("Escolha a FONTE.");
+                document.getElementById("formaba1").style.display = 'none';
+                document.getElementById("formaba2").style.display = '';
+                document.getElementById("aba1_on").style.display = 'none';
+                document.getElementById("aba1_off").style.display = '';
+                document.getElementById("aba2_on").style.display = '';
+                document.getElementById("aba2_off").style.display = 'none';
+                frm.cmbFonte.focus();
+                frm.cmbFonte.style.backgroundColor='#B9DCFF';
+                return false;
+            }
+
+            if (frm.txtCodigo.value == "")
+            {
+                frm.action = "SolicitacaoCadastrar.php?acao=incluir";
+            }
+            else
+            {
+                frm.action = "SolicitacaoCadastrar.php?acao=alterar";
+            }
+
+            frm.submit();
+        }
+
+        function MostrarBloqueio()
+        {
+            document.getElementById("divBloqueio").style.display = '';
+        }
+	
+        $(document).ready(function(){
+            $("#calcular").click(function(){
+                $.ajax({
+                    type: 'POST',
+                    url: "acao.php",
+                    data: "dataPartida="  +$("#dataPartida").val() + "&dataChegada=" +$("#dataChegada").val(),
+                    success: function(result){
+                        if(result == "true")
+                            feriado = true;
+                        else
+                            feriado = false;
+						
+                        dataPartida = $("#dataPartida").val();
+                        dataChegada = $("#dataChegada").val();
+					
+                        dataPartida = dataPartida.charAt(6)+dataPartida.charAt(7)+dataPartida.charAt(8)+dataPartida.charAt(9)+
+                            dataPartida.charAt(3)+dataPartida.charAt(4)+dataPartida.charAt(0)+dataPartida.charAt(1);
+					
+                        dataChegada = dataChegada.charAt(6)+dataChegada.charAt(7)+dataChegada.charAt(8)+dataChegada.charAt(9)+
+                            dataChegada.charAt(3)+dataChegada.charAt(4)+
+                            dataChegada.charAt(0)+dataChegada.charAt(1);
+					
+                        dias = parseInt(dataChegada) - parseInt(dataPartida);
+
+                        if(($("#diaPartida").val() == "Sabado") || ($("#diaPartida").val() == "Domingo") || ($("#diaChegada").val() == "Sabado") || ($("#diaChegada").val() == "Domingo"))
+                            final_de_semana = true;
+                        else
+                            switch(dias) {
+                                case 0:
+                                case 1:
+                                    final_de_semana = false;
+                                    break;
+								
+                                case 2:
+                                    if(($("#diaPartida").val() == "Quinta-Feira") ||($("#diaPartida").val() == "Sexta-Feira"))
+                                        final_de_semana = true;
+                                    else
+                                        final_de_semana = false;
+                                    break;
+								
+                                case 3:
+                                    if(($("#diaPartida").val() == "Quarta-Feira") || ($("#diaPartida").val() == "Quinta-Feira") || ($("#diaPartida").val() == "Sexta-Feira"))
+                                        final_de_semana = true;
+                                    else
+                                        final_de_semana = false;
+                                    break;
+								
+                                case 4:
+                                    if(($("#diaPartida").val() == "Terca-Feira")  || ($("#diaPartida").val() == "Quarta-Feira") || ($("#diaPartida").val() == "Quinta-Feira") ||($("#diaPartida").val() == "Sexta-Feira"))
+                                        final_de_semana = true;
+                                    else
+                                        final_de_semana = false;
+                                    break;
+								
+                                case 5:
+                                    if($("#diaPartida").val() != "Segunda-Feira")
+                                        final_de_semana = true;
+                                    else
+                                        final_de_semana = false;
+                                    break;
+								
+                                default:
+                                    final_de_semana = true;
+                                    break;
+                            }
+                    },
+                    error: function(){
+                        alert("Erro");
+                    }
+                });
+            });
+		
+            $('.testb').click(function(){
+                $('#tabela tbody>tr:last').clone(true).insertAfter('#tabela tbody>tr:last');
+            });
+		
+        });
+        -->
+    </script>
+
+    <body onLoad="Foco(document.Form);WM_initializeToolbar();">
+        <form id="Form" name="Form" method="post">
+
+            <table align="left" width="100%" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                    <td><? include "../Include/Inc_Topo.php" ?></td>
+                </tr>
+                <tr>
+                    <td><? include "../Include/Inc_Aba.php" ?></td>
+                </tr>
+                <tr>
+                    <td>
+                        <table align="left" width="990" cellspacing="0" cellpadding="0" border="0">
+                            <tr>
+                                <td valign="top" align="left" width="190"><? include "../Include/Inc_Menu.php" ?></td>
+                                <td valign="top" align="left">
+                                    <? include "../Include/Inc_Titulo.php" ?>
+                                    <? include "../Include/Inc_Linha.php" ?>
+                                    <table cellpadding="0" cellspacing="0" border="0" width="800">
+                                        <tr>
+                                            <td>
+                                                <table cellpadding="0" cellspacing="0" border="0" width="800">
+                                                    <tr>
+                                                        <!-- aba 1 -->
+                                                        <td>
+                                                            <table cellpadding="0" width="100%" cellspacing="0" border="0" id="aba1_on">
+                                                                <tr>
+                                                                    <td width="7" align="left" background="../Imagens/bgaba_on.gif"><img src="../Imagens/aba_esq_on.gif" width="7" height="18"></td>
+                                                                    <td background="../Imagens/bgaba_on.gif" align="center" class="linktab">Di&aacute;ria</td>
+                                                                    <td width="7" align="right" background="../Imagens/bgaba_on.gif"><img src="../Imagens/aba_dir_on.gif" width="7" height="18"></td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        <td width="1"><img src="../Imagens/separa_aba.gif" width="1" height="18"></td>
+                                                        <td>
+                                                            <table cellpadding="0" width="100%" cellspacing="0" border="0" id="aba1_off" style="cursor:pointer;display:none">
+                                                                <tr>
+                                                                    <td width="7" align="left" background="../Imagens/bgaba_off.gif"><img src="../Imagens/aba_esq_off.gif" width="7" height="18"></td>
+                                                                    <td background="../Imagens/bgaba_off.gif" align="center"><a class="linktab" href="#" onClick="mostra_obj_id(aba1_on); esconde_obj_id(aba1_off); mostra_obj_id(formaba1); mostra_obj_id(aba2_off); esconde_obj_id(aba2_on); esconde_obj_id(formaba2);">Di&aacute;ria</a></td>
+                                                                    <td width="7" align="right" background="../Imagens/bgaba_off.gif"><img src="../Imagens/aba_dir_off.gif" width="7" height="18"></td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        <td width="1"><img src="../Imagens/separa_aba.gif" width="1" height="18"></td>
+                                                        <td>
+                                                            <!-- aba 2 -->
+                                                            <table cellpadding="0" width="100%" cellspacing="0" border="0" id="aba2_on" style="cursor:pointer;display:none">
+                                                                <tr>
+                                                                    <td width="7" align="left" background="../Imagens/bgaba_on.gif"><img src="../Imagens/aba_esq_on.gif" width="7" height="18"></td>
+                                                                    <td background="../Imagens/bgaba_on.gif" align="center" class="linktab">Projeto</td>
+                                                                    <td width="7" align="right" background="../Imagens/bgaba_on.gif"><img src="../Imagens/aba_dir_on.gif" width="7" height="18"></td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        <td width="1"><img src="../Imagens/separa_aba.gif" width="1" height="18"></td>
+                                                        <td>
+                                                            <table cellpadding="0" width="100%" cellspacing="0" border="0" id="aba2_off">
+                                                                <tr>
+                                                                    <td width="7" align="left" background="../Imagens/bgaba_off.gif"><img src="../Imagens/aba_esq_off.gif" width="7" height="18"></td>
+                                                                    <td background="../Imagens/bgaba_off.gif" align="center"><a class="linktab" href="#" onClick="esconde_obj_id(aba1_on); mostra_obj_id(aba1_off); esconde_obj_id(formaba1); esconde_obj_id(aba2_off); mostra_obj_id(aba2_on); mostra_obj_id(formaba2);">Projeto</a></td>
+                                                                    <td width="7" align="right" background="../Imagens/bgaba_off.gif"><img src="../Imagens/aba_dir_off.gif" width="7" height="18"></td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        <td width="1"><img src="../Imagens/separa_aba.gif" width="380" height="18"></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center" class="tabFiltro"><img src="../Imagens/vazio.gif" width="1" height="10"></td>
+                                        </tr>
+                                    </table>
+
+                                    <? include "../Include/Inc_Linha.php" ?>
+
+                                    <div id="formaba1" style="display:block">
+
+                                        <table width="800" border="0" cellpadding="0" cellspacing="0" class="TabelaFormulario">
+
+                                            <tr>									
+                                                <td>
+                                                    <table width="798" border="0" cellpadding="0" cellspacing="1">
+                                                        <tr height="21" class="dataLabel">
+                                                            <!-- Alteração feita por Erinaldo em 19/02/2011 Inclusão de um novo atributo na tabela diaria para resolver o problema de pré-aprovação-->
+                                                            <td> Local da Solicitação:</td>									
+                                                            <td>													
+                                                                <INPUT id="sede" TYPE=RADIO NAME="radio_diaria_local_solicitacao" VALUE="Sede" onClick="HabCoordenadoria()" />Sede
+                                                                <INPUT id="coordenadoria" TYPE=RADIO NAME="radio_diaria_local_solicitacao" VALUE="Coordenadoria" onClick="HabCoordenadoria()" />Coordenadoria
+                                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                                                <LABEL  id="campo_coordenadoria" style="display:none">
+                                                                    <SELECT name="combo_diaria_local_solicitacao">
+                                                                        <OPTION SELECTED>[-------Selecione-------]
+                                                                            <?php
+                                                                            $sql = "select id_coordenadoria, nome From diaria.coordenadoria order by nome asc";
+                                                                            $consulta = executar_SQL($sql);
+                                                                            if (verifica_resultado($consulta)) {
+                                                                                while ($tupla = retorna_linha($consulta)) {
+                                                                                    $idCoordenadoria = $tupla["id_coordenadoria"];
+                                                                                    $nomeCoordenadoria = $tupla["nome"];
+                                                                                    echo "<OPTION value=\"$idCoordenadoria\">$nomeCoordenadoria";
+                                                                                }
+                                                                            }
+                                                                            ?>
+                                                                    </SELECT>
+                                                                </LABEL>													
+                                                            </TD>
+                                                        </tr>
+                                                        <!--  Fim da alteração feita por Erinaldo em 19/02/2011 -->
+
+                                                        <tr height="21" class="dataLabel">
+                                                            <td width="50%">&nbsp;Solicitante</td>
+                                                            <td width="50%">&nbsp;Benefici&aacute;rio</td>
+                                                        </tr>
+                                                        <!--
+                                                        <tr height="21" class="dataField">
+                                                                <td>&nbsp;<? //=$_SESSION['UsuarioNome'] ?></td>
+                                                                
+                                                                <td>&nbsp;<? //=ComboBeneficiario($Beneficiario,"onChange=MandaID(this.value,'AjaxValorRef','funcionario_id');PedeNovoCalculo(document.Form);") ?>&nbsp;*<input type="hidden" name="txtAlterouCalculo" value="<? //=$AlterouCalculo ?>"></td>
+											</tr>
+											-->
+
+                                                        <tr height="21" class="dataField">
+                                                            <td>&nbsp;<?= $_SESSION['UsuarioNome'] ?></td>
+                                                            <td>&nbsp;<?= ComboBeneficiario($Beneficiario, "onChange=MandaValorRef(this.value,'" . $DataPartida . "','AjaxValorRef','funcionario_id','DataPartida');PedeNovoCalculo(document.Form);") ?>&nbsp;*<input type="hidden" name="txtAlterouCalculo" value="<?= $AlterouCalculo ?>"></td>
+                                                        </tr>
+
+
+
+                                                        <tr height="21" class="dataTitulo">
+                                                            <td colspan="2">&nbsp;Roteiro</td>
+                                                        </tr>
+                                                        <tr height="21" class="dataLabel">
+                                                            <td>&nbsp;Origem</td>
+                                                            <td>&nbsp;Destino</td>
+                                                        </tr>
+                                                        <?php if ($AlterarRoteiro == 1) { ?>
+                                                            <tr>
+                                                                <td>
+                                                                    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                                                                        <tr height="21" class="dataField">
+                                                                            <td width="50">&nbsp;<?= f_ComboEstado("cmbRoteiroOrigemUF", "onChange=MandaID(this.value,'AjaxRoteiroOrigem','estado_id')", "") ?></td>
+                                                                            <td><div id="RoteiroOrigem"><?= f_ComboMunicipio("cmbRoteiroOrigemMunicipio", "", "") ?></div></td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </td>
+                                                                <td class="dataField">
+                                                                    <table cellpadding="0" cellspacing="0" border="0" width="399">
+                                                                        <tr height="21" class="dataField">
+                                                                            <td width="50">&nbsp;<?= f_ComboEstado("cmbRoteiroDestinoUF", "onChange=MandaID(this.value,'AjaxRoteiroDestino','estado_id')", "") ?></td>
+                                                                            <td><div id="RoteiroDestino"><?= f_ComboMunicipio("cmbRoteiroDestinoMunicipio", "", "") ?></div></td>
+                                                                            <td>
+                                                                                <input type="button" name="btnAdicionar" style=" width:55px;" value="Adicionar" onClick="AdicionaRoteiro(document.Form.cmbRoteiroOrigemMunicipio.value,document.Form.cmbRoteiroDestinoMunicipio.value,'AjaxRoteiroAdicionar', document.Form.txtDataPartida.value);PedeNovoCalculo(document.Form);">&nbsp;
+                                                                                <?php if ($Codigo == "") { ?>
+                                                                                    <input type="button" style=" width:55px;" value="Limpar" onClick="LimparDados(document.Form);">
+                                                                                <?php } else { ?>
+                                                                                    <input type="button" style=" width:55px;" value="Limpar" onClick="AlterarRoteiro(document.Form);">&nbsp;
+                                                                                <?php } ?>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                            <?php
+                                                        } else {
+
+                                                            $sqlRoteiro = "SELECT roteiro_origem, roteiro_destino FROM diaria.roteiro WHERE diaria_id = " . $Codigo;
+                                                            $rsRoteiro = pg_query(abreConexao(), $sqlRoteiro);
+
+                                                            $j = 0;
+
+                                                            while ($linha = pg_fetch_assoc($rsRoteiro)) {
+                                                                $sqlRoteiroOrigem = "SELECT * FROM dados_unico.municipio WHERE municipio_cd = " . $linha['roteiro_origem'];
+                                                                $rsRoteiroOrigem = pg_query(abreConexao(), $sqlRoteiroOrigem);
+
+                                                                $linhaOrigem = pg_fetch_assoc($rsRoteiroOrigem);
+
+                                                                $sqlRoteiroDestino = "SELECT * FROM dados_unico.municipio WHERE municipio_cd = " . $linha['roteiro_destino'];
+                                                                $rsRoteiroDestino = pg_query(abreConexao(), $sqlRoteiroDestino);
+
+                                                                $linhaDestino = pg_fetch_assoc($rsRoteiroDestino);
+
+                                                                echo "<tr class='dataField' height='21'>";
+                                                                echo " <td>&nbsp;" . $linhaOrigem['estado_uf'] . " - " . $linhaOrigem['municipio_ds'] . "</td>";
+                                                                echo " <td>&nbsp;" . $linhaDestino['estado_uf'] . " - " . $linhaDestino['municipio_ds'] . "</td>";
+                                                                echo "</tr>";
+
+                                                                if ($j == 0) {
+                                                                    //verifica se o municipio eh da bahia
+                                                                    $sqlConsultaUF = "SELECT estado_uf FROM dados_unico.municipio WHERE municipio_cd = " . $linhaDestino['municipio_cd'];
+                                                                    $rsConsultaUF = pg_query(abreConexao(), $sqlConsultaUF);
+
+                                                                    $linhaUF = pg_fetch_assoc($rsConsultaUF);
+
+                                                                    if ($linhaUF['estado_uf'] != "BA") {
+                                                                        //verifica o percentual do municipio para calculo
+                                                                        $sqlConsultaCidade = "SELECT percentual_ds FROM diaria.percentual_capital pc, diaria.percentual p WHERE (pc.percentual_id = p.percentual_id) AND municipio_cd = " . $linhaDestino['municipio_cd'];
+                                                                        $rsConsultaCidade = pg_query(abreConexao(), $sqlConsultaCidade);
+
+                                                                        $linhaCidade = pg_fetch_assoc($rsConsultaCidade);
+
+                                                                        if ($linhaCidade) {
+                                                                            $Percentual = $linhaCidade['percentual_ds'];
+                                                                        } else {
+                                                                            $sql3 = "SELECT percentual_ds FROM diaria.percentual WHERE percentual_id = 2";
+                                                                            $rs3 = pg_query(abreConexao(), $sql3);
+
+                                                                            $linhars3 = pg_fetch_assoc($rs3);
+                                                                            $Percentual = $linhars3['percentual_ds']; //recebe valor padrao de calculo
+                                                                        }
+                                                                    } else { //Alterar por Rodolfo . 03-09-2008
+                                                                        if ($linhaOrigem['estado_uf'] != "BA") {
+                                                                            //verifica o percentual do municipio para calculo
+                                                                            $sqlConsultaCidade = "SELECT percentual_ds FROM diaria.percentual_capital pc, diaria.percentual p WHERE (pc.percentual_id = p.percentual_id) AND municipio_cd = " . $linhaOrigem['municipio_cd'];
+                                                                            $rsConsultaCidade = pg_query(abreConexao(), $sqlConsultaCidade);
+
+                                                                            $linhaCidade = pg_fetch_assoc($rsConsultaCidade);
+
+                                                                            if ($linhaCidade) {
+                                                                                $Percentual = $linhaCidade['percentual_ds'];
+                                                                            } else {
+                                                                                $sql3 = "SELECT percentual_ds FROM diaria.percentual WHERE percentual_id = 2";
+                                                                                $rs3 = pg_query(abreConexao(), $sql3);
+
+                                                                                $linhars3 = pg_fetch_assoc($rs3);
+                                                                                $Percentual = $linhars3['percentual_ds']; //recebe valor padrao de calculo
+                                                                            }
+                                                                        } else {
+                                                                            $Percentual = 0; //nao altera o calculo, so para cidades da bahia
+                                                                        }
+                                                                    }
+
+                                                                    $j = 1;
+                                                                }
+                                                            }
+
+                                                            //botao para alterar roteiro e campo q grava o percentual do roteiro
+                                                            echo "<tr class=dataField>";
+                                                            echo "<td colspan=2 align=right><input type=button style=width:85px; value='Alterar Roteiro' onClick=AlterarRoteiro(document.Form);>&nbsp;<input type=hidden name=txtPercentual value=" . $Percentual . "></td>";
+                                                            echo "</tr>";
+                                                        }
+                                                        ?>
+                                                    </table>
+
+                                                    <div id="Roteiro"></div>
+
+                                                    <table width="798" border="0" cellpadding="0" cellspacing="1">
+                                                        <tr height="21">
+                                                            <td colspan="8" class="dataLabel">&nbsp;Complemento do Roteiro</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="8" class="dataField">&nbsp;<input type="text" name="txtRoteiroComplemento" size="154" maxlentgh="120" value="<?= $RoteiroComplemento ?>"></td>
+                                                        </tr>
+                                                        <tr height="21" class="dataTitulo">
+                                                            <td width="399" colspan="4">&nbsp;Partida Prevista</td>
+                                                            <td width="399" colspan="4">&nbsp;Chegada Prevista</td>
+                                                        </tr>
+                                                        <tr height="21" class="dataLabel">
+                                                            <td width="100" colspan="2">&nbsp;Data</td>
+                                                            <td width="100">&nbsp;Hora</td>
+                                                            <td width="199">&nbsp;Dia da Semana</td>
+                                                            <td width="100" colspan="2">&nbsp;Data</td>
+                                                            <td width="100">&nbsp;Hora</td>
+                                                            <td width="199">&nbsp;Dia da Semana</td>
+                                                        </tr>
+                                                        <tr height="21" class="dataField">
+                                                            <td width="80">&nbsp;<input id="dataPartida" type="text" name="txtDataPartida" maxlength="10" style=" width:75px;" readonly value="<?= $DataPartida ?>" onChange="compute(this,1);PedeNovoCalculo(document.Form);"></td>
+                                                            <td width="20"><a href="#" onClick="javascript:displayCalendar(document.getElementById('dataPartida'),'dd/mm/yyyy',this);"><img src="../Icones/ico_calendario.gif" border="0" align="Mostrar CalendÃ¡rio" width="18" height="18"></a></td>
+                                                            <td width="100">&nbsp;<input id="horaPartida" type="text" name="txtHoraPartida" maxlength="5" style=" width:75px;" OnKeyUp="mascaraHora(this.value, document.Form.txtHoraPartida);PedeNovoCalculo(document.Form);" onKeyPress="mascaraNumero(event, this);" value="<?= $HoraPartida ?>" onChange="PedeNovoCalculo(document.Form);"></td>
+                                                            <td width="199">&nbsp;<input id="diaPartida" type="text" name="txtPartidaSemana" class="Oculto" value="<?= $DiaSemanaPartida ?>" readonly></td>
+                                                            <td width="80">&nbsp;<input id="dataChegada" type="text" name="txtDataChegada" maxlength="10" style=" width:75px;" readonly value="<?= $DataChegada ?>" onChange="compute(this,2);PedeNovoCalculo(document.Form)"></td>
+                                                            <td width="20"><a href="#" onClick="javascript:displayCalendar(document.getElementById('dataChegada'),'dd/mm/yyyy',this);"><img src="../Icones/ico_calendario.gif" border="0" align="Mostrar CalendÃ¡rio" width="18" height="18"></a></td>
+                                                            <td width="100">&nbsp;<input id="horaChegada" type="text" name="txtHoraChegada" maxlength="5" style=" width:75px;" OnKeyUp="mascaraHora(this.value, document.Form.txtHoraChegada);PedeNovoCalculo(document.Form);" onKeyPress="mascaraNumero(event, this);" value="<?= $HoraChegada ?>" onChange="PedeNovoCalculo(document.Form);"></td>
+                                                            <td width="199">&nbsp;<input id="diaChegada" type="text" name="txtChegadaSemana" class="Oculto" value="<?= $DiaSemanaChegada ?>" readonly></td>
+                                                        </tr>
+                                                    </table>
+                                                    <table width="798" border="0" cellpadding="0" cellspacing="1">										
+
+                                                        <tr height="21" class="dataLabel">
+                                                            <td width="85">&nbsp;Redu&ccedil;&atilde;o 50%</td>
+                                                            <td width="180">&nbsp;Valor Refer&ecirc;ncia (Descri&ccedil;&atilde;o)</td>
+                                                            <td width="132">&nbsp;Valor do Roteiro</td>
+                                                            <td width="102">&nbsp;Qtde Di&aacute;rais</td>
+                                                            <td width="98">&nbsp;Valor Total</td>
+                                                            <td>&nbsp;</td>
+                                                        </tr>											
+
+                                                        <tr height="21" class="dataField">
+<?php
+/*
+  if ($Beneficiario != "")
+  {
+  echo "<script language='javascript'>";
+  echo "MandaID(".$Beneficiario. ",'AjaxValorRef','funcionario_id');";
+  echo "</script>";
+  }
+  $PercentualImprimir= (str_replace(",",".",$Percentual) * 100);
+ */
+
+if ($Beneficiario != "") {
+    echo "<script language='javascript'>";
+    echo "MandaValorRef(" . $Beneficiario . ",'" . $DataPartida . "','AjaxValorRef','funcionario_id','DataPartida');";
+    echo "</script>";
+}
+$PercentualImprimir = (str_replace(",", ".", $Percentual) * 100);
+?>
+
+
+                                                            <td width="85">&nbsp;<input type="checkbox" name="chkDesconto" class="checkbox" <?= $DescontoMarcado ?>  onChange="PedeNovoCalculo(document.Form);">&nbsp;Sim</td>
+                                                            <td width="180" valign="middle"><div id="ValorRef">&nbsp;<input type="hidden" name="txtValorReferencia" value="" style=" width:75px;" readonly></div></td>
+                                                            <td width="332" colspan="3" valign="middle">
+                                                                <div id="QtdeDiariaAlterar" style='display:none'> 
+                                                                    <table width="332" border="0" cellpadding="0" cellspacing="1">
+                                                                        <tr height="21" class="dataField">
+                                                                            <td width="132">&nbsp;<?= '+' . $PercentualImprimir . '% ' . $ValorRef; ?></td>
+                                                                            <td width="102">&nbsp;<?= $Qtde ?></td>
+                                                                            <td width="98">&nbsp;<?= $Valor ?></td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                                <div id="QtdeDiaria" style="display:none">&nbsp;</div>
+                                                            </td>
+                                                            <td>&nbsp;<input id="calcular" type="button" name="btnCalcular" style=" width:125px;" value="Calcular Di&aacute;ria" onClick="Calcular(document.getElementById('dataPartida').value, document.getElementById('dataChegada').value,document.getElementById('horaPartida').value,document.getElementById('horaChegada').value, document.Form.cmbBeneficiario.value, document.Form.chkDesconto.value, document.Form.txtDataAtual.value);"></td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                        <div id="divBloqueio"> </div>
+<? include "../Include/Inc_Linha.php" ?>
+                                        <div id="MostrarResumoBloqueio">
+<? include "IncludeLocal/Inc_Regra_Bloqueio.php" ?>
+
+<?php
+if ($ContadorVirtual > 2) {
+    echo "<table width='800' border='0' cellpadding='0' cellspacing='0' class='TabelaFormulario'>";
+    echo "<tr height='21'>";
+    echo "<td class='dataLinha'>&nbsp;BLOQUEADO - Benefici&aacute;rio com comprova&ccedil;&atilde;o pendente de documenta&ccedil;&atilde;o. N&uacute;mero(s) da(s) SD: " . $NumeroDiariaVirtual . "</td>";
+    echo "</table>";
+}
+if ($ContadorAtraso > 1) {
+    echo "<table width='800' border='0' cellpadding='0' cellspacing='0' class='TabelaFormulario'>";
+    echo "<tr height='21'>";
+    echo "<td class='dataLinha'>&nbsp;BLOQUEADO - Benefici&aacute;rio com solicita&ccedil;&atilde;o pendente de comprova&ccedil;&atilde;o. N&uacute;mero(s) da(s) SD: " . $NumeroDiariaAtrasada . "</td>";
+    echo "</table>";
+}
+?>
+                                        <? include "../Include/Inc_Linha.php" ?>
+                                        </div>
+
+                                        <table width="800" border="0" cellpadding="0" cellspacing="0" class="TabelaFormulario">
+                                            <tr>
+                                                <td>
+                                                    <table width="798" border="0" cellpadding="0" cellspacing="1">
+                                                        <tr height="21" class="dataLabel">
+                                                            <td>
+                                                                <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                                                                    <tr height="21">
+                                                                        <td width="50%" class="dataLabel">&nbsp;Justificativa do Final de Semana</td>
+                                                                        <td width="50%" class="dataLabelSemBold" align="right">M&aacute;ximo permitido 255 caracteres&nbsp;<input type="text" id="QtdFimSemana" name="QtdFimSemana" style=" width:35px;" readonly class="Oculto">&nbsp;</td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="21" class="dataField">
+                                                            <td>&nbsp;<textarea name="txtJustificativaFimSemana" style=" width:789px; height:45px" maxlenght="255" onKeyUp="ContarJustificativaFimSemana(this,255)"><?= $JustificativaFimSemana ?></textarea></td>
+                                                        </tr>
+                                                    </table>
+
+                                                    <table width="798" border="0" cellpadding="0" cellspacing="1">
+                                                        <tr height="21" class="dataLabel">
+                                                            <td>
+                                                                <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                                                                    <tr height="21">
+                                                                        <td width="50%" class="dataLabel">&nbsp;Justificativa do Feriado</td>
+                                                                        <td width="50%" class="dataLabelSemBold" align="right">M&aacute;ximo permitido 255 caracteres&nbsp;<input type="text" id="QtdFeriado" name="QtdFeriado" style=" width:35px;" readonly class="Oculto">&nbsp;</td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="21" class="dataField">
+                                                            <td>&nbsp;<textarea name="txtJustificativaFeriado" style=" width:789px; height:45px" maxlenght="255" onKeyUp="ContarJustificativaFeriado(this,255)"><?= $JustificativaFeriado ?></textarea></td>
+                                                        </tr>
+                                                    </table>
+
+                                                    <input type="hidden" id="calculo" name="Calculo" value="<?= $DiariaCalculada ?>">
+
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                    </div>
+
+                                    <div id="formaba2" style="display:none">
+
+                                        <table width="800" border="0" cellpadding="0" cellspacing="0" class="TabelaFormulario">
+                                            <tr>
+                                                <td>
+                                                    <table width="798" border="0" cellpadding="0" cellspacing="1">
+                                                        <tr height="21">
+                                                            <td class="dataLabel" width="320">&nbsp;Meio de Transporte</td>
+                                                            <td class="dataLabel" width="478">&nbsp;Observa&ccedil;&atilde;o</td>
+                                                        </tr>
+                                                        <tr height="21">
+                                                            <td class="dataField">&nbsp;<?= f_ComboMeioTransporte($MeioTransporte) ?></td>
+                                                            <td class="dataField">&nbsp;<input name="txtMeioTransporteObservacao" maxlength="255" type="text" value="<?= $TransporteObservacao ?>" style=" width:465px;"></td>
+                                                        </tr>
+                                                    </table>
+
+                                                    <table width="798" border="0" cellpadding="0" cellspacing="1">
+                                                        <tr height="21">
+                                                            <td class="dataLabel" width="320">&nbsp;Motivo</td>
+                                                            <td class="dataLabel" width="478">&nbsp;Sub-Motivo</td>
+                                                        </tr>
+                                                        <tr height="21">
+                                                            <td class="dataField">&nbsp;<?= ComboMotivoDiaria($Motivo, 3, "") ?></td>
+                                                            <td class="dataField">&nbsp;<?= ComboSubMotivoDiaria($SubMotivo) ?></td>
+                                                        </tr>
+                                                    </table>
+
+                                                    <table width="798" border="0" cellpadding="0" cellspacing="1">
+                                                        <tr height="21">
+                                                            <td class="dataLabel">
+                                                                <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                                                                    <tr height="21">
+                                                                        <td width="50%" class="dataLabel">&nbsp;Detalhe do Motivo</td>
+                                                                        <td width="50%" class="dataLabelSemBold" align="right">M&aacute;ximo permitido 300 caracteres&nbsp;<input type="text" id="QtdDescricao" name="QtdDescricao" style=" width:35px;" readonly class="Oculto">&nbsp;</td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="21">
+                                                            <td class="dataField">&nbsp;<textarea name="txtDescricao" style=" width:789px; height:45px" maxlenght="300" onKeyUp="ContarDescricao(this,300)"><?= $Descricao ?></textarea></td>
+                                                        </tr>
+                                                    </table>
+
+                                                    <table width="798" border="0" cellpadding="0" cellspacing="1">
+                                                        <tr height="21">
+                                                            <td class="dataLabel">&nbsp;Unidade de Custo</td>
+                                                        </tr>
+                                                        <tr height="21">
+                                                            <td class="dataField">&nbsp;<?= ComboACP($UnidadeCusto, "onChange=MandaID(this.value,'AjaxProjeto')") ?></td>
+                                                        </tr>
+                                                        <tr height="21">
+                                                            <td class="dataLabel">&nbsp;Projeto</td>
+                                                        </tr>
+                                                        <tr height="21">
+                                                            <td class="dataField"><div id="Projeto">&nbsp<?= f_ComboProjeto($Projeto, "onChange=MandaID(this.value,'AjaxAcao','projeto_cd')") ?></div></td>
+                                                        </tr>
+                                                        <tr height="21">
+                                                            <td class="dataLabel">&nbsp;Produto</td>
+                                                        </tr>
+                                                        <tr height="21">
+<?php if ($Acao != "") { ?>
+                                                                <td class="dataField"><div id="Acao">&nbsp;<?= f_ComboAcao($Acao, $Projeto, "onChange=MandaID(this.value,'AjaxTerritorio','acao_cd')") ?></div></td>
+<?php } else { ?>
+                                                                <td class="dataField"><div id="Acao">&nbsp;</div></td>
+<?php } ?>
+                                                        </tr>
+                                                        <tr height="21">
+                                                            <td class="dataLabel">&nbsp;Territ&oacute;rio</td>
+                                                        </tr>
+                                                        <tr height="21">
+<?php if ($Territorio != "") { ?>
+                                                                <td class="dataField"><div id="Territorio">&nbsp;<?= f_ComboTerritorio($Acao, $Territorio, "onChange=MandaID(this.value,'AjaxFonte','territorio_cd')", "") ?></div></td>
+<?php } else { ?>
+                                                                <td class="dataField"><div id="Territorio">&nbsp;</div></td>
+<?php } ?>
+                                                        </tr>
+                                                        <tr height="21">
+                                                            <td class="dataLabel">&nbsp;Fonte</td>
+                                                        </tr>
+                                                        <tr height="21">
+                                                            <td class="dataField"><div id="Fonte">&nbsp;<?= f_ComboFonte($Fonte, "785") ?></div></td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+
+<?php
+$vetData = explode("-", date("Y-m-d"));
+$Dia = $vetData[0];
+$Mes = $vetData[1];
+$Ano = $vetData[2];
+
+if (strlen($Dia) == 1) {
+    $Dia = "0" . $Dia;
+}
+if (strlen($Mes) == 1) {
+    $Mes = "0" . $Mes;
+}
+$Atual = implode("/", array($Dia, $Mes, $Ano));
+?>
+
+                                    <input name="txtCodigo"           type="hidden" value="<?= $Codigo ?>"       >
+                                    <input name="txtHoraCriacao"      type="hidden" value="<?= $HoraCriacao ?>"  >
+                                    <input name="txtNovaSaida"        type="hidden" value=""                   >
+                                    <input name="txtNovaChegada"      type="hidden" value=""                   >
+                                    <input name="txtDataAtual"        type="hidden" value="<?= $Atual ?>"        >
+                                    <input name="txtReCalculo"        type="hidden" value="0"                  id="txtReCalculo">
+                                    <input name="txthorasAcesso"      type="hidden" value="<?= $HoraAcesso ?>"   >
+                                    <input name="txtBeneficiarioTemp" type="hidden" value="<?= $Beneficiario ?>" >
+                                    <? include "../Include/Inc_Linha.php" ?>
+
+                                    <?php
+                                    if ($MensagemErroBD != "") {
+                                        echo "<table border='0' cellpadding='0' cellspacing='0' width='100%'>";
+                                        echo "<tr>";
+                                        echo "<td class='MensagemErro'>" . $MensagemErroBD . "</td>";
+                                        echo "</tr>";
+                                        echo "<tr>";
+                                        echo "<td><img src='../images/vazio.gif' width='1' height='10' border='0'></td>";
+                                        echo "</tr>";
+                                        echo "</table>";
+                                    }
+                                    ?>
+
+                                    <table border="0" cellpadding="1" cellspacing="1" width="800">
+                                        <tr height="25">
+                                            <td align="right">
+                                                <button style="width:70px" onClick="Javascript:GravarForm(document.Form);" name="btnGravar" class="botao">Gravar</button>&nbsp;&nbsp;&nbsp;
+                                                <button style="width:70px" onClick="Javascript:history.back(-1);" name="btnConsultar" class="botao">Voltar</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+
+        </form>
+
+    </body>
+</html>

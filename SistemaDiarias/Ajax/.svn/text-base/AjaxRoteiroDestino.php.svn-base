@@ -1,0 +1,3 @@
+<?php
+include "../../Include/Inc_Configuracao.php";?>
+<?=f_ComboMunicipio("cmbRoteiroDestinoMunicipio",$_GET['estado_id'],"")?>

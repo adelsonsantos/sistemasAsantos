@@ -1,0 +1,85 @@
+<?php
+// define a pagina local para fins de especificação quando for utilizar componentes genéricos
+$PaginaLocal = "SolicitacaoImprimirProcesso";
+
+/**
+ * Seleciona Diárias que estejam aptas a imprimir o processo
+ * @param String $filtro <p>Parametro de consulta de Diárias específicas.</p>
+ * <p>Pode ser um nome completo ou parte de um nome. Ou um número ou parte de um número de SD</p>
+ */
+function acaoConsultar($filtro){
+    // verifica se foi informado algum filtro de busca
+    if ($filtro != "") {
+        $condicao = "AND (pessoa_nm ILIKE '%" . $filtro . "%' OR diaria_numero ILIKE '%" . $filtro . "%')";
+    }
+
+
+    $sqlConsulta = "SELECT distinct 
+                        d.diaria_id, d.diaria_numero, d.diaria_dt_saida, d.diaria_hr_saida, d.diaria_dt_chegada, d.diaria_hr_chegada,
+                        d.diaria_processo, d.diaria_st, pessoa_nm, d.diaria_unidade_custo, imp_processo_st, d.diaria_dt_criacao,
+                        d.diaria_hr_criacao 
+                    FROM
+                        diaria.diaria d, dados_unico.funcionario f, dados_unico.pessoa p, diaria.diaria_aprovacao ap
+                    WHERE 
+                        (p.pessoa_id = f.pessoa_id) AND
+                        (d.diaria_beneficiario = f.pessoa_id) AND
+                        d.diaria_id = ap.diaria_id AND
+                        d.diaria_cancelada = 0 AND
+                        d.diaria_excluida = 0 AND
+                        d.diaria_agrupada = 0 AND
+                        diaria_st = 2 ".$condicao." AND
+                        ap.aprovacao_final = true
+                    ORDER BY diaria_dt_saida DESC, diaria_hr_saida ASC";
+
+    return pg_query(abreConexao(),$sqlConsulta);	
+}	
+
+/**
+ * Ação executada para buscar Diárias na base de dados ordenadas por um parametro
+ * @param String $cod <p>Parametro que será usado para ordenar a consulta</p> 
+ * @param String $filtro <p>Parametro de consulta de Diárias específicas.</p>
+ * @return Query 
+ */
+function acaoBuscar($cod,$filtro=''){
+    if ($cod != '') {
+        switch ($cod){
+            case "diaria_id": $order = "d.diaria_id ASC";
+                break;
+            case "diaria_dt_criacao": $order = "extract(month From  " . $cod . ") DESC , extract(day  From " . $cod . ") ASC";
+                break;
+            default: $order = $cod." ASC";
+        }
+
+        $sqlConsulta = "SELECT 
+                            d.diaria_id, d.diaria_numero, d.diaria_dt_saida, d.diaria_hr_saida, d.diaria_dt_chegada, d.diaria_hr_chegada,
+                            d.diaria_processo, d.diaria_st, pessoa_nm, diaria_unidade_custo, imp_processo_st, d.diaria_dt_criacao,
+                            d.diaria_hr_criacao 
+                        FROM 
+                            diaria.diaria d, dados_unico.funcionario f, dados_unico.pessoa p, diaria.diaria_aprovacao ap 
+                        WHERE 
+                            (p.pessoa_id = f.pessoa_id) AND 
+                            (d.diaria_beneficiario = f.pessoa_id) AND 
+                            d.diaria_id = ap.diaria_id AND 
+                            diaria_cancelada = 0 AND
+                            diaria_excluida = 0 AND 
+                            diaria_st = 2 AND 
+                            ap.aprovacao_final = true AND
+                            (pessoa_nm ILIKE '%" . $RetornoFiltro . "%' OR diaria_numero ILIKE '%" . $RetornoFiltro . "%') 
+                        ORDER BY ".$order;
+        return pg_query(abreConexao(), $sqlConsulta);
+    }
+}
+
+if (isset ($AcaoSistema)) {
+    switch ($AcaoSistema){
+        case "buscar":
+            $rsConsulta = acaoBuscar($_GET['atributo'],$filtro);
+            break;
+        default : $rsConsulta = acaoConsultar($RetornoFiltro);
+            break;
+    }
+} else {
+   $rsConsulta = acaoConsultar($RetornoFiltro);
+}
+
+?>

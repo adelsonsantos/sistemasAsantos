@@ -1,0 +1,161 @@
+<?php
+include "../Include/Inc_Configuracao.php";
+include "Classe/ClasseDiariaArquivada.php";
+?>
+<html>
+
+<style type="text/css">@import url("../css/estilo.css"); </style>
+
+<script language="javascript" src="../JavaScript/ScriptFuncao.js"></script>
+<script language="javascript" src="../JavaScript/ScriptMenu.js"></script>
+
+<script language="javascript">
+<!--
+
+	function Foco(frm)
+	{
+		frm.txtFiltro.focus();
+	}
+
+	function FiltrarForm(frm)
+	{
+
+		for(cont=0; cont < frm.elements.length; cont++)
+			frm.elements[cont].style.backgroundColor = '';
+
+		if (frm.txtFiltro.value == "")
+		{
+			alert("Digite filtro para busca.");
+			frm.txtFiltro.focus();
+			frm.txtFiltro.style.backgroundColor='#B9DCFF';
+			return false;
+		}
+
+		frm.action = "SolicitacaoArquivadainicio.php?acao=buscar";
+		frm.submit();
+	}
+            function ImprimirDiaria(codigo)
+	 {
+            window.open ("SolicitacaoComprovacaoImprimirPDF.php?acao=imprimir&cod="+codigo);
+	 }
+	function TodosForm(frm)
+	{
+		frm.txtFiltro.value = "";
+		frm.action = "SolicitacaoArquivadainicio.php";
+		frm.submit();
+	}
+
+
+-->
+</script>
+
+<body onLoad="WM_initializeToolbar();">
+
+<form name="Form" method="post">
+
+<table align="left" width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tr>
+       <td><?include "../Include/Inc_Topo.php"?></td>
+    </tr>
+    <tr>
+    	<td><?include "../Include/Inc_Aba.php"?></td>
+    </tr>
+    <tr>
+    	<td align="left">
+            <table width="990" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                    <td valign="top" align="left" width="190"><?include "../Include/Inc_Menu.php"?></td>
+                    <td valign="top" align="left">
+
+                        <?include "../Include/Inc_Titulo.php"?>
+
+                        <?include "../Include/Inc_Linha.php"?>
+
+                        <?include "../Include/Inc_Pesquisa_Sem_Filtro.php"?>
+
+                        <?include "../Include/Inc_Linha.php"?>
+
+                        <table cellpadding="0" cellspacing="0" width="800" border="0" class="GridPaginacao">
+                            <tr>
+                                <td>
+                                    <table border="0" cellpadding="1" cellspacing="1" width="798">
+                                        <tr height="20" class="GridPaginacaoRegistroCabecalho">
+                                            <td width="25" align="center" colspan="2" >&nbspA&ccedil;&atilde;o</td>
+                                            <td width="80" align="center">SD</td>
+                                            <td width="303" align="left">&nbsp;Funcion&aacute;rio</td>
+                                            <td width="95" align="center">Partida</td>
+                                            <td width="95" align="center">Chegada</td>
+                                            <td width="100 "align="center">Processo</td>
+                                            <td width="100" align="center">Status</td>
+                                        </tr>
+<?
+
+                                       While ($linha=pg_fetch_assoc($rsConsulta))
+                                       {
+											$Codigo         = $linha['diaria_id'];
+											$Numero         = $linha['diaria_numero'];
+											$DataPartida    = $linha['diaria_dt_saida'];
+											$HoraPartida	= $linha['diaria_hr_saida'];
+											$DataChegada	= $linha['diaria_dt_chegada'];
+											$HoraChegada	= $linha['diaria_hr_chegada'];
+											$Processo       = $linha['diaria_processo'];
+											$Status         = $linha['diaria_st'];
+											$Nome           = $linha['pessoa_nm'];
+											$Beneficiario   = $linha['diaria_beneficiario'];
+
+
+
+?>
+												<?include "IncludeLocal/Inc_Status_Diaria.php"?>
+<?
+												echo "<tr height='20' bgcolor='#f2f2f2' onMouseOver=javascript:this.style.backgroundColor='#cccccc' onMouseOut=javascript:this.style.backgroundColor='#f2f2f2'>";
+												echo "<td width='20' align='center'><a href=ComprovacaoConsultar.php?cod=".$Codigo."&acao=consultar&pagina=SolicitacaoArquivada><img src='../icones/ico_consultar.png' alt='Consultar' border='0'></a></td>";
+                                                                                                        /*
+                                                                                                        * Por: Thiago
+                                                                                                        * Date: 28/03/2011
+                                                                                                        * Codigo para imprimir a comprovação da diaria 
+                                                                                                        */
+                                                                                                        if($linha['diaria_comprovada']== 1 && $linha['diaria_st'] >=4)
+                                                                                                        {
+                                                                                                            echo "<td width='10px' align='center'>
+                                                                                                            <a href='javascript:ImprimirDiaria(" .$Codigo.");'>
+                                                                                                            <img src='../Icones/ico_imprimir.png' border='0' alt='Imprimir Comprova&ccedil;&atilde;o'>
+                                                                                                            </a>
+                                                                                                            </td>
+                                                                                                            ";
+
+                                                                                                        }
+                                                                                                        else
+                                                                                                        {
+                                                                                                            echo "<td width='10px' align='center'>
+                                                                                                            <img src='../Icones/ico_imprimir_off.png' border='0' alt='Imprimir Comprova&ccedil;&atilde;o'>
+                                                                                                            </a>
+                                                                                                            </td>
+                                                                                                            ";
+                                                                                                        }
+												echo "<td class='GridPaginacaoLink' align='center'>".$Numero."</td>";
+                                                                                                echo "<td class='GridPaginacaoLink' align='left'>&nbsp;".substr($Nome,0,30)."</td>";
+												echo "<td class='GridPaginacaoLink' align='center'>".$DataPartida. " ".$HoraPartida."</td>";
+												echo "<td class='GridPaginacaoLink' align='center'>".$DataChegada. " ".$HoraChegada. "</td>";
+												echo "<td class='GridPaginacaoLink' align='center'>".$Processo. "</td>";
+												echo "<td class='GridPaginacaoLink' align='center'><font color='#000099'>".$StatusNome."</font></td>";
+												echo "</tr>";
+
+                                       }
+											
+?>
+                                     </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+	</tr>
+</table>
+
+</form>
+
+</body>
+</html>

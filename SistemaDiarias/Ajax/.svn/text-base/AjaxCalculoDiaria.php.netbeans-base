@@ -1,0 +1,133 @@
+<?php
+include "../../Include/Inc_Configuracao.php";
+
+	$_SESSION['DataPartida'] 	= "";
+	$_SESSION['HoraPartida'] 	= "";
+	$_SESSION['DataChegada'] 	= "";
+	$_SESSION['HoraChegada'] 	= "";
+        $_SESSION['PossuiFimSemana']    = "";
+        $_SESSION['PossuiFeriado']      = "";
+        
+        
+        
+	$HoraPartida 		    	= $_GET['horasaida'];
+	$HoraChegada 		    	= $_GET['horachegada'];
+	$DataPartida 		    	= $_GET['datasaida'];
+	$DataChegada 		    	= $_GET['datachegada'];
+	$ValorReferencia    		= str_replace(",",".",$_GET['valor']);
+	$Desconto			= $_GET['desconto'];
+	$PercentualRecebido		= str_replace(",",".",$_GET['perc']);
+
+
+
+        $_SESSION['DataPartida'] 	= $DataPartida;
+	$_SESSION['HoraPartida'] 	= $HoraPartida;
+	$_SESSION['DataChegada'] 	= $DataChegada;
+	$_SESSION['HoraChegada'] 	= $HoraChegada;
+
+        If (($_SESSION['PercentualRecebido'] == $PercentualRecebido) || ($_SESSION['PercentualRecebido'] == ""))
+        {
+
+        //calcula a diferenca entre as horas
+	// Divide a hora
+        $HoraP=explode(":",$HoraPartida); //hora de partida 
+        $HoraC=explode(":",$HoraChegada);// hora de chegada
+		
+		// Divide a data
+		$DataP = explode("/", $DataPartida);
+		$DataC = explode("/", $DataChegada);
+		
+		// Transforma em segundo
+		$MinutoPartida = mktime($HoraP[0], $HoraP[1], "00", $DataP[1], $DataP[0], $DataP[2]);
+		$MinutoChegada = mktime($HoraC[0], $HoraC[1], "00", $DataC[1], $DataC[0], $DataC[2]);
+		
+//                var_dump($MinutoPartida);
+//                var_dump($MinutoChegada);
+//                exit;
+		// Transforma os segundos em minutos
+		$difMinutos = ($MinutoChegada - $MinutoPartida)/60;
+	
+		// Diferença em dias
+                //qntidade de dias.
+		$difDias = $difMinutos/1440;		 
+	  
+		// Trunca o numero de dias .. 
+		$NumeroDia = intval($difDias);
+	
+		$DiariaResto = $difMinutos - (1440*$NumeroDia);
+		
+                            //se horas entre 6:00 e 12:00
+                            If (($DiariaResto > 360) && ($DiariaResto <= 720)) 
+                            {	
+                                $Percentual = ".4";
+                            }
+                            ElseIf (($DiariaResto > 720) && ($DiariaResto < 1440)) //se horas entre 12:01 e 23:59
+                            {	
+                               $Percentual = ".6";
+                            }
+                            Else	//se horas menor que 5:59 ou igual a 24:00
+                            {
+                                $Percentual = "";
+                            }
+                            $NumeroDiarias 	= $NumeroDia.$Percentual;
+                            //calculo de acordo com o roteiro
+                            If (($PercentualRecebido != 0) ||($PercentualRecebido != "")|| ($PercentualRecebido != 1))
+                            {
+                                $ValorReferencia = ((double)($ValorReferencia)) + ((double)($ValorReferencia)) * ((double)($PercentualRecebido));
+                            }
+                            ElseIf ($PercentualRecebido == 1)
+                            {
+                                $ValorReferencia = (double)($ValorReferencia) + (double)($ValorReferencia);
+                            }
+	
+			$ValorReferencia = round($ValorReferencia);
+ 
+			$ValorTotal	= ((double)$ValorReferencia)*((double)($NumeroDiarias));
+
+			If ($Desconto == "on") //se checkbox desconto 50% marcado
+			{	
+                            $ValorTotal = $ValorTotal/2;
+                        }
+     
+			//chama funcao que percorre o periodo da viagem para busca de feriados
+			$PossuiFeriado = f_PossuiFeriado($DataPartida,$DataChegada);
+
+			//chama funcao que percorre o periodo da viagem para busca de fim de semana
+         
+			$PossuiFimSemana = f_PossuiFimSemana($DataPartida,$DataChegada);
+
+			$_SESSION['PercentualRecebido'] = $PercentualRecebido;
+			$_SESSION['NumeroDiarias']		= $NumeroDiarias;
+			$_SESSION['PossuiFeriado']		= $PossuiFeriado;
+			$_SESSION['PossuiFimSemana']	= $PossuiFimSemana;
+			$_SESSION['ValorTotal']			= $ValorTotal;
+    }
+    Else
+    {
+        $_SESSION['ErroRoteiro']= 1;
+    }
+
+    If ($NumeroDiarias <= 15)
+    {
+
+?>
+            <input type="text" name="txPercentualRef" style=" width:120px;" readonly value="+<?=$PercentualRecebido*100?>%&nbsp;<?=number_format($ValorReferencia, 2, ',', '.')?>" class="Oculto">&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="text" name="txtQtde" style=" width:57px;" readonly value="<?=$_SESSION['NumeroDiarias']?>" class="Oculto">
+            <input name="txtConfDataPartida" type="hidden" value="<?=$_SESSION['DataPartida']?>">
+            <input name="txtConfHoraPartida" type="hidden" value="<?=$_SESSION['HoraPartida']?>">
+            <input name="txtConfDataChegada" type="hidden" value="<?=$_SESSION['DataChegada']?>">
+            <input name="txtConfHoraChegada" type="hidden" value="<?=$_SESSION['HoraChegada']?>">
+            <input type="hidden" name="txNovoValorRef" value="<?=number_format($ValorReferencia, 2, ',', '.')?>" class="Oculto">
+            <input type="hidden" name="txtNovoCalculo" value="1">&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="hidden" name="PossuiFeriado" value="<?=$_SESSION['PossuiFeriado']?>">
+            <input type="hidden" name="PossuiFimSemana" value="<?=$_SESSION['PossuiFimSemana']?>">&nbsp;&nbsp;
+            <input type="text" name="txtValorTotal" style=" width:75px;" class="Oculto" readonly value="<?=number_format($_SESSION['ValorTotal'], 2, ',', '.')?>">
+<?
+    }
+    Else
+    {
+        echo "<font color='#ff0000'>Per&iacute;odo de viagem n&atilde;o pode ultrapassar 15 dias corridos!</font>";
+    }
+?>
+
+

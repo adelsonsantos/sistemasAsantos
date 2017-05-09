@@ -1,0 +1,300 @@
+<?php
+include "../Include/Inc_Configuracao.php";
+//include "classe/ClasseRelatorioSaldoProjeto.php";
+include "fpdf.php";
+
+$idCoordenadoria = $_POST['combo_coordenadoria'];
+$tipoRelatorio = $_POST['radio_tipo_relat'];
+
+$pdf = new FPDF();
+$pdf->SetFont('Times','B',16);
+$pdf->Open();
+$pdf->AddPage();
+$RelatorioTipo="";
+
+/*Cabeçalho
+'******************************************************************************************
+ *
+ */
+ 
+function Cabecalho(FPDF $pdf,$coordenadoria)
+{
+	$pdf->Cell (55,22,"",1,0,"C");
+	$pdf->SETX (65);
+	$pdf->SetFont ("Times", "B",10);
+	$pdf->Cell (135,11,"RELATÓRIO DIÁRIA POR COORDENADORIA ",1,1,"C");
+	$pdf->SetFont ("Times", "",8);
+	$pdf->Text (114, 20 ,"EMITIDO : " .date("d/m/Y")." ".date("H:i:s"));
+	$pdf->SetFont ("Times", "B",8);
+	$pdf->SETX (65);
+	$pdf->Cell (135,11,"Diárias até a data: ".date("d/m/Y"),1,1,"C");
+	$pdf->SetFont ("Times", "B",8);
+	$pdf->image ("../SistemaDiarias/logo.jpg",14,16,40);
+	$pdf->Cell (155,5,"COORDENADORIA",1,0);
+	$pdf->Cell (35,5,"TOTAL",1,0);
+}
+
+Cabecalho($pdf,$coordenadoria);
+$contador = 1;
+$pdf->Text (180, 285 ,"PÁGINA: ");
+$pdf->Text (196, 285 , "1");
+$PAGINA = 1;
+$contatorReg = 0;
+$pdf->Cell (0,5,"",1,1);
+
+if($tipoRelatorio == "coord"){ 
+
+$sqlConsulta = "select count(id_coordenadoria) as total
+		from diaria.diaria
+		where id_coordenadoria =  $idCoordenadoria";	
+
+$rsConsulta = pg_query(abreConexao(),$sqlConsulta);							 
+$linha=pg_fetch_assoc($rsConsulta);		
+$total = $linha["total"];
+
+$sql = 	"select nome from diaria.coordenadoria where id_coordenadoria = $idCoordenadoria ";
+$Consulta = pg_query(abreConexao(),$sql);							 
+$tupla=pg_fetch_assoc($Consulta);		
+$coordenadoria = $tupla["nome"];	
+	
+$pdf->SetFont ("Times", "",8);	
+$pdf->Cell (155,5,utf8_decode($coordenadoria),1,0);
+$pdf->Cell (35,5,$total,1,1);		
+}
+else{
+$sqlConsulta = "select count(d.id_coordenadoria) as total
+				from diaria.diaria as d
+				where d.id_coordenadoria = 4 ";
+		
+$rsConsulta = pg_query(abreConexao(),$sqlConsulta);							 
+$linha=pg_fetch_assoc($rsConsulta);		
+$total_barreiras = $linha["total"];
+	
+$pdf->SetFont ("Times", "",8);	
+$pdf->Cell (155,5,"Barreiras",1,0);
+$pdf->Cell (35,5,$total_barreiras,1,1);
+//=============================================================================================================================
+$nome = "Escritório Local";
+$sqlConsulta = "select count(d.id_coordenadoria) as total
+				from diaria.diaria as d
+				where d.id_coordenadoria = 16 ";
+		
+$rsConsulta = pg_query(abreConexao(),$sqlConsulta);							 
+$linha=pg_fetch_assoc($rsConsulta);		
+$total_esc_local = $linha["total"];
+	
+$pdf->SetFont ("Times", "",8);	
+$pdf->Cell (155,5,"Escritório Local",1,0);
+$pdf->Cell (35,5,$total_esc_local,1,1); 
+//=============================================================================================================================
+$sqlConsulta = "select count(d.id_coordenadoria) as total
+				from diaria.diaria as d
+				where d.id_coordenadoria = 5  ";
+		
+$rsConsulta = pg_query(abreConexao(),$sqlConsulta);							 
+$linha=pg_fetch_assoc($rsConsulta);		
+$total_FSA = $linha["total"];
+	
+$pdf->SetFont ("Times", "",8);	
+$pdf->Cell (155,5,"Feira de Santana",1,0);
+$pdf->Cell (35,5,$total_FSA,1,1);
+
+//=============================================================================================================================
+$sqlConsulta = "select count(d.id_coordenadoria) as total
+				from diaria.diaria as d
+				where d.id_coordenadoria = 12 ";
+		
+$rsConsulta = pg_query(abreConexao(),$sqlConsulta);							 
+$linha=pg_fetch_assoc($rsConsulta);		
+$total_guanambi = $linha["total"];
+	
+$pdf->SetFont ("Times", "",8);	
+$pdf->Cell (155,5,"Guanambi",1,0);
+$pdf->Cell (35,5,$total_guanambi,1,1);
+
+//=============================================================================================================================
+$nome_Irece = "Irecê";
+$nome_Irece = utf8_decode($nome_Irece);
+$ConsultaIrece = "select count(d.id_coordenadoria) as total
+				from diaria.diaria as d
+				where d.id_coordenadoria = 9 ";
+
+$rsConsulta = pg_query(abreConexao(),$ConsultaIrece);							 
+$linha_irece=pg_fetch_assoc($rsConsulta);		
+$total_irece= $linha_irece["total"];
+	
+$pdf->SetFont ("Times", "",8);	
+$pdf->Cell (155,5,"Irecê",1,0);
+$pdf->Cell (35,5,$total_irece,1,1);
+
+//=============================================================================================================================
+$sqlConsulta = "select count(d.id_coordenadoria) as total
+				from diaria.diaria as d
+				where d.id_coordenadoria = 8 ";
+		
+$rsConsulta = pg_query(abreConexao(),$sqlConsulta);							 
+$linha=pg_fetch_assoc($rsConsulta);		
+$total_Itaberaba = $linha["total"];
+	
+$pdf->SetFont ("Times", "",8);	
+$pdf->Cell (155,5,"Itaberaba",1,0);
+$pdf->Cell (35,5,$total_Itaberaba,1,1);
+
+//=============================================================================================================================
+$sqlConsulta = "select count(d.id_coordenadoria) as total
+				from diaria.diaria as d
+				where d.id_coordenadoria = 13 ";
+		
+$rsConsulta = pg_query(abreConexao(),$sqlConsulta);							 
+$linha=pg_fetch_assoc($rsConsulta);		
+$total_Itabuna = $linha["total"];
+	
+$pdf->SetFont ("Times", "",8);	
+$pdf->Cell (155,5,"Itabuna",1,0);
+$pdf->Cell (35,5,$total_Itabuna,1,1);
+
+//=============================================================================================================================
+$sqlConsulta = "select count(d.id_coordenadoria) as total
+				from diaria.diaria as d
+				where d.id_coordenadoria = 14 ";
+		
+$rsConsulta = pg_query(abreConexao(),$sqlConsulta);							 
+$linha=pg_fetch_assoc($rsConsulta);		
+$total_Itapetinga = $linha["total"];
+	
+$pdf->SetFont ("Times", "",8);	
+$pdf->Cell (155,5,"Itapetinga",1,0);
+$pdf->Cell (35,5,$total_Itapetinga,1,1);
+
+//=============================================================================================================================
+$nomeJequie = "Jequié";
+$ConsultaJequie = "select count(d.id_coordenadoria) as total
+				from diaria.diaria as d
+				where d.id_coordenadoria = 1";
+		
+$rsConsulta = pg_query(abreConexao(),$ConsultaJequie);							 
+$linha_jequie=pg_fetch_assoc($rsConsulta);		
+$total_jequie= $linha_jequie["total"];
+	
+$pdf->SetFont ("Times", "",8);	
+$pdf->Cell (155,5,"Jequié",1,0);
+$pdf->Cell (35,5,$total_jequie,1,1);
+
+//=============================================================================================================================
+$sqlConsulta = "select count(d.id_coordenadoria) as total
+				from diaria.diaria as d
+				where d.id_coordenadoria = 10";
+$rsConsulta = pg_query(abreConexao(),$sqlConsulta);							 
+$linha=pg_fetch_assoc($rsConsulta);		
+$total_Juaz = $linha["total"];
+	
+$pdf->SetFont ("Times", "",8);	
+$pdf->Cell (155,5,"Juazeiro",1,0);
+$pdf->Cell (35,5,$total_Juaz,1,1);
+
+//=============================================================================================================================
+$sqlConsulta = "select count(d.id_coordenadoria) as total
+				from diaria.diaria as d
+				where d.id_coordenadoria = 11";
+		
+$rsConsulta = pg_query(abreConexao(),$sqlConsulta);							 
+$linha_MC=pg_fetch_assoc($rsConsulta);		
+$total_MC = $linha_MC["total"];
+	
+$pdf->SetFont ("Times", "",8);	
+$pdf->Cell (155,5,"Miguel Calmon",1,0);
+$pdf->Cell (35,5,$total_MC,1,1);
+
+//=============================================================================================================================
+$sqlConsulta = "select count(d.id_coordenadoria) as total
+				from diaria.diaria as d
+				where d.id_coordenadoria = 7 ";
+		
+$rsConsulta = pg_query(abreConexao(),$sqlConsulta);							 
+$linha=pg_fetch_assoc($rsConsulta);		
+$total_PA = $linha["total"];
+	
+$pdf->SetFont ("Times", "",8);	
+$pdf->Cell (155,5,"Paulo Afonso",1,0);
+$pdf->Cell (35,5,$total_PA,1,1);
+
+//=============================================================================================================================
+$sqlConsulta = "select count(d.id_coordenadoria) as total
+				from diaria.diaria as d
+				where d.id_coordenadoria = 3 ";
+		
+$rsConsulta = pg_query(abreConexao(),$sqlConsulta);							 
+$linha=pg_fetch_assoc($rsConsulta);		
+$total_pombal = $linha["total"];
+	
+$pdf->SetFont ("Times", "",8);	
+$pdf->Cell (155,5,"Ribeira do Pombal",1,0);
+$pdf->Cell (35,5,$total_pombal,1,1);
+
+//=============================================================================================================================
+$ConsultaSantamaria = "select count(d.id_coordenadoria) as total
+				from diaria.diaria as d
+				where d.id_coordenadoria = 6";
+		
+$rsConsulta = pg_query(abreConexao(),$ConsultaSantamaria);							 
+$linha_SM=pg_fetch_assoc($rsConsulta);		
+$total_SantaMaria = $linha_SM["total"];
+	
+$pdf->SetFont ("Times", "",8);	
+$pdf->Cell (155,5,"Santa Maria da Vitória",1,0);
+$pdf->Cell (35,5,$total_SantaMaria,1,1);
+
+//=============================================================================================================================
+$sqlConsulta = "select count(d.id_coordenadoria) as total
+				from diaria.diaria as d
+				where d.id_coordenadoria = 15 ";
+		
+$rsConsulta = pg_query(abreConexao(),$sqlConsulta);							 
+$linha=pg_fetch_assoc($rsConsulta);		
+$nome_coord = $linha["nome"];
+$total_tx = $linha["total"];
+	
+$pdf->SetFont ("Times", "",8);	
+$pdf->Cell (155,5,"Teixeira de Freitas",1,0);
+$pdf->Cell (35,5,$total_tx,1,1);
+
+//=============================================================================================================================
+$nomeConquista = "Vitória da Conquista";
+$ConsultaConquista = "select count(d.id_coordenadoria) as total
+				from diaria.diaria as d
+				where d.id_coordenadoria = 2";
+		
+$rsConsulta = pg_query(abreConexao(),$ConsultaConquista);							 
+$linha_VC=pg_fetch_assoc($rsConsulta);		
+$total_Conquista = $linha_VC["total"];
+	
+$pdf->SetFont ("Times", "",8);	
+$pdf->Cell (155,5,"Vitória da Conquista",1,0);
+$pdf->Cell (35,5,$total_Conquista,1,1);
+
+//=============================================================================================================================
+$ConsultaSede = "select count(d.id_coordenadoria) as total
+				from diaria.diaria as d
+				where d.id_coordenadoria = 0";
+		
+$rsConsulta = pg_query(abreConexao(),$ConsultaSede);							 
+$linha_sede=pg_fetch_assoc($rsConsulta);		
+$total_sede = $linha_sede["total"];
+	
+$pdf->SetFont ("Times", "",8);	
+$pdf->Cell (155,5,"Sede",1,0);
+$pdf->Cell (35,5,$total_sede,1,1);
+
+$total_todos =  $total_sede + $total_Conquista + $total_tx + $total_SantaMaria + $total_pombal + $total_PA + $total_MC + $total_Juaz + $total_jequie + $total_Itabuna + $total_Itapetinga 
++ $total_Itaberaba + $total_irece + $total_guanambi + $total_FSA + $total_esc_local + $total_barreiras;
+
+
+$pdf->SetFont ("Times", "",10);	
+$pdf->Cell (155,5,"TOTAL",1,0);
+$pdf->Cell (35,5,$total_todos,1,1);
+
+}
+
+$pdf->Close();
+$pdf->Output();
+?>

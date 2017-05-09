@@ -1,0 +1,336 @@
+<?php
+include "../Include/Inc_Configuracao.php";
+include "Classe/ClasseDiariaFinanceiro.php";
+?>
+<html>
+
+<style type="text/css">@import url("../css/estilo.css"); </style>
+<style type="text/css">@import url("../css/dhtmlgoodies_calendar.css"); </style>
+
+<script language="javascript" src="../JavaScript/ScriptMenu.js"></script>
+<script language="javascript" src="../JavaScript/ScriptAjax.js"></script>
+
+<script language="javascript">
+<!--
+
+	function CancelarDiaria(frm)
+	 {
+
+		frm.action = "SolicitacaoCancelar.php";
+		frm.submit();
+
+	 }
+
+	function ImprimirDiaria(frm)
+	 {
+		window.open ("SolicitacaoImprimir.php?acao=imprimir&cod=<?=$Codigo?>");
+	 }
+-->
+</script>
+
+<body onLoad="WM_initializeToolbar();">
+
+<form name="Form" method="post">
+
+<table align="left" width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tr>
+       <td><?include "../Include/Inc_Topo.php"?></td>
+    </tr>
+    <tr>
+    	<td><?include "../Include/Inc_Aba.php"?></td>
+    </tr>
+    <tr>
+    	<td>
+            <table align="left" width="990" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                    <td valign="top" align="left" width="190"><?include "../Include/Inc_Menu.php"?></td>
+                    <td valign="top" align="left">
+
+                        <?include "../Include/Inc_Titulo.php"?>
+
+						<?include "../Include/Inc_Linha.php"?>
+
+                        <table width="800" border="0" cellpadding="0" cellspacing="0" class="TabelaFormulario">
+                        	<tr>
+                            	<td>
+                                    <table width="798" border="0" cellpadding="0" cellspacing="1">
+                                        <tr height="21" class="dataLabel">
+                                            <td width="80" align="center">&nbsp;N&uacute;mero SD</td>
+                                            <td width="110" align="center">&nbsp;Solicitada em</td>
+                                            <td width="110" align="center">&nbsp;Nº Empenho</td>
+                                            <td width="110" align="center">&nbsp;Data Empenho</td>
+                                            <td width="158" align="center">&nbsp;Processo</td>
+                                            <td width="230">&nbsp;Status</td>
+                                        </tr>
+                                        <tr height="21" class="dataField">
+                                            <?php
+												if($Diaria_agrupada == 0){
+													echo "<td align=\"center\">$Numero</td>";
+												}else{
+													echo "<td align=\"center\">$Diaria_Super_SD</td>";
+												}											
+											?>
+											<!--<td align="center"><?=$Numero?></td>-->
+											<td>&nbsp;<?=DBToData($DataCriacao)." " .$HoraCriacao?></td>
+                                            <td align="center"><?=$Empenho?></td>
+                                            <td align="center"><?=$DataEmpenho?></td>
+                                            <td align="center"><?=$Processo?></td>
+											<?include "IncludeLocal/Inc_Status_Diaria.php"?>
+                                            <td>&nbsp;<font color="#ff0000"><?=$StatusNome?></font></td>
+                                        </tr>
+                                    </table>
+
+								</td>
+							</tr>
+						</table>
+
+<?
+						If ($Status == 4)
+                        {
+
+?>
+							<br>
+                            <table width="800" border="0" cellpadding="0" cellspacing="0" class="TabelaFormulario">
+                                <tr>
+                                    <td>
+                                        <table width="798" border="0" cellpadding="0" cellspacing="1">
+                                            <tr height="21" class="dataLabel">
+                                                <td width="100" align="center">Data Obriga&ccedil;&atilde;o</td>
+                                                <td width="100" align="center">Hora Obriga&ccedil;&atilde;o</td>
+                                                <td width="338" align="left">&nbsp;Pr&eacute;-Liquidante</td>
+                                                <td width="130" align="center">Data Pr&eacute;-Liquida&ccedil;&atilde;o</td>
+                                                <td width="130" align="center">Hora Pr&eacute;-Liquida&ccedil;&atilde;o</td>
+                                            </tr>
+                                            <tr height="21" class="dataField">
+                                            <?$linharsFinanceiro=pg_fetch_assoc($rsFinanceiro);?>
+                                                <td align="center"><?=$linharsFinanceiro['diaria_financeiro_dt_obrigacao']?></td>
+                                                <td align="center"><?=$linharsFinanceiro['diaria_financeiro_hr_obrigacao']?></td>
+                                                <?$linharsPessoa=pg_fetch_assoc($rsPessoa);?>
+                                                <td>&nbsp;<?=$linharsPessoa['pessoa_nm']?></td>
+                                                <td align="center"><?=$linharsFinanceiro['diaria_preliquidacao_dt']?></td>
+                                                <td align="center"><?=$linharsFinanceiro['diaria_preliquidacao_hr']?></td>
+                                            </tr>
+                                        </table>
+
+                                    </td>
+                                </tr>
+                            </table>
+<?
+                        }
+?>
+                         <br>
+<?
+
+						If ((($Status == 9) ||($Status == 3)) &&  ($Status == 5))
+                        {
+
+							$sqlConsultaComplemento = "SELECT diaria_comprovacao_complemento, diaria_comprovacao_complemento_justificativa FROM diaria.diaria_comprovacao WHERE diaria_id = " .$Codigo;
+							$rsConsultaComplemento = pg_query(abreConexao(),$sqlConsultaComplemento);
+                             /*
+                             Alterado por Rodolfo Para correÃ§Ã£o do Sistema . erro
+                            ***************************************************
+                              */
+                              $linharsConsultaComplemento=pg_fetch_assoc($rsConsultaComplemento);
+
+                              If ($linharsConsultaComplemento)
+                              {
+                                    $Complemento = $linharsConsultaComplemento['diaria_comprovacao_complemento'];
+                              }
+                              else
+                              {		$Complemento =0;
+                              }
+
+                             //***********************************************************
+
+                        }
+						If ($Complemento == "1")
+                        {
+							$ComplementoJustificativa = $linharsConsultaComplemento['diaria_comprovacao_complemento_justificativa'];
+                        }
+?>
+
+						<?  If ($Complemento == "1")
+                            {
+                        ?>
+
+
+                        <table width="800" border="0" cellpadding="0" cellspacing="0" class="TabelaFormulario">
+                            <tr>
+                                <td>
+                                    <table width="798" border="0" cellpadding="0" cellspacing="1">
+                                        <tr class="dataLabel" height="21">
+                                            <td>&nbsp;Justificativa do Complemento&nbsp;(Conforme Art. 4º par&aacute;grafo 2º do DECRETO Nº 5.910 de Outubro de 1996.)</td>
+                                        </tr>
+                                        <tr height="21" class="dataField">
+                                            <td>&nbsp;<?=$ComplementoJustificativa?></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <? }?>
+
+                         <br>
+
+                        <table width="800" border="0" cellpadding="0" cellspacing="0" class="TabelaFormulario">
+                        	<tr>
+                            	<td>
+                                    <table width="798" border="0" cellpadding="0" cellspacing="1">
+                                        <tr height="21" class="dataLabel">
+                                            <td width="400">&nbsp;Benefici&aacute;rio</td>
+                                            <td width="200">&nbsp;Matr&iacute;cula</td>
+                                            <td width="198">&nbsp;CPF</td>
+                                        </tr>
+                                        <tr height="21" class="dataField">
+                                            <td>&nbsp;<?=f_ConsultaNomeFuncionario($Beneficiario)?></td>
+                                            <td>&nbsp;<?=$Matricula?> </td>
+                                            <td>&nbsp;<?=$CPF?> </td>
+                                        </tr>
+                                        <tr height="21" class="dataLabel">
+                                            <td width="400">&nbsp;Banco</td>
+                                            <td width="200">&nbsp;Ag&ecirc;ncia</td>
+                                            <td width="198">&nbsp;Conta</td>
+                                        </tr>
+                                        <tr height="21" class="dataField">
+                                        <? $linharsBanco=pg_fetch_assoc($rsBanco);?>
+                                            <td>&nbsp;<?=$linharsBanco['banco_cd']?> - <?=$linharsBanco['banco_ds']?></td>
+                                            <td>&nbsp;<?=$linharsBanco['dados_bancarios_agencia']?> </td>
+                                            <td>&nbsp;<?=$linharsBanco['dados_bancarios_conta']?></td>
+                                        </tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+
+
+                         <br>
+
+                        <table width="800" border="0" cellpadding="0" cellspacing="0" class="TabelaFormulario">
+                        	<tr>
+                            	<td>
+
+    						        <table width="798" border="0" cellpadding="0" cellspacing="1">
+                                        <tr height="21" class="dataLabel">
+                                            <td width="312">&nbsp;Valor Refer&ecirc;ncia</td>
+                                            <td width="85">&nbsp;Redu&ccedil;&atilde;o 50%</td>
+                                            <td width="102">&nbsp;Qtde Di&aacute;rais</td>
+                                            <td width="98">&nbsp;Valor Total</td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr height="21" class="dataField">
+                                            <td width="312">&nbsp;<?=$linharsConsulta['diaria_valor_ref'];?></td>
+                                            <td width="85">&nbsp;<?=$Desconto?></td>
+                                            <td>&nbsp;<?=$Qtde?></td>
+                                            <td>&nbsp;<?=$linharsConsulta['diaria_valor']?></td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+									</table>
+
+
+ 								</td>
+                        	</tr>
+                        </table>
+
+                         <br>
+
+                        <table width="800" border="0" cellpadding="0" cellspacing="0" class="TabelaFormulario">
+                        	<tr>
+                            	<td>
+
+
+                                    <table width="798" border="0" cellpadding="0" cellspacing="1">
+                                        <tr height="21">
+                                            <td class="dataLabel">&nbsp;Unidade de Custo</td>
+                                        </tr>
+                                        <tr height="21">
+                                            <td class="dataField">&nbsp;<?=f_ExibeUnidadeCusto($UnidadeCusto)?></td>
+                                        </tr>
+                                    </table>
+
+ 								</td>
+                        	</tr>
+                        </table>
+
+                        <br>
+
+                        <table width="800" border="0" cellpadding="0" cellspacing="0" class="TabelaFormulario">
+                        	<tr>
+                            	<td>
+                                    <table width="798" border="0" cellpadding="0" cellspacing="1">
+                                        <tr height="21" class="dataTitulo">
+                                            <td colspan="2">&nbsp;Roteiro</td>
+                                        </tr>
+                                        <tr height="21" class="dataLabel">
+                                            <td>&nbsp;Origem</td>
+                                            <td>&nbsp;Destino</td>
+                                        </tr>
+<?
+
+										$sqlRoteiro = "SELECT roteiro_origem, roteiro_destino FROM diaria.roteiro WHERE diaria_id = ".$Codigo;
+										$rsRoteiro = pg_query(abreConexao(),$sqlRoteiro);
+
+                                        while($linharsRoteiro=pg_fetch_assoc($rsRoteiro))
+                                        {
+											$sqlRoteiroOrigem = "SELECT * FROM dados_unico.municipio WHERE municipio_cd = " .$linharsRoteiro['roteiro_origem'];
+                                            $rsRoteiroOrigem = pg_query(abreConexao(),$sqlRoteiroOrigem);
+                                            $linharsRoteiroOrigem=pg_fetch_assoc($rsRoteiroOrigem);
+
+                                            $sqlRoteiroDestino = "SELECT * FROM dados_unico.municipio WHERE municipio_cd = " .$linharsRoteiro['roteiro_destino'];
+                                            $rsRoteiroDestino = pg_query(abreConexao(),$sqlRoteiroDestino);
+                                            $linharsRoteiroDestino=pg_fetch_assoc($rsRoteiroDestino);
+                                            echo "<tr class='dataField' height='21'>";
+                                            echo "<td>&nbsp;" .$linharsRoteiroOrigem['estado_uf']." - " .$linharsRoteiroOrigem['municipio_ds']."</td>";
+                                            echo "<td>&nbsp;" .$linharsRoteiroDestino['estado_uf']. " - " .$linharsRoteiroDestino['municipio_ds']. "</td>";
+                                            echo "</tr>";
+
+                                        }
+
+?>
+                                    </table>
+								</td>
+							</tr>
+						</table>
+
+						<br>
+						
+						<?php include("tabelaHistorico.php"); ?>
+                        
+                        <input name="txtCodigo" type="hidden" value="<?=$Codigo?>">
+
+						<?include "../Include/Inc_Linha.php"?>
+
+<?
+						If ($MensagemErroBD != "")
+                        {
+
+							echo "<table border='0' cellpadding='0' cellspacing='0' width='100%'>";
+							echo "<tr>";
+							echo "<td class='MensagemErro'>".$MensagemErroBD."</td>";
+							echo "</tr>";
+							echo "<tr>";
+							echo "<td><img src='../images/vazio.gif' width='1' height='10' border='0'></td>";
+							echo "</tr>";
+							echo "</table>";
+
+                        }
+?>
+
+                        <table border="0" cellpadding="1" cellspacing="1" width="800">
+                            <tr height="25">
+                                <td align="right">
+                                <button style="width:70px" onClick="Javascript:window.location.href='SolicitacaoFinanceiroExecucaoInicio.php';" name="btnConsultar" class="botao">Voltar</button>
+                           </tr>
+                        </table>
+                        <br>
+                    </td>
+                </tr>
+            </table>
+        </td>
+	</tr>
+</table>
+
+</form>
+
+</body>
+</html>

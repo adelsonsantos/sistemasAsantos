@@ -1,0 +1,180 @@
+<?php
+include "../Include/Inc_Configuracao.php";
+include "Classe/ClasseDiariaArquivamento.php";
+?>
+<html>
+
+<style type="text/css">@import url("../css/estilo.css"); </style>
+
+<script language="javascript" src="../JavaScript/ScriptFuncao.js"></script>
+<script language="javascript" src="../JavaScript/ScriptMenu.js"></script>
+
+<script language="javascript">
+<!--
+
+	function Foco(frm)
+	{
+		frm.txtFiltro.focus();
+	}
+
+	function FiltrarForm(frm)
+	{
+
+		for(cont=0; cont < frm.elements.length; cont++)
+			frm.elements[cont].style.backgroundColor = '';
+
+		if (frm.txtFiltro.value == "")
+		{
+			alert("Digite filtro para busca.");
+			frm.txtFiltro.focus();
+			frm.txtFiltro.style.backgroundColor='#B9DCFF';
+			return false;
+		}
+
+		frm.action = "ArquivamentoInicio.php?acao=buscar";
+		frm.submit();
+	}
+
+	function TodosForm(frm)
+	{
+		frm.txtFiltro.value = "";
+		frm.action = "ArquivamentoInicio.php";
+		frm.submit();
+	}
+
+	function Arquivar(codigo)
+	 {
+
+		var resposta = confirm('Tem certeza que deseja arquivar a diária?');
+
+		if (resposta == true)
+		{
+			document.Form.action="ArquivamentoInicio.php?cod="+codigo+"&acao=arquivar";
+			document.Form.submit();
+		}
+
+	 }
+/* Função que Arquivar todas as Diárias*/
+		function ArquivarTodasDiarias(checkboxArquivarDiaria){
+			CodigoDiarias ='';
+             
+			for (i=0; i < checkboxArquivarDiaria.length; i++) {
+				if (checkboxArquivarDiaria[i].checked) {
+			        CodigoDiarias = (checkboxArquivarDiaria[i].value)+','+CodigoDiarias ;
+                }
+			}
+			
+			if (CodigoDiarias == ""){
+               alert("Todas as Diárias já foram Arquivadas.\n\Para Arquivar alguma Diária é Nécessário Selecionar Alguma.!!!");
+               return;
+            }		
+			
+          if (CodigoDiarias.length > 4){
+		  		CodigoDiarias = CodigoDiarias.substr(0,CodigoDiarias.length-1);//retira a virgula do final							
+			//	document.write(CodigoDiarias);
+		  }
+		  
+		  var resposta = confirm('Tem certeza que deseja Arquivar Todas as Diárias Selecionadas ?');
+            if (resposta == true)
+            {
+				Form.action = "ArquivamentoInicio.php?acao=ArquivarTodasDiarias&Codigos="+CodigoDiarias;		  
+				document.Form.submit();		  
+            }		  
+		}
+
+-->
+</script>
+
+<body onLoad="WM_initializeToolbar();">
+
+<form name="Form" method="post">
+
+<table align="left" width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tr>
+       <td><?include "../Include/Inc_Topo.php"?></td>
+    </tr>
+    <tr>
+    	<td><?include "../Include/Inc_Aba.php"?></td>
+    </tr>
+    <tr>
+    	<td align="left">
+            <table width="990" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                    <td valign="top" align="left" width="190"><?include "../Include/Inc_Menu.php"?></td>
+                    <td valign="top" align="left">
+
+                        <?include "../Include/Inc_Titulo.php"?>
+
+                        <?include "../Include/Inc_Linha.php"?>
+
+                        <?include "../Include/Inc_Pesquisa_Sem_Filtro.php"?>
+						
+						<?include "../Include/Inc_Linha.php"?>
+						<table cellpadding="0" cellspacing="0" width="800" border="1">
+							<tr>
+								<td align="left" height='20'><button style="width:100px; height: 20px;" onClick="javascript:ArquivarTodasDiarias(document.Form.checkboxArquivarDiaria);" class="botao">Arquivar Diárias</button> <img src='../Icones/ico_arquivar.png' border="0" alt="Arquivar Diárias"></td>
+							</tr>
+						
+							<tr class="GridPaginacaoCabecalho">
+								<td align="right">
+									<a href="#" class="GridPaginacaoRegistroNumRegistro" onClick="javascript:MarcaCheckbox(document.Form.checkboxArquivarDiaria);">Marcar Todos</a> |
+									<a href="#" class="GridPaginacaoRegistroNumRegistro" onClick="javascript:DesmarcaCheckbox(document.Form.checkboxArquivarDiaria);">Desmarcar Todos</a>
+								</td>
+							</tr>						
+                        </table>
+                        <?include "../Include/Inc_Linha.php"?>
+
+                        <table cellpadding="0" cellspacing="0" width="800" border="0" class="GridPaginacao">
+                            <tr>
+                                <td>
+                                    <table border="0" cellpadding="1" cellspacing="1" width="798">
+                                        <tr height="20" class="GridPaginacaoRegistroCabecalho">
+                                            <td width="100" colspan="4"></td>
+                                            <td width="80" align="center">SD</td>
+                                            <td width="290" align="left">&nbsp;Nome</td>
+                                            <td width="68" align="center">Data</td>
+                                            <td width="130" align="center">Partida Efetiva</td>
+                                            <td width="130" align="center">Chegada Efetiva</td>
+	                                     </tr>
+									<?php
+											while($linha=pg_fetch_assoc($rsConsulta)){
+
+												$Codigo         = $linha['diaria_id'];
+												$Numero         = $linha['diaria_numero'];
+												$Nome           = $linha['pessoa_nm'];
+												$DataPartida    = $linha['diaria_comprovacao_dt_saida'];
+												$HoraPartida	= $linha['diaria_comprovacao_hr_saida'];
+												$DataChegada	= $linha['diaria_comprovacao_dt_chegada'];
+												$HoraChegada	= $linha['diaria_comprovacao_hr_chegada'];
+												$DataCriacao    = $linha['diaria_dt_criacao'];
+												$Status         = $linha['diaria_st'];
+
+                                                echo "<tr height='20' bgcolor='#f2f2f2' class='GridPaginacaoLink' onMouseOver=javascript:this.style.backgroundColor='#cccccc' onMouseOut=javascript:this.style.backgroundColor='#f2f2f2'>";
+                                                echo "<td width='100' align='center' bgcolor='#8FBC8F' ><input type='checkbox' class='checkbox'name='checkboxArquivarDiaria' value= ".$Codigo."></td>";
+												echo "<td align='center'><a href='SolicitacaoConsultarFinanceiro.php?acao=consultar&cod=".$Codigo."&pagina=Arquivamento'><img src='../Icones/ico_consultar.png' border='0' alt='Consultar'></a></td>";
+                                                echo "<td align='center'><a href='SolicitacaoDevolver.php?cod=".$Codigo."&pagina=Arquivamento'><img src='../Icones/ico_devolver.png' border='0' alt='Devolver'></a></td>";
+                                                echo "<td align='center'><a href='javascript:Arquivar(".$Codigo.")'><img src='../Icones/ico_arquivar.png' border='0' alt='Arquivar'></a></td>";
+                                                echo "<td align='center'>".$Numero."</td>";
+                                                echo "<td>&nbsp;".$Nome."</a></td>";
+                                                echo "<td align='center'>".$DataCriacao."</a></td>";
+                                                echo "<td align='center'>".$DataPartida." &agrave;s ".$HoraPartida."</td>";
+                                                echo "<td align='center'>".$DataChegada." &agrave;s ".$HoraChegada."</td>";
+                                                echo "</tr>";
+										}
+									?>
+                                     </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+	</tr>
+</table>
+
+</form>
+
+</body>
+</html>
+

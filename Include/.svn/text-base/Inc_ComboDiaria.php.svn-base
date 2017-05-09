@@ -1,0 +1,75 @@
+<?php
+//funcao que exibe combo com os beneficiarios da diaria
+ Function ComboBeneficiario($Beneficiario, $FuncaoJavaScript)
+ {  echo "<select name=cmbBeneficiario style=width:382px ".$FuncaoJavaScript.">";
+	$sql = "SELECT f.pessoa_id, pessoa_nm FROM dados_unico.pessoa p ,dados_unico.funcionario f
+           WHERE (p.pessoa_id = f.pessoa_id) AND pessoa_st = 0 AND funcionario_tipo_id <> 3 AND
+           funcionario_validacao_rh = 1 ORDER BY UPPER(pessoa_nm)";
+
+    $rs = pg_query(abreConexao(),$sql);
+
+		echo "<option value=0>[--------------------------------------------------- Selecione ------------------------------------------------]</option>";
+		//converte para inteiro o (int)$codigoEscolhido
+        while ($linha = pg_fetch_assoc($rs))
+        { 
+			if ($Beneficiario == $linha['pessoa_id'])
+			{   
+				echo "<option selected value=".$linha['pessoa_id'].">".$linha['pessoa_nm']."</option>";
+				
+            }
+           else{				
+				echo "<option value=" .$linha['pessoa_id'].">".$linha['pessoa_nm']."</option>";				
+           }
+		   
+        }
+        
+    $sql ="SELECT     Count(diaria_numero) as total
+                    FROM diaria.diaria 
+                    Join dados_unico.pessoa du on du.pessoa_id = diaria_beneficiario
+                    where diaria_qtde >='3' 
+                    and diaria_beneficiario ='1004'
+                    and diaria_dt_criacao > '2012-01-01'";
+         $rs = pg_query(abreConexao(),$sql);
+         $linha = pg_fetch_assoc($rs);
+         if($linha['total'] == 180)
+         {
+             ?>
+        <script language="javascript">
+            alert('Servidor já tem Número limite de Diárias por Ano')
+        </script>
+    
+        <?php
+         }
+ }
+
+Function ComboACP($codigoEscolhido, $FuncaoJavaScript)
+{  echo "<select name=cmbUnidadeCusto style=width:785px ".$FuncaoJavaScript.">";
+
+		$sql = "SELECT * FROM dados_unico.est_organizacional WHERE est_organizacional_centro_custo = 1 AND
+               est_organizacional_st = 0 ORDER BY est_organizacional_centro_custo_num";
+        $rs=pg_query(abreConexao(),$sql);
+		echo "<option value=0>[--------------------------------------------------------------------------------------------------------------------- Selecione --------------------------------------------------------------------------------------------------------------------]</option>";
+		echo "<option value=0></option>";
+
+		while ($linha=pg_fetch_assoc($rs))
+        {  if($codigoEscolhido!="")
+           {  if ((int)$codigoEscolhido==(int)$linha['est_organizacional_id'])
+              {  echo  "<option value=".$linha['est_organizacional_id']." selected>".$linha['est_organizacional_centro_custo_num']." ----> "
+                     .$linha['est_organizacional_sigla']." ----> ".$linha['est_organizacional_ds']."</option>";
+              }
+              else
+              {  echo "<option value=".$linha['est_organizacional_id'].">".$linha['est_organizacional_centro_custo_num']. " ----> "
+                     .$linha['est_organizacional_sigla']." ----> ".$linha['est_organizacional_ds']."</option>";
+              }
+           }
+		   else
+           {  echo "<option value=".$linha['est_organizacional_id'].">".$linha['est_organizacional_centro_custo_num']." ----> "
+                  .$linha['est_organizacional_sigla']." ----> ".$linha['est_organizacional_ds']."</option>";
+           }
+        }
+
+		echo "</select>";
+}
+
+
+?>

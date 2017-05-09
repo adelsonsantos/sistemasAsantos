@@ -1,0 +1,3 @@
+<?php
+include "../../Include/Inc_Configuracao.php"?>
+&nbsp;<?=ComboSubMotivoDiaria($SubMotivo,$_GET['motivo_id'])?>

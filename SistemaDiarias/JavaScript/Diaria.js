@@ -1,0 +1,77 @@
+function MakeArray(n)
+{
+   this.length = n;
+   for (var i = 1; i <=n; i++) {
+     this[i] = 0;
+   }
+}
+
+days = new MakeArray(7);
+days[0] = "Sábado"
+days[1] = "Domingo"
+days[2] = "Segunda-Feira"
+days[3] = "Terça-Feira"
+days[4] = "Quarta-Feira"
+days[5] = "Quinta-Feira"
+days[6] = "Sexta-Feira"
+
+
+function compute(form,destino) 
+{
+
+	var val1  = parseInt(form.value.substr(0,2), 10)
+	var val2  = parseInt(form.value.substr(3,5), 10)
+	var val2x = parseInt(form.value.substr(3,5), 10)
+	var val3  = parseInt(form.value.substr(6,9), 10)
+	
+	if (val2 == 1) {
+	  val2x = 13;
+	  val3 = val3-1
+	}
+	if (val2 == 2) {
+	  val2x = 14;
+	  val3 = val3-1
+	}
+	var val4 = parseInt(((val2x+1)*3)/5, 10)
+	var val5 = parseInt(val3/4, 10)
+	var val6 = parseInt(val3/100, 10)
+	var val7 = parseInt(val3/400, 10)
+	var val8 = val1+(val2x*2)+val4+val3+val5-val6+val7+2
+	var val9 = parseInt(val8/7, 10)
+	var val0 = val8-(val9*7)
+	
+	if (destino == 1)
+	   document.Form.txtPartidaSemana.value = days[val0]
+	else
+	   document.Form.txtChegadaSemana.value = days[val0]	
+}   
+
+function computeControle(form,destino,controle) 
+{
+
+	var val1  = parseInt(form.value.substr(0,2), 10)
+	var val2  = parseInt(form.value.substr(3,5), 10)
+	var val2x = parseInt(form.value.substr(3,5), 10)
+	var val3  = parseInt(form.value.substr(6,9), 10)
+	
+	if (val2 == 1) {
+	  val2x = 13;
+	  val3 = val3-1
+	}
+	if (val2 == 2) {
+	  val2x = 14;
+	  val3 = val3-1
+	}
+	var val4 = parseInt(((val2x+1)*3)/5, 10)
+	var val5 = parseInt(val3/4, 10)
+	var val6 = parseInt(val3/100, 10)
+	var val7 = parseInt(val3/400, 10)
+	var val8 = val1+(val2x*2)+val4+val3+val5-val6+val7+2
+	var val9 = parseInt(val8/7, 10)
+	var val0 = val8-(val9*7)
+	
+	if (destino == 1)
+	   $('#diaPartida'+controle).val(days[val0])
+	else
+	   $('#diaChegada'+controle).val(days[val0])	
+}  

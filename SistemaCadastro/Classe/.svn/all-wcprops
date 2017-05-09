@@ -1,0 +1,137 @@
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/Classe
+END
+ClasseEstrutura.php
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/Classe/ClasseEstrutura.php
+END
+ClasseSenha.php
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/Classe/ClasseSenha.php
+END
+ClasseEstruturaLotacao.php
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/Classe/ClasseEstruturaLotacao.php
+END
+ClasseAcao.php
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/Classe/ClasseAcao.php
+END
+AcaoExcluir.php
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/Classe/AcaoExcluir.php
+END
+ClasseSimbolo.php
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/Classe/ClasseSimbolo.php
+END
+ClasseRelatorioTerceirizado.php
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/Classe/ClasseRelatorioTerceirizado.php
+END
+ClassePessoaJuridica.php
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/Classe/ClassePessoaJuridica.php
+END
+ClasseSistema.php
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/Classe/ClasseSistema.php
+END
+ClasseOrgao.php
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/Classe/ClasseOrgao.php
+END
+ClassePessoaFisica.php
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/Classe/ClassePessoaFisica.php
+END
+ClasseFuncao.php
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/Classe/ClasseFuncao.php
+END
+ClasseFuncionario.php
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/Classe/ClasseFuncionario.php
+END
+ClasseFuncionarioValidacao.php
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/Classe/ClasseFuncionarioValidacao.php
+END
+ClasseBanco.php
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/Classe/ClasseBanco.php
+END
+ClasseLotacao.php
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/Classe/ClasseLotacao.php
+END
+ClasseTerceirizado.php
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/Classe/ClasseTerceirizado.php
+END
+ClasseUsuario.php
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/Classe/ClasseUsuario.php
+END
+ClasseContrato.php
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/Classe/ClasseContrato.php
+END
+ClasseSecao.php
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/Classe/ClasseSecao.php
+END
+ClasseCargo.php
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/Classe/ClasseCargo.php
+END
+ClasseSenha_old.php
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/Classe/ClasseSenha_old.php
+END

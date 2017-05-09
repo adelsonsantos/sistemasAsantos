@@ -1,0 +1,95 @@
+<?php
+include "../../Include/Inc_Configuracao.php";
+
+	$Beneficiario = $_POST['beneficiario'];
+
+	$sqlBloqueio = "SELECT diaria_id, diaria_dt_chegada, diaria_st, diaria_numero,diaria_comprovada 
+					FROM diaria.diaria 
+					WHERE  ((diaria_st >=3 ) and  (diaria_st <= 5)) AND diaria_excluida = 0 AND (diaria_beneficiario = " .$Beneficiario. ")";
+
+
+    $rsBloqueio = pg_query(abreConexao(),$sqlBloqueio);
+
+
+	$ContadorAtraso  = 0;
+	$ContadorVirtual = 0;
+	$PossuiBloqueio  = 0;
+	$NumeroDiariaVirtual = "";
+	$NumeroDiariaAtrasada= "";
+
+
+
+    While($linha=pg_fetch_assoc($rsBloqueio))
+    {
+			//Diaria Pendente de Documentação.
+			If ($linha['diaria_comprovada'] == "1")// diaria comprovada, mas nao autorizada nem aprovada
+			{	$ContadorVirtual = $ContadorVirtual + 1;
+				$NumeroDiariaVirtual = $NumeroDiariaVirtual. "(" .$linha['diaria_numero']. ") ";
+            }
+
+			Else
+			{	$dataBanco= $linha['diaria_dt_chegada'];
+                $dataBanco= explode("-", $dataBanco);
+                //A funÃ§Ã£o mktime recebe os argumentos (hora, minuto, segundos, mes, dia, ano).
+                $diaBanco = mktime(0,0,0,$dataBanco[1],$dataBanco[0],$dataBanco[2]);
+
+                $dataAtual=date("Y-m-d");
+                $dataAtual=explode("-", $dataAtual);
+                $diaAtual = mktime(0,0,0,$dataAtual[1],$dataAtual[0],$dataAtual[2]);
+
+               $diferencaDataTempo = ($diaAtual-$diaBanco);
+                //converte o tempo em dias
+                $DiferencaDias = round(($diferencaDataTempo/60/60/24));
+                //modulo da diferenca
+                if($DiferencaDias<0)
+                {  $DiferencaDias=$DiferencaDias*(-1);
+
+                }
+                //Diaria com Prazo de chegada superior a 5 dias .. sem Comprovação .
+				If ($DiferencaDias > 5)
+                {
+					$ContadorAtraso = $ContadorAtraso + 1;
+					$NumeroDiariaAtrasada = $NumeroDiariaAtrasada. "(" .$linha['diaria_numero'].") ";
+                 }
+            }
+    }
+
+	If ($ContadorVirtual > 2)
+    {
+		$PossuiBloqueio = 1;
+    }
+
+	If ($ContadorAtraso > 1)
+    {
+		$PossuiBloqueio = 1;
+    }
+
+
+
+echo "<table border='0' cellpadding='0' cellspacing='0' width='100%'>" ;
+echo " <tr> ";
+echo "<td><img src='images/vazio.gif' width='1' height='4' border='0'></td>";
+echo " </tr>";
+echo "</table>";
+
+
+	If ($ContadorVirtual > 2)
+    {
+		echo "<table width='800' border='0' cellpadding='0' cellspacing='0' class='TabelaFormulario'>";
+       	echo "<tr height='21'>";
+		echo "<td class='dataLinha'>&nbsp;BLOQUEADO - Benefici&aacute;rio com comprova&ccedil;&atilde;o pendente de documenta&ccedil;&atilde;o. Numero(s) da(s) SD: ".$NumeroDiariaVirtual."</td>";
+		echo "</table>";
+    }
+
+	If ($ContadorAtraso > 1)
+    {
+		echo "<table width='800' border='0' cellpadding='0' cellspacing='0' class='TabelaFormulario'>";
+		echo "<tr height='21'>";
+	    echo "<td class='dataLinha'>&nbsp;BLOQUEADO - Benefici&aacute;rio com solicita&ccedil;&atilde;o pendente de comprova&ccedil;&atilde;o. Numero(s) da(s) SD: ".$NumeroDiariaAtrasada."</td>";
+		echo "</table>";
+	}
+
+		echo "<input type='hidden' id='txtBloqueio' name='txtBloqueio' style= 'width:35px;' readonly class='Oculto' value = ".$PossuiBloqueio.">";
+
+
+?>

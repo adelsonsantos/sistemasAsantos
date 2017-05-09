@@ -1,0 +1,407 @@
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro
+END
+FisicaInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/FisicaInicio.php
+END
+OrgaoCadastrar.php
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/OrgaoCadastrar.php
+END
+SistemaInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/SistemaInicio.php
+END
+SistemaExcluir.php
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/SistemaExcluir.php
+END
+OrgaoInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/OrgaoInicio.php
+END
+Index.php
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/Index.php
+END
+FuncionarioInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/FuncionarioInicio.php
+END
+FuncionarioConsultar.php
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/FuncionarioConsultar.php
+END
+EstOrganizacionalLotacaoExcluir.php
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/EstOrganizacionalLotacaoExcluir.php
+END
+LotacaoInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/LotacaoInicio.php
+END
+ContratoCadastrar.php
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/ContratoCadastrar.php
+END
+CargoCadastrar.php
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/CargoCadastrar.php
+END
+UsuarioConsultar.php
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/UsuarioConsultar.php
+END
+FisicaCadastrar.php
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/FisicaCadastrar.php
+END
+CargoInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/CargoInicio.php
+END
+AcaoCadastrar.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/AcaoCadastrar.php
+END
+FisicaExcluir.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/FisicaExcluir.php
+END
+CadastroInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/CadastroInicio.php
+END
+ValidacaoEmail.php
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/ValidacaoEmail.php
+END
+AcaoInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/AcaoInicio.php
+END
+FuncaoCadastrar.php
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/FuncaoCadastrar.php
+END
+EstOrganizacionalCadastrar.php
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/EstOrganizacionalCadastrar.php
+END
+FuncaoInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/FuncaoInicio.php
+END
+LotacaoCadastrar.php
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/LotacaoCadastrar.php
+END
+EstOrganizacionalExcluir.php
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/EstOrganizacionalExcluir.php
+END
+LotacaoExcluir.php
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/LotacaoExcluir.php
+END
+UsuarioExcluir.php
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/UsuarioExcluir.php
+END
+ContratoConsultar.php
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/ContratoConsultar.php
+END
+JuridicaInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/JuridicaInicio.php
+END
+RelatorioTercerizadoInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/RelatorioTercerizadoInicio.php
+END
+ValidacaoSucesso.php
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/ValidacaoSucesso.php
+END
+SimboloCadastrar.php
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/SimboloCadastrar.php
+END
+FisicaConsultar.php
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/FisicaConsultar.php
+END
+SistemaCadastrar.php
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/SistemaCadastrar.php
+END
+acoes.php
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/acoes.php
+END
+SimboloExcluir.php
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/SimboloExcluir.php
+END
+OrgaoExcluir.php
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/OrgaoExcluir.php
+END
+EstOrganizacionalLotacaoCadastrar.php
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/EstOrganizacionalLotacaoCadastrar.php
+END
+EstOrganizacionalInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/EstOrganizacionalInicio.php
+END
+TerceirizadoCadastrar.php
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/TerceirizadoCadastrar.php
+END
+ValidacaoAguardando.php
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/ValidacaoAguardando.php
+END
+EstOrganizacionalLotacaoInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/EstOrganizacionalLotacaoInicio.php
+END
+BancoInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/BancoInicio.php
+END
+JuridicaCadastrar.php
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/JuridicaCadastrar.php
+END
+TerceirizadoExcluir.php
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/TerceirizadoExcluir.php
+END
+ValidacaoFuncionario.php
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/ValidacaoFuncionario.php
+END
+ContratoInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/ContratoInicio.php
+END
+SecaoInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/SecaoInicio.php
+END
+ContratoExcluir.php
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/ContratoExcluir.php
+END
+JuridicaExcluir.php
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/JuridicaExcluir.php
+END
+CargoExcluir.php
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/CargoExcluir.php
+END
+SimboloInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/SimboloInicio.php
+END
+AcaoExcluir.php
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/AcaoExcluir.php
+END
+FuncionarioCadastrar.php
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/FuncionarioCadastrar.php
+END
+BancoCadastrar.php
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/BancoCadastrar.php
+END
+FuncaoExcluir.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/FuncaoExcluir.php
+END
+FuncionarioExcluir.php
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/FuncionarioExcluir.php
+END
+UsuarioCadastrar.php
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/UsuarioCadastrar.php
+END
+BancoExcluir.php
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/BancoExcluir.php
+END
+SecaoCadastrar.php
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/SecaoCadastrar.php
+END
+TerceirizadoConsultar.php
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/TerceirizadoConsultar.php
+END
+TerceirizadoInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/TerceirizadoInicio.php
+END
+UsuarioInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/UsuarioInicio.php
+END
+JuridicaConsultar.php
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/JuridicaConsultar.php
+END
+SecaoExcluir.php
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/SecaoExcluir.php
+END
+RelatorioTercerizadoPDF.php
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/RelatorioTercerizadoPDF.php
+END
+funcoes.js
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaCadastro/funcoes.js
+END

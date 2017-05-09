@@ -1,0 +1,389 @@
+<?php
+include "../Include/Inc_Configuracao.php";
+include "../Include/conecta.php";
+include "Classe/ClasseDiaria.php";
+
+
+if(isset($_GET["funcao"]))
+	$funcao = $_GET["funcao"];
+?>
+<html>
+
+<style type="text/css">@import url("../css/estilo.css"); </style>
+<style type="text/css">@import url("../css/dhtmlgoodies_calendar.css"); </style>
+
+<script language="javascript" src="../JavaScript/ScriptMenu.js"></script>
+<script language="javascript" src="../JavaScript/ScriptAjax.js"></script>
+
+<script language="javascript">
+<!--
+
+	function CancelarDiaria(frm)
+	 {
+
+		frm.action = "SolicitacaoCancelar.php";
+		frm.submit();
+
+	 }
+
+	function ImprimirDiaria(frm)
+	 {
+		window.open ("SolicitacaoImprimir.php?acao=imprimir&cod=<?=$Codigo?>");
+	 }	 
+	//**** Alteração feita por Erinaldo em 21/02/2011 para atender a solictação da criação do perfil de Pré-Autorizador ****//
+	function PreAutorizar(codigo)
+	{
+		// Falta fazer o form que vai fazer a verificação da pré-autorização
+		var resposta = confirm("Prezado Senhor, a pré-autorização implica em concordância quanto à necessidade e oportunidade \n      do deslocamento, conforme roteiro e período indicado. Confirma pré-autorização ?");
+		
+		if (resposta == true)
+		{
+			document.Form.action="VerificaDiariaPreAutorizacao.php?cod="+codigo+"&acao=preautorizar";
+			document.Form.submit();
+		}
+	}	
+	//**** Fim da Alteração feita por Erinaldo em 21/02/2011 para atender a solictação da criação do perfil de Pré-Autorizador ****//
+	
+	function Autorizar(codigo)
+	{
+		var resposta = confirm("Prezado Senhor, a autorização implica em concordância quanto à necessidade e oportunidade \n      do deslocamento, conforme roteiro e período indicado. Confirma autorização ?");
+		
+		if (resposta == true)
+		{
+			document.Form.action="SolicitacaoAutorizacaoInicio.php?cod="+codigo+"&acao=autorizar";
+			document.Form.submit();
+		}
+	}
+	
+	function Aprovar(codigo)
+	{
+
+		var resposta = confirm('Tem certeza que deseja aprovar a diária?');
+
+		if (resposta == true)
+		{
+			document.Form.action="SolicitacaoAprovacaoInicio.php?cod="+codigo+"&acao=aprovar";
+			document.Form.submit();
+		}
+
+	}
+	
+	function Devolver(codigo)
+	{
+		document.Form.action="SolicitacaoDevolver.php?cod="+codigo+"&pagina=SolicitacaoAutorizacao";
+		document.Form.submit();
+	}
+-->
+</script>
+
+<body onLoad="WM_initializeToolbar();">
+
+<form name="Form" method="post">
+
+<table align="left" width="100%" cellspacing="0" cellpadding="0" border="0">
+	<tr>
+	 <td><?include "../Include/Inc_Topo.php"?></td>
+	</tr>
+	<tr>
+		<td><?include "../Include/Inc_Aba.php"?></td>
+	</tr>
+	<tr>
+		<td>
+			<table align="left" width="990" cellspacing="0" cellpadding="0" border="0">
+				<tr>
+					<td valign="top" align="left" width="190"><?include "../Include/Inc_Menu.php"?></td>
+					<td valign="top" align="left">
+
+						<?include "../Include/Inc_Titulo.php"?>
+
+						<?include "../Include/Inc_Linha.php"?>
+
+						<table width="800" border="0" cellpadding="0" cellspacing="0" class="TabelaFormulario">
+							<tr>
+								<td>
+									<table width="798" border="0" cellpadding="0" cellspacing="1">
+										<tr height="21" class="dataLabel">
+											<td width="80" align="center">&nbsp;N&uacute;mero SD</td>
+											<td width="110" align="center">&nbsp;Solicitada em</td>
+											<td width="110" align="center">&nbsp;Nº Empenho</td>
+											<td width="110" align="center">&nbsp;Data Empenho</td>
+											<td width="158" align="center">&nbsp;Processo</td>
+											<td width="230">&nbsp;Status</td>
+										</tr>
+										<tr height="21" class="dataField">
+											<td align="center"><?=$Numero?></td>
+											<td>&nbsp;<?=($DataCriacao). " " .$HoraCriacao?></td>
+											<td align="center"><?=$Empenho?></td>
+											<td align="center"><?=($DataEmpenho)?></td>
+											<td align="center"><?=$Processo?></td>
+											<?include "IncludeLocal/Inc_Status_Diaria.php"?>
+												<?php
+													$sql = "SELECT diaria_local_solicitacao,diaria_st FROM diaria.diaria WHERE diaria_numero = '$Numero'";
+													$consulta = executar_SQL($sql);
+													$tupla= retorna_linha($consulta);
+													$local_diaria = $tupla["diaria_local_solicitacao"];
+													$Status = $tupla["diaria_st"];
+													if(($Status == 100) && ($local_diaria == "Coordenadoria" ))
+														{
+															$StatusNome = "Pré-Autorização";
+															echo "<td>&nbsp;<font color=\"#ff0000\">$StatusNome</font></td>";
+														}else{
+															echo "<td>&nbsp;<font color=\"#ff0000\">$StatusNome</font></td>";
+														}												
+												?>
+											
+											<!--<td>&nbsp;<font color="#ff0000"><?=$StatusNome?></font></td>
+											<td>&nbsp;<font color="#ff0000"><?echo $StatusNome?></font></td>-->
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+
+						<br>
+
+						<table width="800" border="0" cellpadding="0" cellspacing="0" class="TabelaFormulario">
+							<tr>
+								<td>
+									<table width="798" border="0" cellpadding="0" cellspacing="1">
+										<tr height="21" class="dataLabel">
+											<td width="50%">&nbsp;Solicitante</td>
+											<td width="50%">&nbsp;Benefici&aacute;rio</td>
+										</tr>
+										<tr height="21" class="dataField">
+											<td>&nbsp;<?=f_ConsultaNomeFuncionario($Solicitante)?></td>
+											<td>&nbsp;<?=f_ConsultaNomeFuncionario($Beneficiario)?></td>
+										</tr>
+										<tr height="21" class="dataTitulo">
+											<td colspan="2">&nbsp;Roteiro</td>
+										</tr>
+										<tr height="21" class="dataLabel">
+											<td>&nbsp;Origem</td>
+											<td>&nbsp;Destino</td>
+										</tr>
+										<?
+											$sqlRoteiro = "SELECT roteiro_origem, roteiro_destino FROM diaria.roteiro WHERE diaria_id = ".$Codigo;
+											$rsRoteiro = pg_query(abreConexao(),$sqlRoteiro);
+
+											While ($linha=pg_fetch_assoc($rsRoteiro))
+											{
+												$sqlRoteiroOrigem = "SELECT * FROM dados_unico.municipio WHERE municipio_cd = " .$linha['roteiro_origem'];
+												$rsRoteiroOrigem = pg_query(abreConexao(),$sqlRoteiroOrigem);
+												$linhaOrigem=pg_fetch_assoc($rsRoteiroOrigem);
+
+												$sqlRoteiroDestino = "SELECT * FROM dados_unico.municipio WHERE municipio_cd = " .$linha['roteiro_destino'];
+												$rsRoteiroDestino = pg_query(abreConexao(),$sqlRoteiroDestino);
+												$linhaDestino= pg_fetch_assoc($rsRoteiroDestino);
+
+												echo "<tr class='dataField' height='21'>";
+												echo "<td>&nbsp;"  .$linhaOrigem['estado_uf']." - "  .$linhaOrigem['municipio_ds']. "</td>";
+												echo "<td>&nbsp;"  .$linhaDestino['estado_uf']. " - "  .$linhaDestino['municipio_ds']. "</td>";
+												echo "</tr>";
+											}
+										?>
+									</table>
+								</td>
+							</tr>
+						</table>
+
+						<br>
+
+						<table width="800" border="0" cellpadding="0" cellspacing="0" class="TabelaFormulario">
+							<tr>
+								<td>
+									<table width="798" border="0" cellpadding="0" cellspacing="1">
+										<tr height="21" class="dataTitulo">
+											<td width="399" colspan="3">&nbsp;Partida Prevista</td>
+											<td width="399" colspan="3">&nbsp;Chegada Prevista</td>
+										</tr>
+										<tr height="21" class="dataLabel">
+											<td width="100">&nbsp;Data</td>
+											<td width="100">&nbsp;Hora</td>
+											<td width="199">&nbsp;Dia da Semana</td>
+											<td width="100">&nbsp;Data</td>
+											<td width="100">&nbsp;Hora</td>
+											<td width="199">&nbsp;Dia da Semana</td>
+										</tr>
+										<tr height="21" class="dataField">
+											<td width="100">&nbsp;<?=$DataPartida?></td>
+											<td width="100">&nbsp;<?=$HoraPartida?></td>
+											<td width="199">&nbsp;<?=$DiaSemanaPartida?></td>
+											<td width="100">&nbsp;<?=$DataChegada?></td>
+											<td width="100">&nbsp;<?=$HoraChegada?></td>
+											<td width="199">&nbsp;<?=$DiaSemanaChegada?></td>
+										</tr>
+									</table>
+
+									<table width="798" border="0" cellpadding="0" cellspacing="1">
+										<tr height="21" class="dataLabel">
+											<td width="100">&nbsp;Redu&ccedil;&atilde;o 50%</td>
+											<td width="102">&nbsp;Qtde Di&aacute;rais</td>
+											<td width="195">&nbsp;Valor Refer&ecirc;ncia</td>
+											<td width="98">&nbsp;Valor Total</td>
+											<td>&nbsp;</td>
+										</tr>
+										<tr height="21" class="dataField">
+											<td width="85">&nbsp;<?=$Desconto?></td>
+                                            <td>&nbsp;<?=$Qtde?></td>
+   											<td width="100">&nbsp;<?=$ValorRef?></td>
+											<td>&nbsp;<?=$Valor?></td>
+											<td>&nbsp;</td>
+										</tr>
+									</table>
+
+									<? If ($JustificativaFeriado != ""){?>
+										<table width="798" border="0" cellpadding="0" cellspacing="1">
+											<tr height="21">
+												<td class="dataLabel">&nbsp;Justificativa do Feriado</td>
+											</tr>
+											<tr height="21" class="dataField">
+												<td>&nbsp;<?=$JustificativaFeriado?></td>
+											</tr>
+										</table>
+									<?}?>
+
+									<? If ($JustificativaFimSemana != ""){?>
+										<table width="798" border="0" cellpadding="0" cellspacing="1">
+											<tr height="21">
+												<td class="dataLabel">&nbsp;Justificativa do Fim de Semana</td>
+											</tr>
+											<tr height="21" class="dataField">
+												<td>&nbsp;<?=$JustificativaFimSemana?></td>
+											</tr>
+										</table>
+									<? }?>
+									
+ 								</td>
+							</tr>
+						</table>
+
+						<br>
+
+						<table width="800" border="0" cellpadding="0" cellspacing="0" class="TabelaFormulario">
+							<tr>
+								<td>
+									<table width="798" border="0" cellpadding="0" cellspacing="1">
+										<tr height="21">
+											<td class="dataLabel" width="320">&nbsp;Meio de Transporte</td>
+											<td class="dataLabel" width="478">&nbsp;Meio de Transporte Observa&ccedil;&atilde;o</td>
+										</tr>
+										<tr height="21">
+											<td class="dataField">&nbsp;<?=f_ExibeMeioTransporte($MeioTransporte)?></td>
+											<td class="dataField">&nbsp;<?=$TransporteObservacao?></td>
+										</tr>
+									</table>
+
+									<table width="798" border="0" cellpadding="0" cellspacing="1">
+										<tr height="21">
+											<td class="dataLabel" width="320">&nbsp;Motivo</td>
+											<td class="dataLabel" width="478">&nbsp;Sub-Motivo</td>
+										</tr>
+										<tr height="21">
+											<td class="dataField">&nbsp;<?=f_ExibeMotivo($Motivo)?></td>
+											<td class="dataField">&nbsp;<?=f_ExibeSubMotivo($SubMotivo)?></td>
+										</tr>
+									</table>
+
+									<table width="798" border="0" cellpadding="0" cellspacing="1">
+										<tr height="21">
+											<td class="dataLabel">&nbsp;Descri&ccedil;&atilde;o</td>
+										</tr>
+										<tr height="21">
+											<td class="dataField">&nbsp;<?=$Descricao?></td>
+										</tr>
+									</table>
+
+									<table width="798" border="0" cellpadding="0" cellspacing="1">
+										<tr height="21">
+											<td class="dataLabel">&nbsp;Unidade de Custo</td>
+										</tr>
+										<tr height="21">
+											<td class="dataField">&nbsp;<?=f_ExibeUnidadeCusto($UnidadeCusto)?></td>
+										</tr>
+										<tr height="21">
+											<td class="dataLabel">&nbsp;Projeto</td>
+										</tr>
+										<tr height="21">
+											<td class="dataField">&nbsp;<?=f_ExibeProjeto($Projeto)?></td>
+										</tr>
+										<tr height="21">
+											<td class="dataLabel">&nbsp;A&ccedil;&atilde;o</td>
+										</tr>
+										<tr height="21">
+											<td class="dataField">&nbsp;<?=f_ExibeAcao($Acao)?></td>
+										</tr>
+										<tr height="21">
+											<td class="dataLabel">&nbsp;Territ&oacute;rio</td>
+										</tr>
+										<tr height="21">
+											<td class="dataField">&nbsp;<?=f_ExibeTerritorio($Territorio)?></td>
+										</tr>
+										<tr height="21">
+											<td class="dataLabel">&nbsp;Fonte</td>
+										</tr>
+										<tr height="21">
+											<td class="dataField">&nbsp;<?=f_ExibeFonte($Fonte)?></td>
+										</tr>
+									</table>
+
+								</td>
+							</tr>
+						</table>
+						
+						<br>
+						
+						<?php include "tabelaHistorico.php"; ?>
+
+						<input name="txtCodigo" type="hidden" value="<?=$Codigo?>">
+
+						<?include "../Include/Inc_Linha.php"?>
+
+						<?
+							if ($MensagemErroBD != "")
+							{
+								echo "<table border='0' cellpadding='0' cellspacing='0' width='100%'>";
+								echo "  <tr>";
+								echo "    <td class='MensagemErro'>".$MensagemErroBD."</td>";
+								echo "  </tr>";
+								echo "  <tr>";
+								echo "    <td><img src='../images/vazio.gif' width='1' height='10' border='0'></td>";
+								echo "  </tr>";
+								echo "</table>";
+							}
+						?>
+
+						<table border="0" cellpadding="1" cellspacing="1" width="800">
+							<tr height="25">
+								<td align="right">
+ 									<?php if(isset($funcao)) {
+									
+									if($funcao == "autorizar") { 
+										echo "<button style=\"width:70px\" onClick=\"Javascript:Autorizar('$Codigo');\" name=\"btnConsultar\" class=\"botao\">Autorizar</button>&nbsp;&nbsp";
+										}elseif($funcao == "aprovar") { 
+										echo "<button style=\"width:70px\" onClick=\"Javascript:Aprovar('$Codigo');\" name=\"btnConsultar\" class=\"botao\">Aprovar</button>&nbsp;&nbsp";
+										}elseif($funcao == "preautorizar") { 
+										echo "<button style=\"width:70px\" onClick=\"Javascript:PreAutorizar('$Codigo');\" name=\"btnConsultar\" class=\"botao\">Pré-Autorizar</button>&nbsp;&nbsp";
+										}
+										echo "<button style=\"width:70px\" onClick=\"Javascript:Devolver('$Codigo');\" name=\"btnConsultar\" class=\"botao\">Devolver</button>&nbsp;&nbsp";
+										}
+										echo "<button style=\"width:70px\" onClick=\"Javascript:window.location.href='$PaginaLocal"."inicio.php';\" name=\"btnConsultar\" class=\"botao\">Voltar</button>";
+																	
+									?>									
+							 </td>
+						 </tr>
+						</table>
+						
+						<br>
+						
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+</form>
+
+</body>
+</html>
+

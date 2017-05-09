@@ -1,0 +1,244 @@
+﻿<?php
+include "../Include/Inc_Configuracao.php";
+include "Classe/ClasseUsuario.php";
+?>
+<html>
+
+<style type="text/css">@import url("../css/estilo.css"); </style>
+
+<script language="javascript" src="../JavaScript/ScriptFuncao.js"></script>
+<script language="javascript" src="../JavaScript/ScriptMenu.js"></script>
+
+<script language="javascript">
+<!--
+
+	function Foco(frm)
+	{
+		frm.txtFiltro.focus();
+	}
+
+	function FiltrarForm(frm)
+	{
+
+		for(cont=0; cont < frm.elements.length; cont++)
+			frm.elements[cont].style.backgroundColor = '';
+
+		if (frm.txtFiltro.value == "")
+		{
+			alert("Digite filtro para busca.");
+			frm.txtFiltro.focus();
+			frm.txtFiltro.style.backgroundColor='#B9DCFF';
+			return false;
+		}
+
+		frm.action = "UsuarioInicio.php?acao=buscar";
+		frm.submit();
+	}
+
+	function TodosForm(frm)
+	{
+		frm.txtFiltro.value = "";
+		frm.action = "UsuarioInicio.php";
+		frm.submit();
+	}
+
+	function Redirect(frm)
+	{
+		frm.action = "UsuarioInicio.php?filtro="+frm.cmbStatus.value;
+		frm.submit();
+	}
+
+
+-->
+</script>
+
+<body onLoad="WM_initializeToolbar();">
+
+<form name="Form" method="post">
+
+<table align="left" width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tr>
+       <td><?include "../Include/Inc_Topo.php"?></td>
+    </tr>
+    <tr>
+    	<td><?include "../Include/Inc_Aba.php"?></td>
+    </tr>
+    <tr>
+    	<td align="left">
+            <table width="990" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                    <td valign="top" align="left" width="190"><?include "../Include/Inc_Menu.php"?></td>
+                    <td valign="top" align="left">
+
+                        <?include "../Include/Inc_Titulo.php"?>
+
+                        <?include "../Include/Inc_Linha.php"?>
+
+                        <table cellpadding="0" cellspacing="0" border="0" width="800">
+                            <tr>
+                                <td align="center" class="tabPesquisa" >
+
+                                    <table cellpadding="0" border="0" cellspacing="0" width="100%">
+                                        <tr>
+                                            <td><img src="../SistemaCadastro/Imagens/vazio.gif" width="1" height="3" border="0"></td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="top" class="LinhaTexto">
+                                                    <table cellpadding="0" border="0" cellspacing="0" width="100%">
+                                                        <tr>
+                                                            <td width="270" class="dataField">&nbsp;<input name="txtFiltro" maxlength="100" type="text" value="<?=$RetornoFiltro?>" style=" width:265px;"></td>
+                                                            <td width="75" valign="middle"><button style="width:70px; height: 18px;" onClick="Javascript:FiltrarForm(document.Form);" class="botao">Pesquisar</button></td>
+<?
+                                                            If ($RetornoFiltro != "")
+                                                            {
+
+                                                               echo "<td valign=middle><button style=width:90px; height:18px; onClick=Javascript:TodosForm(document.Form); class=botao>Exibir Todos</button></td>";
+                                                            }
+                                                            Else
+                                                            {
+                                                               echo "<td>&nbsp;</td>";
+                                                            }
+
+
+                                                               echo "<td class=dataLinha align=right>Ver status ";
+
+
+                                                                If ($numFiltro == "")
+                                                                {
+                                                                    $strCLogin   = "";
+                                                                    $strSLogin = "";
+                                                                    $strTodos   = "Selected";
+                                                                }
+                                                                ElseIf ($numFiltro == 1)
+                                                                {
+                                                                    $strCLogin   = "Selected";
+                                                                    $strSLogin   = "";
+                                                                    $strTodos    = "";
+                                                                }
+                                                                Elseif ($numFiltro == 0)
+                                                                {
+                                                                    $strCLogin = "";
+                                                                    $strSLogin = "Selected";
+                                                                    $strTodos  = "";
+                                                                }
+
+                                                               echo "<select name='cmbStatus' onchange='Redirect(document.Form);'>";
+                                                               echo "<option value='' " .$strTodos.">Todos</option>";
+                                                               echo "<option value='1' " .$strCLogin.">Com Login</option>";
+                                                               echo "<option value='0' ".$strSLogin. ">Sem Login</option>";
+                                                               echo "</select>";
+?>
+                                                            </td>
+                                                       </tr>
+                                                    </table>
+
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><img src="../SistemaCadastro/Imagens/vazio.gif" width="1" height="2" border="0"></td>
+                                        </tr>
+                                    </table>
+
+                                </td>
+                            </tr>
+                        </table>
+
+                        <?include "../Include/Inc_Linha.php"?>
+
+                        <table cellpadding="0" cellspacing="0" width="800" border="0" class="GridPaginacao">
+                            <tr>
+                                <td>
+                                    <table border="0" cellpadding="1" cellspacing="1">
+                                        <tr height="20" class="GridPaginacaoRegistroCabecalho">
+                                            <td width="75" colspan="3">&nbsp;</td>
+                                            <td width="345" align="left">&nbsp;Nome</td>
+                                            <td width="198" align="left">&nbsp;Estrutura</td>
+                                            <td width="120" align="left">&nbsp;Login</td>
+                                            <td width="60" align="center">Status</td>
+                                        </tr>
+<?
+
+                                        $paginaAtual =(int) $_GET['PaginaMostrada'];
+
+                                        $qtdRegistroPagina = $iPageSize;
+
+                                        $qtdRegistroTotal = pg_num_rows($rsConsulta);
+
+                                        $qtdIndice = $paginaAtual * $qtdRegistroPagina;
+
+                                        $qtdIndiceFinal = (($qtdIndice + $qtdRegistroPagina)-1);
+
+                                        $qtdPagina = ($qtdRegistroTotal/$qtdRegistroPagina);
+
+                                        $qtdPagina= ceil($qtdPagina);
+
+
+
+                                        While((($qtdIndice <= $qtdIndiceFinal) && ($qtdIndice < $qtdRegistroTotal)))
+										{       $linha=pg_fetch_assoc($rsConsulta,$qtdIndice);
+
+												$Codigo				= $linha['pessoa_id'];
+												$Nome	   			= $linha['pessoa_nm'];
+												$Login	   			= $linha['usuario_login'];
+												$StatusNumero	   	= $linha['usuario_st'];
+												$Estrutura			= $linha['est_organizacional_sigla'];
+
+
+
+														echo "<tr height='20' bgcolor='#f2f2f2' onMouseOver=javascript:this.style.backgroundColor='#cccccc' onMouseOut=javascript:this.style.backgroundColor='#f2f2f2'>";
+
+														echo "<td width='20' align='center'>";
+
+														If ($_SESSION['BotaoConsultar'] == false)
+                                                        {
+															echo "<img src='../icones/ico_consultar_off.png' alt='Consultar' border='0'>";
+                                                        }
+														Else
+														{	If ($_SESSION['BotaoConsultar'] != 0)
+                                                            {
+																echo "<a href=".$PaginaLocal."Consultar.php?cod=" .$Codigo. "&acao=consultar><img src='../icones/ico_consultar.png' alt='Consultar' border='0'></a>";
+                                                            }
+                                                        }
+
+														echo "</td>";
+														echo "<td width='20' align='center'><a href='" .$PaginaLocal."Cadastrar.php?cod=".$Codigo."&acao=consultar&acaoTitulo=Editar'><img src='../icones/ico_alterar.png' alt='Editar' border='0'></a></td>";
+														echo "<td width='20' align='center'><a href='" .$PaginaLocal."Excluir.php?cod=".$Codigo."&acao=consultar&acaoTitulo=Excluir'><img src='../icones/ico_excluir.png'  alt='Excluir' border='0'></a></td>";
+														echo "<td class='GridPaginacaoLink'>&nbsp;".$Nome."</td>";
+														echo "<td class='GridPaginacaoLink'>&nbsp;".$Estrutura."</td>";
+														echo "<td class='GridPaginacaoLink'>&nbsp;".$Login."</td>";
+
+														If ($Login != "")
+                                                        {
+															echo "<td class='GridPaginacaoLink' align='center'><font color='#ff0000'>Com Login</font></td>";
+                                                        }
+														Else
+														{	echo "<td class='GridPaginacaoLink' align='center'><font color='#ff0000'>Sem Login</font></td>";
+                                                        }
+
+														echo "</tr>";
+
+                                                $qtdIndice++;
+                                             }
+
+                                        $paginaAtual++;
+ ?>
+                                     </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><?include "../Include/Inc_Paginacao.php"?></td>
+                            </tr>
+                        </table>
+                    </div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+	</tr>
+</table>
+
+</form>
+
+</body>
+</html>

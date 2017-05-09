@@ -1,0 +1,665 @@
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias
+END
+logo.jpg
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/logo.jpg
+END
+RelatorioSolicitacaoFiltro.php
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/RelatorioSolicitacaoFiltro.php
+END
+SolicitacaoExecutar.php
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Gestor_Diarias/!svn/ver/5/trunk/SistemaDiarias/SolicitacaoExecutar.php
+END
+DiariaEstornoPDF.php
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/DiariaEstornoPDF.php
+END
+TerritorioInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/TerritorioInicio.php
+END
+FonteCadastrar.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/FonteCadastrar.php
+END
+SolicitacaoFinanceiroExecucaoInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/Gestor_Diarias/!svn/ver/14/trunk/SistemaDiarias/SolicitacaoFinanceiroExecucaoInicio.php
+END
+CapaProcessoDiariasAgrupadasPDF.php
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/CapaProcessoDiariasAgrupadasPDF.php
+END
+ConsultaDiaria.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/ConsultaDiaria.php
+END
+acao.php
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/Gestor_Diarias/!svn/ver/5/trunk/SistemaDiarias/acao.php
+END
+ComprovacaoConsultar.php
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/Gestor_Diarias/!svn/ver/5/trunk/SistemaDiarias/ComprovacaoConsultar.php
+END
+SolicitacaoCancelada.php
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SolicitacaoCancelada.php
+END
+FonteInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/FonteInicio.php
+END
+MeioTransporteExcluir.php
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/MeioTransporteExcluir.php
+END
+Index.php
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/Gestor_Diarias/!svn/ver/14/trunk/SistemaDiarias/Index.php
+END
+MotivoInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/MotivoInicio.php
+END
+MotivoExcluir.php
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/MotivoExcluir.php
+END
+SolicitacaoDiariaAgrupada.php
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SolicitacaoDiariaAgrupada.php
+END
+SubMotivoCadastrar.php
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SubMotivoCadastrar.php
+END
+SolicitacaoConsultaGlobalinicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/Gestor_Diarias/!svn/ver/15/trunk/SistemaDiarias/SolicitacaoConsultaGlobalinicio.php
+END
+Status_Diarias.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/Status_Diarias.php
+END
+fpdf.php
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/fpdf.php
+END
+SolicitacaoDiariaAgrupadaEmpenhoInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SolicitacaoDiariaAgrupadaEmpenhoInicio.php
+END
+SolicitacaoImprimirProcesso.php
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SolicitacaoImprimirProcesso.php
+END
+SolicitacaoImprimirDiariasAgrupadasPDF.php
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SolicitacaoImprimirDiariasAgrupadasPDF.php
+END
+SolicitacaoIniciobkp.php
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SolicitacaoIniciobkp.php
+END
+SubMotivoInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SubMotivoInicio.php
+END
+img_processo.jpg
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/img_processo.jpg
+END
+ComprovacaoAprovacaoEmpenhar.php
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/ComprovacaoAprovacaoEmpenhar.php
+END
+TerritorioCadastrar.php
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/TerritorioCadastrar.php
+END
+SolicitacaoAutorizacaoInicio - Cópia.php
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SolicitacaoAutorizacaoInicio%20-%20C%C3%B3pia.php
+END
+AcaoCadastrar.php
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/AcaoCadastrar.php
+END
+SolicitacaoAlterarComprovacaoInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SolicitacaoAlterarComprovacaoInicio.php
+END
+RelatoriobeneficiarioInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/RelatoriobeneficiarioInicio.php
+END
+RelatorioProjetoUnidade.php
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/RelatorioProjetoUnidade.php
+END
+AcaoInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/AcaoInicio.php
+END
+SolicitacaoPreAutorizacaoInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SolicitacaoPreAutorizacaoInicio.php
+END
+TerritorioExcluir.php
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/TerritorioExcluir.php
+END
+RelatorioDiariaCoordenadoriaInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/RelatorioDiariaCoordenadoriaInicio.php
+END
+ComprovacaoAprovacaoInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/ComprovacaoAprovacaoInicio.php
+END
+SolicitacaoDevolver.php
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SolicitacaoDevolver.php
+END
+SolicitacaoImprimirGER.php
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SolicitacaoImprimirGER.php
+END
+SolicitacaoProcessoPDF.php
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SolicitacaoProcessoPDF.php
+END
+roteiro.teste.php
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/roteiro.teste.php
+END
+DiariasInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/DiariasInicio.php
+END
+historico.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Gestor_Diarias/!svn/ver/5/trunk/SistemaDiarias/historico.class.php
+END
+ListagemDRM.php
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/ListagemDRM.php
+END
+VerificaDiariaPreAutorizacao.php
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/VerificaDiariaPreAutorizacao.php
+END
+RelatorioSaldoProjetoPDF.php
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/RelatorioSaldoProjetoPDF.php
+END
+RelatorioSaldoProjetoPDF - Cópia.php
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/RelatorioSaldoProjetoPDF%20-%20C%C3%B3pia.php
+END
+fpdf.css
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/fpdf.css
+END
+RelatorioSaldoProjetoInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/RelatorioSaldoProjetoInicio.php
+END
+AssociarMunicipio.php
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/AssociarMunicipio.php
+END
+ImprimirDiariasAgrupadasEmpenhoPDF.php
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/Gestor_Diarias/!svn/ver/5/trunk/SistemaDiarias/ImprimirDiariasAgrupadasEmpenhoPDF.php
+END
+SolicitacaoInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Gestor_Diarias/!svn/ver/14/trunk/SistemaDiarias/SolicitacaoInicio.php
+END
+SolicitacaoAutorizacaoInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/Gestor_Diarias/!svn/ver/14/trunk/SistemaDiarias/SolicitacaoAutorizacaoInicio.php
+END
+RelatorioProjetoUnidadePDF.php
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/RelatorioProjetoUnidadePDF.php
+END
+AssociarAutorizador.php
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/AssociarAutorizador.php
+END
+SolicitacaoGestaoInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SolicitacaoGestaoInicio.php
+END
+RelatorioBeneficiarioPDF.php
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/RelatorioBeneficiarioPDF.php
+END
+SolicitacaoLiberar.php
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SolicitacaoLiberar.php
+END
+SolicitacaoImprimirPDF.php
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SolicitacaoImprimirPDF.php
+END
+SolicitacaoComprovacaoImprimir.php
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SolicitacaoComprovacaoImprimir.php
+END
+MeioTransporteCadastrar.php
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/MeioTransporteCadastrar.php
+END
+MotivoCadastrar.php
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/MotivoCadastrar.php
+END
+RelatorioExtratoProjetoPDF.php
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/RelatorioExtratoProjetoPDF.php
+END
+SolicitacaoDiariaAgrupadaInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SolicitacaoDiariaAgrupadaInicio.php
+END
+ArquivamentoInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/ArquivamentoInicio.php
+END
+MeioTransporteInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/MeioTransporteInicio.php
+END
+FonteExcluir.php
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/FonteExcluir.php
+END
+SolicitacaoImprimirEmpenhoPDF.php
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SolicitacaoImprimirEmpenhoPDF.php
+END
+RelatorioExtratoProjeto.php
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/RelatorioExtratoProjeto.php
+END
+conecta.php
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/conecta.php
+END
+ProjetoInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/ProjetoInicio.php
+END
+SolicitacaoDesagruparDiariaInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SolicitacaoDesagruparDiariaInicio.php
+END
+SolicitacaoCadastrar.php
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/Gestor_Diarias/!svn/ver/5/trunk/SistemaDiarias/SolicitacaoCadastrar.php
+END
+ComprovacaoDevolver.php
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/ComprovacaoDevolver.php
+END
+SolicitacaoAprovacaoInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SolicitacaoAprovacaoInicio.php
+END
+SolicitacaoAgruparDiariaInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SolicitacaoAgruparDiariaInicio.php
+END
+SolicitacaoDesagruparDiaria.php
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SolicitacaoDesagruparDiaria.php
+END
+SolicitacaoArquivadaInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/Gestor_Diarias/!svn/ver/15/trunk/SistemaDiarias/SolicitacaoArquivadaInicio.php
+END
+SolicitacaoConsultarFinanceiro.php
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SolicitacaoConsultarFinanceiro.php
+END
+SolicitacaoFinanceiroInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SolicitacaoFinanceiroInicio.php
+END
+SubMotivoExcluir.php
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SubMotivoExcluir.php
+END
+SolicitacaoDiariaAgrupadaEmpenho.php
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SolicitacaoDiariaAgrupadaEmpenho.php
+END
+SolicitacaoExcluir.php
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SolicitacaoExcluir.php
+END
+RelatorioDiariaPendentePDF.php
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/RelatorioDiariaPendentePDF.php
+END
+AtualizacaoData.php
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/AtualizacaoData.php
+END
+SolicitacaoComprovacaoImprimirPDF.php
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/Gestor_Diarias/!svn/ver/14/trunk/SistemaDiarias/SolicitacaoComprovacaoImprimirPDF.php
+END
+RelatorioDiariaCoordenadoriaPDF.php
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/RelatorioDiariaCoordenadoriaPDF.php
+END
+DiariaEstornoInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/DiariaEstornoInicio.php
+END
+SolicitacaoAlterarComprovacao.php
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SolicitacaoAlterarComprovacao.php
+END
+AcaoExcluir.php
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/AcaoExcluir.php
+END
+Thumbs.db
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/Thumbs.db
+END
+SolicitacaoGestaoInicio - certo.php
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SolicitacaoGestaoInicio%20-%20certo.php
+END
+SolicitacaoImprimir.php
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SolicitacaoImprimir.php
+END
+Index_.php
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/Index_.php
+END
+ProjetoCadastrar.php
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/ProjetoCadastrar.php
+END
+AssociarDRM.php
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/AssociarDRM.php
+END
+SolicitacaoProcesso.php
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SolicitacaoProcesso.php
+END
+SolicitacaoEmpenhar.php
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SolicitacaoEmpenhar.php
+END
+tabelaHistorico.php
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/tabelaHistorico.php
+END
+ProjetoExcluir.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/ProjetoExcluir.php
+END
+SolicitacaoDiariaAgrupadaExecucaoInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SolicitacaoDiariaAgrupadaExecucaoInicio.php
+END
+SolicitacaoCancelar.php
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SolicitacaoCancelar.php
+END
+SolicitacaoComprovar.php
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SolicitacaoComprovar.php
+END
+SolicitacaoConsultar.php
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Gestor_Diarias/!svn/ver/14/trunk/SistemaDiarias/SolicitacaoConsultar.php
+END
+SolicitacaoDiariaAgrupadaExecucao.php
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/SolicitacaoDiariaAgrupadaExecucao.php
+END
+funcoes.js
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/funcoes.js
+END
+RelatorioDiariaPendenteInicio.php
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/Gestor_Diarias/!svn/ver/2/trunk/SistemaDiarias/RelatorioDiariaPendenteInicio.php
+END

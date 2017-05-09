@@ -1,0 +1,461 @@
+body { 
+	margin: 0px 0px 0px 5px;
+	font-family: arial;
+	font-size: 11px;
+	color: #444444;
+	background-color: #ffffff;
+	scrollbar-arrow-color: #FFFFFF; 
+	scrollbar-3dlight-color: #dddddd; 
+	scrollbar-highlight-color: #aaaaaa; 
+	scrollbar-face-color: #aaaaaa; 
+	scrollbar-shadow-color: #aaaaaa;
+	scrollbar-track-color: #cccccc; 
+	scrollbar-darkshadow-color: #666666;
+	}
+
+.linkStatus {
+	color: #444444;
+	font-size: 11px;
+	text-decoration: none;
+}
+
+a:link, a:visited {
+	color: #444444;
+	font-size: 11px;
+	text-decoration: none;
+}
+a:hover {
+	color: #666666;
+	font-size: 11px;	
+	text-decoration: none;
+	}
+
+a.rodapeLink:link, a.rodapeLink:visited {
+	vertical-align : middle;
+}
+a.rodapeLink:hover {
+	vertical-align : middle;
+}
+
+.menu_modulo_titulo {
+	font-size: 10px;
+	color: #333333;
+	background-color: #EDEDED;
+	padding-bottom: 2px;
+	padding-top: 1px;
+	border-bottom: 1px solid #D8D8D8;
+	}
+
+.menu_modulo {
+	font-size: 11px;
+	color: #333333;
+	background-color: #EDEDED;
+	padding-bottom: 2px;
+	padding-top: 1px;
+	border-bottom: 1px solid #D8D8D8;
+	}
+
+a.menu_modulo_link:link, a.menu_modulo_link:visited {
+	color: #333333;
+	text-decoration: none;
+	border-bottom: 0px;
+	margin-left: 10px; 
+	padding-left: 0px;
+	}
+	
+a.menu_modulo_link:hover {
+	color: #333333;
+	text-decoration: none;
+	border-bottom: 0px;
+	}
+
+.dataTitulo {
+	font-weight: bold;
+	font-size: 11px;	
+	vertical-align : middle;
+	background-color: #D4D4D4;	
+}
+
+.dataLabel {
+	font-weight: bold;
+	font-size: 11px;
+	vertical-align : middle;
+	background-color: #E7E7E7;	
+}
+
+.dataLabelSemBold {
+	font-weight: normal;
+	font-size: 11px;
+	vertical-align : middle;
+	background-color: #E7E7E7;	
+}
+
+
+.dataField {
+	font-weight: normal;
+	font-size: 11px;	
+	vertical-align: middle;
+	background-color: #f2f2f2;	
+}
+
+.dataField2 {
+	font-weight: normal;
+	font-size: 11px;	
+	vertical-align: middle;
+	background-color:#ffffff;	
+}
+
+.dataLinha {
+	font-size: 11px;
+	vertical-align : middle;
+}
+
+.dataTexto {
+	font-size: 10px;	
+	vertical-align : middle;
+}
+
+.titulo_pagina {
+	color: #325068;
+	font-size: 12px; 
+	font-weight: bold; 
+	margin-bottom: 0px;
+	margin-top: 0px;
+	}
+
+/* Form Styles */
+
+
+form {
+	margin: 0px;
+	}
+	
+.botao {
+
+	border: 1px solid #444444;
+	background-color: #ffffff;
+	font-size: 11px;
+	color: #444444;
+	font-weight: normal;
+	background-color: #dddddd;
+	background-position: bottom;
+	}
+	
+.buttonOn, .button:hover, .button:focus, .buttonOn:focus {
+
+	border: 1px solid #444444;
+	background-color: #ffffff;
+	font-size: 11px;
+	color: #444444;
+	font-weight: normal;
+	background-image: url(../images/bg_botao.gif);
+	background-repeat: repeat-x;
+	background-position: top;
+	}
+	
+input,select {
+	border: 1px solid #888888;
+	font-size: 10px;
+	height: 18px;
+	background-color: #ffffff;
+	}
+.checkbox{
+	font-size: 10px;
+	background-color: #ffffff;
+	}	
+
+.Oculto {
+	border: 1px solid #888888;
+	font-size: 10px;
+	height: 18px;
+	background-color: #f2f2f2;
+	}
+	
+.Invisivel {
+	border: 0px solid #888888;
+	font-size: 10px;	
+	vertical-align : middle;
+	background-color: #f2f2f2;	
+	}	
+	
+.RealmenteInvisivel {
+	border: 0px solid #888888;
+	font-size: 12px;	
+	font-color: #000000;
+	font-family: Arial, Verdana, Helvetica, sans-serif;	
+	overflow:hidden;	
+	}	
+	
+.RealmenteInvisivel2 {
+	border: 0px solid #888888;
+	font-size: 12px;	
+	font-color: #000000;
+	font-family: Arial, Verdana, Helvetica, sans-serif;	
+	overflow:hidden;	
+	background-color: #f2f2f2;		
+	}	
+		
+.Desabilitado {
+	border: 0px solid #888888;
+	font-size: 10px;
+	height: 18px;
+	background-color: #E7E7E7;
+	}	
+		
+.radio{
+	border: 0px;
+	font-size: 10px;
+	background-color: #f2f2f2;	
+	}
+
+textarea {
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	border: 1px solid #888888;
+	font-size: 12px;
+	background-color: #ffffff;
+	}
+.checkbox {
+	border:0px;
+	background-color: transparent;
+	margin: 0px;
+    vertical-align: middle; 
+    
+	}
+
+.leftColumaMenu  {
+	font-size: 11px;
+	color: #444444;
+	text-align: left;
+}
+
+.subMenu {
+	font-size: 10px;
+	color: #ffffff;
+	background-color: #efefef;
+	border-top: 1px solid #9E9E9E;
+	border-bottom: 1px solid #9E9E9E;
+	border-left: 1px solid #9E9E9E;
+	border-right: 1px solid #9E9E9E;
+	}
+	
+.TabFormulario {
+	font-size: 10px;
+	background-color: #efefef;
+	border-bottom: 1px solid #9E9E9E;
+	border-top: 1px solid #9E9E9E;
+	border-left: 1px solid #9E9E9E;
+	border-right: 1px solid #9E9E9E;
+	}
+	
+.TabelaFormulario {
+	border-bottom: 1px solid #9E9E9E;
+	border-top: 1px solid #9E9E9E;
+	border-left: 1px solid #9E9E9E;
+	border-right: 1px solid #9E9E9E;
+	}	
+
+
+.bgcolor {
+	background-color: #ACACAC;
+	border-bottom: 1px solid #000000;
+	border-top: 1px solid #000000;	
+	border-left: 1px solid #000000;
+	border-right: 1px solid #000000;	
+	padding-right: 10px;
+	text-align: right;
+}
+
+.Pesquisar {
+	color: #ffffff;
+	font-size: 10px;	
+	}
+
+.TabModulo {
+	text-decoration: none;
+	border-bottom: 1px solid #aaaaaa;
+	border-left: 1px solid #aaaaaa;
+	border-right: 1px solid #aaaaaa;
+	border-top: 1px solid #aaaaaa;
+}
+
+
+.linktab {
+	font-size: 11px;
+	color: #6e6e6e;
+	font-weight: bold;
+	}
+	
+.tabFiltro {
+	background-color: #efefef;
+	padding: 1px;
+	background-image: url(../images/bgfiltro.gif);
+	background-position: bottom;
+	background-repeat : repeat-x;
+	background-color: #efefef;
+	border-bottom: 1px solid #9E9E9E;
+	border-left: 1px solid #9E9E9E;
+	border-right: 1px solid #9E9E9E;
+
+}
+
+.tabPesquisa {
+	background-color: #efefef;
+	padding: 1px;
+	background-image: url(../images/bgfiltro.gif);
+	background-position: bottom;
+	background-repeat : repeat-x;
+	background-color: #efefef;
+	border-bottom: 1px solid #9E9E9E;
+	border-left: 1px solid #9E9E9E;
+	border-right: 1px solid #9E9E9E;
+	border-top: 1px solid #9E9E9E;
+}
+
+.operacoes {
+	font-size: 11px;
+	color: #ffffff;
+	background-color: #efefef;
+	border-bottom: 1px solid #9E9E9E;
+	border-top: 1px solid #9E9E9E;
+	border-left: 1px solid #9E9E9E;
+	border-right: 1px solid #9E9E9E;
+	}
+
+.linhaHR {
+	color: #666666;
+    width: 100%;
+    background-color: #000000;
+	}
+	
+	
+/* Grid de Paginacao */	
+.GridPaginacao
+{
+	border: 1px solid #9E9E9E;
+}
+
+.impressaoRelatorio
+{
+	
+	font-family: arial;
+	font-size:12px;
+	
+}
+
+
+.GridPaginacaoCabecalho 
+{
+	font-size: 11px;
+	color: #000099;
+	background-color: #eeeeee;
+	padding-right: 5px;
+	padding-left: 5px;
+	border-top: 1px solid #ffffff;
+	border-bottom: 1px solid #9E9E9E;
+	text-decoration: none;        
+}
+
+.GridImpressao 
+{
+	font-size: 11px;
+	color: #383838;
+	padding-right: 5px;
+	padding-left: 5px;
+	border-top: 1px solid #9E9E9E;
+	border-bottom: 1px solid #9E9E9E;
+	border-left: 1px solid #9E9E9E;
+	border-right: 1px solid #9E9E9E;	
+	text-decoration: none;        
+}
+
+.GridPaginacaoCabecalhoClaro 
+{
+	font-size: 10px;
+	color: #999999;
+	background-color: #F5F5F5;
+	padding-right: 5px;
+	padding-left: 5px;
+	border-top: 1px solid #9E9E9E;
+	text-decoration: none;        
+}
+
+.GridPaginacaoRegistroNumRegistro
+{
+	font-size: 11px;
+	color: #000099;
+	background-color: #eeeeee;
+	text-decoration: none;       
+}
+
+a.GridPaginacaoRegistroNumRegistro:link, a.GridPaginacaoRegistroNumRegistro:visited 
+{
+	color: #000099;
+	font-size: 11px;
+	font-weight: normal;
+	text-decoration: none;
+}
+
+a.GridPaginacaoRegistroNumRegistro:hover 
+{
+	color: #000099;
+	font-size: 11px;
+	text-decoration: none;
+}
+	
+.GridPaginacaoRegistroNumRegistro_1 
+{
+	font-size: 10px;
+	color: #999999;
+	background-color: #eeeeee;
+	padding-right: 5px;
+	padding-left: 5px;
+	border-top: 1px solid #ffffff;
+	text-decoration: none;        
+}
+
+a.GridPaginacaoRegistroNumRegistro_1:link, a.GridPaginacaoRegistroNumRegistro_1:visited {
+	color: #7c7c7c;
+	font-size: 10px;
+	font-weight: normal;
+	text-decoration: none;
+	}
+
+
+a.GridPaginacaoRegistroNumRegistro_1:hover {
+	color: #000000;
+	font-size: 10px;
+	text-decoration: none;
+	}
+
+.GridPaginacaoRegistroCabecalho 
+{
+	font-size: 11px;
+	color: #444444;;
+	font-weight: bold;
+	text-align: left;
+	background-color: #DFDFDF;
+}
+
+.MensagemErro 
+{
+	font-size: 11px;
+	color: #ff0000;;
+	text-align: left;
+}
+
+
+.GridPaginacaoRegistroCabecalhoLinha {
+	background-color: #cccccc;
+}
+
+.GridPaginacaoLink 
+{
+	font-size: 11px;
+	color: #000000;
+	text-decoration: none;    
+}
+
+.LinhaTexto {
+	font-size: 11px;
+	color: #000000;
+}

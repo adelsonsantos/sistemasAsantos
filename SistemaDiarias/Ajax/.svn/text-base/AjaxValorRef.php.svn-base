@@ -1,0 +1,20 @@
+<?php
+/*include "../../Include/Inc_Configuracao.php";?>
+&nbsp;
+<?
+	$CodBeneficiario = $_GET['funcionario_id'];
+
+    If ($CodBeneficiario != "0")
+    {f_ValorReferencia($CodBeneficiario);
+    }
+	*/
+
+include "../../Include/Inc_Configuracao.php";
+
+$CodBeneficiario = $_GET['funcionario_id'];
+$DataPartida     = $_GET['DataPartida'];
+If ($CodBeneficiario != "0") {
+    f_ValorReferencia($CodBeneficiario,$DataPartida);
+}
+	
+?>

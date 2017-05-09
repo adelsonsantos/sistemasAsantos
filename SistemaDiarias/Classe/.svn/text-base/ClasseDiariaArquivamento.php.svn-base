@@ -1,0 +1,62 @@
+<?php
+		//define o nome da pagina local para facilitar nos links
+		$PaginaLocal = "Arquivamento";
+
+		//controla a visibilidade do botao consultar
+		$_SESSION['BotaoConsultar'] = 0;
+
+		If (($AcaoSistema == "buscar")||($AcaoSistema == "")){
+			If ($RetornoFiltro != ""){
+				$sqlConsulta = "SELECT * FROM diaria.diaria d, dados_unico.funcionario f, dados_unico.pessoa p, dados_unico.pessoa_fisica pf, diaria.diaria_comprovacao dc WHERE (d.diaria_id = dc.diaria_id) AND (f.pessoa_id = pf.pessoa_id) AND (p.pessoa_id = f.pessoa_id) AND (d.diaria_beneficiario = f.pessoa_id) AND (diaria_st = 6) AND diaria_devolvida = 0 AND diaria_cancelada = 0 AND (pessoa_nm ILIKE '%" .$RetornoFiltro. "%' OR diaria_numero ILIKE '%" .$RetornoFiltro. "%') ORDER BY diaria_numero";
+            }Else{
+				$sqlConsulta = "SELECT * FROM diaria.diaria d, dados_unico.funcionario f, dados_unico.pessoa p, dados_unico.pessoa_fisica pf, diaria.diaria_comprovacao dc WHERE (d.diaria_id = dc.diaria_id) AND (f.pessoa_id = pf.pessoa_id) AND (p.pessoa_id = f.pessoa_id) AND (d.diaria_beneficiario = f.pessoa_id) AND (diaria_st = 6) AND diaria_devolvida = 0 AND diaria_cancelada = 0 ORDER BY diaria_numero";
+            }
+           $rsConsulta = pg_query(abreConexao(),$sqlConsulta);
+        }
+		ElseIf ($AcaoSistema == "arquivar"){
+				$Codigo = $_GET['cod'];
+				$DataObrigacao = $_POST['txtDataObrigacao'];
+				$HoraObrigacao = $_POST['txtHoraObrigacao'];
+                $Date=date("Y-m-d");
+                $Time=date("H:i:s");
+				$sqlAltera = "UPDATE diaria.diaria SET diaria_st = 7 WHERE diaria_id = " .$Codigo;
+				pg_query(abreConexao(),$sqlAltera);
+
+				$sqlConsulta = "SELECT funcionario_id FROM dados_unico.funcionario WHERE pessoa_id = " .$_SESSION['UsuarioCodigo'];
+				$rsConsulta = pg_query(abreConexao(),$sqlConsulta);
+                $linha=pg_fetch_assoc($rsConsulta);
+				$sqlInsere = "INSERT INTO diaria.diaria_arquivada (diaria_id, diaria_arquivada_func, diaria_arquivada_dt, diaria_arquivada_hr) VALUES (" .$Codigo. ", " .$linha['funcionario_id']. ",'" .$Date. "', '" .$Time. "')";
+
+				pg_query(abreConexao(),$sqlInsere);
+				echo "<script>alert(\"Diária Arquivada com Sucesso.!!!\");</script>";			                         
+			    echo "<script>window.location = 'ArquivamentoInicio.php ';</script>";
+        }
+		ElseIf ($AcaoSistema == "ArquivarTodasDiarias"){
+			$Codigo = $_GET['Codigos'];
+				
+			$sql = "SELECT diaria_id,diaria_comprovada FROM diaria.diaria d WHERE d.diaria_id in ($Codigo)";						
+			$resultado = pg_query(abreConexao(),$sql);			
+		
+			while($tupla=pg_fetch_assoc($resultado)) {
+				
+				$Diaria_Id = $tupla['diaria_id'];				
+				$DiariaComprovada = $tupla['diaria_comprovada'];				
+				
+				$Date=date("Y-m-d");
+				$Time=date("H:i:s");
+				$sqlAltera = "UPDATE diaria.diaria SET diaria_st = 7 WHERE diaria_id = " .$Diaria_Id;
+				//echo $sqlAltera."<br>";
+				pg_query(abreConexao(),$sqlAltera);
+
+				$sqlConsulta = "SELECT funcionario_id FROM dados_unico.funcionario WHERE pessoa_id = " .$_SESSION['UsuarioCodigo'];
+				$rsConsulta = pg_query(abreConexao(),$sqlConsulta);
+                $linha=pg_fetch_assoc($rsConsulta);
+				$sqlInsere = "INSERT INTO diaria.diaria_arquivada (diaria_id, diaria_arquivada_func, diaria_arquivada_dt, diaria_arquivada_hr) VALUES (" .$Diaria_Id. ", " .$linha['funcionario_id']. ",'" .$Date. "', '" .$Time. "')";
+
+				//echo $sqlInsere."<br>";
+				pg_query(abreConexao(),$sqlInsere);
+			}
+			echo "<script>alert(\"Diária Arquivada com Sucesso.!!!\");</script>";			                         
+			echo "<script>window.location = 'ArquivamentoInicio.php ';</script>";
+		}
+?>

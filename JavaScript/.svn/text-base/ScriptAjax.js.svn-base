@@ -1,0 +1,490 @@
+var xmlHttp,xmlHttp1, layer, filter
+
+// Alterado por Rodolfo em 15/10/2008
+//fun��o em ajax que vai buscar as informa��es das di�rias bloqueadas .
+//Lembrando que deve criar um novo objeto .. erro na chamado com objetos sobrepostos..
+// **********************************************************************************************
+function VerificabloqueiaDiaria()
+ {
+    xmlHttp1=GetXmlHttpObject()
+    xmlHttp1.open("post", "IncludeLocal/Inc_Regra_BloqueioAjax.php", true);
+    xmlHttp1.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xmlHttp1.onreadystatechange=function()
+    {
+        if (xmlHttp1.readyState==4)
+        {// abaixo o texto gerado no arquivo executa.php e colocado no div
+            document.getElementById("divBloqueio").innerHTML = xmlHttp1.responseText;
+        }
+    }
+    xmlHttp1.send("beneficiario=" + document.Form.cmbBeneficiario.value);
+}
+// **********************************************************************************************
+
+function AdicionaRoteiro(str1,str2,layer, dataPartida)
+{
+    xmlHttp=GetXmlHttpObject()
+
+    if (document.Form.cmbRoteiroOrigemMunicipio.value == document.Form.cmbRoteiroDestinoMunicipio.value)
+    {
+        alert("ORIGEM e DESTINO s\u00E3o iguais.");
+        document.Form.cmbRoteiroDestinoMunicipio.focus();
+        return false;
+    }
+
+    var url= "Ajax/" + layer +".php"
+    url=url+"?origem="+str1+"&destino="+str2+"&dataPartida="+dataPartida;
+
+    switch(layer){
+        case "AjaxRoteiroAdicionar":
+            xmlHttp.onreadystatechange = stateAddRoteiro
+        break;
+    }
+
+    xmlHttp.open("GET",url,true)
+    xmlHttp.send(null)
+}
+
+function MandaID(str,layer,filter)
+{
+    xmlHttp=GetXmlHttpObject()
+
+    if (xmlHttp==null)
+    {
+        alert ("Este browser n\u00E3o suporta HTTP Request.");
+        return
+    }
+
+    var url= "Ajax/" + layer +".php"
+    url=url+"?"+filter+"="+str
+    switch(layer)
+    {
+        case "AjaxProjeto":
+                xmlHttp.onreadystatechange = stateChangedProjeto
+        break;
+        case "AjaxAcao":
+                xmlHttp.onreadystatechange = stateChangedAcao
+        break;
+        case "AjaxFonte":
+                xmlHttp.onreadystatechange = stateChangedFonte
+        break;
+        case "AjaxTerritorio":
+                xmlHttp.onreadystatechange = stateChangedTerritorio
+        break;
+        case "AjaxRoteiroOrigem":
+                xmlHttp.onreadystatechange = stateChangedRoteiroOrigem
+        break;
+        case "AjaxRoteiroDestino":
+                xmlHttp.onreadystatechange = stateChangedRoteiroDestino
+        break;
+        case "AjaxSubMotivo":
+                xmlHttp.onreadystatechange = stateChangedSubMotivo
+        break;
+        case "AjaxTipoParticipante":
+                xmlHttp.onreadystatechange = stateChangedTipoParticipante
+        break;
+    }
+
+    xmlHttp.open("GET",url,true)
+    xmlHttp.send(null)
+
+}
+function MandaValorRef(str,str2,layer,filter,filter2)
+{
+    xmlHttp=GetXmlHttpObject()
+
+    if (xmlHttp==null)
+    {
+            alert ("Este browser n\u00E3o suporta HTTP Request")
+            return
+    }
+
+    var url= "Ajax/" + layer +".php"
+    url=url+"?"+filter+"="+str+"&"+filter2+"="+str2
+    //alert(url);
+    switch(layer){
+            case "AjaxValorRef":
+                    xmlHttp.onreadystatechange = stateChangedValorRef
+            break;
+    }
+
+    xmlHttp.open("GET",url,true)
+    xmlHttp.send(null)
+
+}
+function RefazResumo(datasaida,datachegada)
+{
+    xmlHttp=GetXmlHttpObject()
+
+    var url
+    url = "Ajax/AjaxRefazResumo.php?datasaida="+datasaida+"&datachegada="+datachegada;
+
+    xmlHttp.onreadystatechange = stateRefazResumo
+
+    xmlHttp.open("GET",url,true)
+    xmlHttp.send(null)
+
+}
+
+function Calcular(datasaida, datachegada, horasaida, horachegada, beneficiario, desconto, dataatual)
+{
+    xmlHttp=GetXmlHttpObject()
+
+    var valor, url
+
+    document.Form.txtReCalculo.value = 1;
+    
+    if (document.Form.chkDesconto.checked)
+    {
+        desconto = "on";
+    }
+    else
+    {
+        desconto = "";
+    }
+
+    if (beneficiario == "0")
+    {
+        alert("Escolha o Benefici\u00E1rio.");
+        document.Form.cmbBeneficiario.focus();
+        document.Form.cmbBeneficiario.style.backgroundColor='#B9DCFF';
+        return false;
+    }
+
+    document.Form.Calculo.value = 1;
+
+    formulario = document.getElementById("Form");
+
+    ExisteCampo = 0;
+
+    for (i=0; i<formulario.elements.length; i++)     //faz um loop por todos os campos do formul�rio
+    {
+        if (formulario.elements.item(i).nodeName == 'INPUT')    //verifica se o tipo do campo � INPUT
+        {
+            if (formulario.elements.item(i).name == 'txtPercentual')    //verifica se o nome do campo � bla bla bla
+            {
+                ExisteCampo = 1;
+                percentual = document.Form.txtPercentual.value;
+            }
+        }
+    }
+
+    if (ExisteCampo == 0)
+    {
+        alert("Escolha o Roteiro.");
+        return false;//2010 [ 07 ] 24
+                     //0123 4 56 7 89
+    }
+
+    data3 = dataatual.substring(8,10)  + "/" + dataatual.substring(5,7)   + "/" + dataatual.substring(0,4);
+
+    data1 = datasaida.substring(0,2)   + "/" + datasaida.substring(3,5)   + "/" + datasaida.substring(6,10);
+
+    data2 = datachegada.substring(0,2) + "/" + datachegada.substring(3,5) + "/" + datachegada.substring(6,10);
+
+    data1 = parseInt(data1.split("/")[2].toString()+data1.split("/")[1].toString()+data1.split("/")[0].toString());
+    data2 = parseInt(data2.split("/")[2].toString()+data2.split("/")[1].toString()+data2.split("/")[0].toString());
+    data3 = parseInt(data3.split("/")[2].toString()+data3.split("/")[1].toString()+data3.split("/")[0].toString());
+
+    if (data2<data1)
+    {
+        alert("Data de Chegada menor que a Data de Partida");
+        document.Form.txtDataChegada.style.backgroundColor='#B9DCFF';
+        document.Form.txtDataPartida.style.backgroundColor='#B9DCFF';
+        return false;
+    }
+
+    if (datasaida == "")
+    {
+        alert("Escolha a Data de Partida.");
+        document.Form.txtDataPartida.focus();
+        document.Form.txtDataPartida.style.backgroundColor='#B9DCFF';
+        return false;
+    }
+
+    if (data1<data3)
+    {
+        alert("Data da Partida menor que a Data Atual");
+        document.Form.txtDataChegada.style.backgroundColor='#B9DCFF';
+        document.Form.txtDataPartida.style.backgroundColor='#B9DCFF';
+        return false;
+    }
+
+    if (horasaida == "")
+    {
+        alert("Digite a Hora de Partida.");
+        document.Form.txtHoraPartida.focus();
+        document.Form.txtHoraPartida.style.backgroundColor='#B9DCFF';
+        return false;
+    }
+    else
+    {
+        hrs = (document.Form.txtHoraPartida.value.substring(0,2));
+        min = (document.Form.txtHoraPartida.value.substring(3,5));
+        // verifica hora
+        if ((hrs < 00 ) || (hrs > 23) || ( min < 00) ||( min > 59))
+        {
+            alert("Formato da Hora de Partida inexistente.");
+            document.Form.txtHoraPartida.focus();
+            document.Form.txtHoraPartida.style.backgroundColor='#B9DCFF';
+            return false;
+        }
+    }
+    if (datachegada == "")
+    {
+        alert("Escolha a Data de Chegada.");
+        document.Form.txtDataChegada.focus();
+        document.Form.txtDataChegada.style.backgroundColor='#B9DCFF';
+        return false;
+    }
+
+    if (horachegada == "")
+    {
+        alert("Digite a Hora de Chegada.");
+        document.Form.txtHoraChegada.focus();
+        document.Form.txtHoraChegada.style.backgroundColor='#B9DCFF';
+        return false;
+    }
+    else
+    {
+        hrs = (document.Form.txtHoraChegada.value.substring(0,2));
+        min = (document.Form.txtHoraChegada.value.substring(3,5));
+        // verifica hora
+        if ((hrs < 00 ) || (hrs > 23) || ( min < 00) ||( min > 59))
+        {
+            alert("Formato da Hora de Chegada inexistente.");
+            document.Form.txtHoraChegada.focus();
+            document.Form.txtHoraChegada.style.backgroundColor='#B9DCFF';
+            return false;
+        }
+    }
+    // O h�rario de Chegada n�o pode ser menor que o hor�rio de Partida quando tem a mesma data de chegada e partida.
+    if ((data2==data1) && (horasaida > horachegada) )
+    {
+        alert("O hor\u00E1rio de chegada menor que o hor\u00E1rio de partida.");
+        document.Form.txtHoraChegada.style.backgroundColor='#B9DCFF';
+        document.Form.txtHoraChegada.style.backgroundColor='#B9DCFF';
+        return false;
+    }
+
+    document.Form.txtNovaSaida.value = datasaida;
+    document.Form.txtNovaChegada.value = datachegada;
+    document.Form.txtAlterouCalculo.value = 1;
+
+    valor = document.Form.txtValorReferencia.value;
+
+    url = "Ajax/AjaxCalculoDiaria.php?datasaida="+datasaida+"&datachegada="+datachegada+"&horasaida="+horasaida+"&horachegada="+horachegada+"&beneficiario="+beneficiario+"&perc="+percentual+"&valor="+valor+"&desconto="+desconto;
+    
+    xmlHttp.onreadystatechange = stateCalcularDiaria
+
+    document.getElementById("QtdeDiariaAlterar").style.display = 'none';
+    document.getElementById("QtdeDiaria").style.display = '';
+
+    xmlHttp.open("GET",url,true)
+    xmlHttp.send(null)
+}
+
+function CalcularComprovacao(datasaida, datachegada, horasaida, horachegada, beneficiario, desconto, percentual, dataatual, valoranterior, complemento)
+{
+    xmlHttp=GetXmlHttpObject()
+
+    var valor, url
+
+    document.Form.txtReCalculo.value = 1;
+
+
+    if (document.Form.chkDesconto.checked)
+    {
+        desconto = "on";
+    }
+    else
+    {
+        desconto = "";
+    }
+
+    if (beneficiario == "0")
+    {
+        alert("Escolha o Benefici\u00E1rio.");
+        document.Form.cmbBeneficiario.focus();
+        document.Form.cmbBeneficiario.style.backgroundColor='#B9DCFF';
+        return false;
+    }
+
+    formulario = document.getElementById("Form");
+
+    for (i=0; i<formulario.elements.length; i++)     //faz um loop por todos os campos do formul�rio
+    {
+        if (formulario.elements.item(i).nodeName == 'INPUT')    //verifica se o tipo do campo � INPUT
+        {
+            if (formulario.elements.item(i).name == 'txtDiaria60')    //verifica se o nome do campo � bla bla bla
+            {
+                document.Form.txtExisteCampoComplemento.value = 1;
+            }
+        }
+    }
+
+    data3 	= dataatual.substring(0,2) + "/" + dataatual.substring(3,5) + "/" + dataatual.substring(6,10);
+    data3	= parseInt(data3.split("/")[2].toString()+data3.split("/")[1].toString()+data3.split("/")[0].toString());
+    data1 	= datasaida.substring(0,2) + "/" + datasaida.substring(3,5) + "/" + datasaida.substring(6,10);
+    data2 	= datachegada.substring(0,2) + "/" + datachegada.substring(3,5) + "/" + datachegada.substring(6,10);
+    data2	= parseInt(data2.split("/")[2].toString()+data2.split("/")[1].toString()+data2.split("/")[0].toString());
+    data1	= parseInt(data1.split("/")[2].toString()+data1.split("/")[1].toString()+data1.split("/")[0].toString());
+
+    if (data2<data1)
+    {
+        alert("Data de Chegada menor que a Data de Partida");
+        document.Form.txtDataChegada.style.backgroundColor='#B9DCFF';
+        document.Form.txtDataPartida.style.backgroundColor='#B9DCFF';
+        return false;
+    }
+
+    if (datasaida == "")
+    {
+        alert("Escolha a Data de Partida.");
+        document.Form.txtDataPartida.focus();
+        document.Form.txtDataPartida.style.backgroundColor='#B9DCFF';
+        return false;
+    }
+
+    if (horasaida == "")
+    {
+        alert("Digite a Hora de Partida.");
+        document.Form.txtHoraPartida.focus();
+        document.Form.txtHoraPartida.style.backgroundColor='#B9DCFF';
+        return false;
+    }
+
+    if (datachegada == "")
+    {
+        alert("Escolha a Data de Chegada.");
+        document.Form.txtDataChegada.focus();
+        document.Form.txtDataChegada.style.backgroundColor='#B9DCFF';
+        return false;
+    }
+
+    if (horachegada == "")
+    {
+        alert("Digite a Hora de Chegada.");
+        document.Form.txtHoraChegada.focus();
+        document.Form.txtHoraChegada.style.backgroundColor='#B9DCFF';
+        return false;
+    }
+
+    // O h�rario de Chegada n�o pode ser menor que o hor�rio de Partida quando tem a mesma data de chegada e partida.
+    if ((data2==data1) && (horasaida > horachegada) )
+    {
+        alert("O hor\u00E1rio de chegada menor que o hor\u00E1rio de partida.");
+        document.Form.txtHoraChegada.style.backgroundColor='#B9DCFF';
+        document.Form.txtHoraChegada.style.backgroundColor='#B9DCFF';
+        return false;
+    }
+
+    document.Form.txtNovaSaida.value = datasaida;
+    document.Form.txtNovaChegada.value = datachegada;
+    document.Form.txtAlterouCalculo.value = 1;
+
+    valor = document.Form.txtValorReferencia.value;
+
+    document.Form.Calculo.value = 1;
+
+    url = "Ajax/AjaxCalculoDiariaComprovacao.php?datasaida="+datasaida+"&datachegada="+datachegada+"&horasaida="+horasaida+"&horachegada="+horachegada+"&beneficiario="+beneficiario+"&perc="+percentual+"&valor="+valor+"&desconto="+desconto+"&ant="+valoranterior+"&complemento="+complemento;
+
+    xmlHttp.onreadystatechange = stateCalcularDiaria
+
+    document.getElementById("QtdeDiariaAlterar").style.display = 'none';
+    document.getElementById("QtdeDiaria").style.display = '';
+
+    if (complemento == 0)
+            document.Form.chkComplemento.checked = false;
+
+    xmlHttp.open("GET",url,true)
+    xmlHttp.send(null)
+
+    HabilitaComplemento();
+}
+
+function stateRefazResumo()
+{
+    if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete")
+        document.getElementById("Resumo").innerHTML=xmlHttp.responseText
+}
+
+function stateCalcularDiaria()
+{
+    if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete")
+        document.getElementById("QtdeDiaria").innerHTML=xmlHttp.responseText
+}
+
+function stateCalcularDiariaComprovacao()
+{
+    if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete")
+        document.getElementById("QtdeDiariaComprovacao").innerHTML=xmlHttp.responseText
+}
+
+function stateChangedSubMotivo()
+{
+    if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete")
+        document.getElementById("SubMotivo").innerHTML=xmlHttp.responseText
+}
+
+function stateChangedProjeto()
+{
+    if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete")
+        document.getElementById("Projeto").innerHTML=xmlHttp.responseText
+}
+
+function stateChangedAcao()
+{
+    if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete")
+        document.getElementById("Acao").innerHTML=xmlHttp.responseText
+}
+
+function stateChangedFonte()
+{
+    if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete")
+        document.getElementById("Fonte").innerHTML=xmlHttp.responseText
+}
+
+function stateChangedTerritorio()
+{
+    if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete")
+        document.getElementById("Territorio").innerHTML=xmlHttp.responseText
+}
+
+function stateChangedValorRef()
+{
+    if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete")
+        document.getElementById("ValorRef").innerHTML=xmlHttp.responseText;
+}
+
+function stateChangedRoteiroOrigem()
+{
+    if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete")
+        document.getElementById("RoteiroOrigem").innerHTML=xmlHttp.responseText
+}
+
+function stateChangedRoteiroDestino()
+{
+    if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete")
+        document.getElementById("RoteiroDestino").innerHTML=xmlHttp.responseText
+}
+
+function stateAddRoteiro()
+{
+    if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete")
+        document.getElementById("Roteiro").innerHTML=xmlHttp.responseText
+}
+
+function GetXmlHttpObject()
+{
+    var objXMLHttp=null
+
+    if (window.XMLHttpRequest)
+    {
+        objXMLHttp=new XMLHttpRequest()
+    }
+    else if (window.ActiveXObject)
+    {
+        objXMLHttp=new ActiveXObject("Microsoft.XMLHTTP")
+    }
+    return objXMLHttp
+}

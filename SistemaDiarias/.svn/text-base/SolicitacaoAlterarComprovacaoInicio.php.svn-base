@@ -1,0 +1,235 @@
+<?php
+include "../Include/Inc_Configuracao.php";
+include "Classe/ClasseDiariaAlterarComprovacao.php";
+include "../Include/conecta.php";
+?>
+<html>
+<meta http-equiv="content-type" content="text/html; UTF-8" />
+<style type="text/css">@import url("../css/estilo.css"); </style>
+<script language="javascript" src="../JavaScript/ScriptFuncao.js"></script>
+<script language="javascript" src="../JavaScript/ScriptMenu.js"></script>
+<script language="javascript">
+<!--
+
+	function Foco(frm)
+	{
+		frm.txtFiltro.focus();
+	}
+
+	function FiltrarForm(frm)
+	{
+
+		for(cont=0; cont < frm.elements.length; cont++)
+			frm.elements[cont].style.backgroundColor = '';
+
+		if (frm.txtFiltro.value == "")
+		{
+			alert("Digite filtro para busca.");
+			frm.txtFiltro.focus();
+			frm.txtFiltro.style.backgroundColor='#B9DCFF';
+			return false;
+		}
+
+		frm.action = "SolicitacaoInicio.php?acao=buscar";
+		frm.submit();
+	}
+
+	function TodosForm(frm)
+	{
+		frm.txtFiltro.value = "";
+		frm.action = "SolicitacaoInicio.php";
+		frm.submit();
+	}
+
+	function ImprimirDiaria(codigo)
+	 {
+		window.open ("SolicitacaoComprovacaoImprimirPDF.php?cod="+codigo);
+	 }
+
+	function ImprimirDiariaGER(codigo)
+	 {
+		window.open ("SolicitacaoImprimirGER.php?cod="+codigo);
+	 }
+
+-->
+</script>
+
+<?
+	//abre a janela da diaria recem comprovada para impressa
+
+	If ($_GET['imprimir'] == 1)
+    {  $DiariaRecebida = $_GET['cod'];
+?>
+		<body onLoad="WM_initializeToolbar();ImprimirDiaria(<?=$DiariaRecebida?>);">
+<?
+    }
+    Else
+    {
+?>
+		<body onLoad="WM_initializeToolbar();">
+<?
+    }
+   
+?>
+
+<form name="Form" method="post">
+
+<table align="left" width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tr>
+       <td><?include "../Include/Inc_Topo.php"?></td>
+    </tr>
+    <tr>
+    	<td><?include "../Include/Inc_Aba.php"?></td>
+    </tr>
+    <tr>
+    	<td align="left">
+            <table width="990" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                    <td valign="top" align="left" width="190"><?include "../Include/Inc_Menu.php"?></td>
+                    <td valign="top" align="left">
+
+                        <?include "../Include/Inc_Titulo.php"?>
+
+                        <?include "../Include/Inc_Linha.php"?>
+
+                        <?include "../Include/Inc_Pesquisa_Sem_Filtro.php"?>
+
+                        <?include "../Include/Inc_Linha.php"?>
+
+                        <div id="Lista">
+
+                        <table cellpadding="0" cellspacing="0" width="800" border="0" class="GridPaginacao">
+                            
+                            <tr>
+                                <td>
+                                    <table border="0" cellpadding="1" cellspacing="1" width="798">
+                                        <tr height="20" class="GridPaginacaoRegistroCabecalho">
+                                            <td width="110" align="center" colspan="3">Ações</td>
+                                            <td width="80" align="center">SD</td>
+                                            <td width="218" align="left">&nbsp;Funcion&aacute;rio</td>
+                                            <td width="95" align="center">Partida</td>
+                                            <td width="95" align="center">Chegada</td>
+                                            <td width="100 "align="center">Processo</td>
+                                            <td width="100" align="center">Status</td>
+                                       </tr>
+									   
+										<?php                                           
+											
+                                            while($linha=pg_fetch_assoc($rsConsulta)){
+											   $Codigo		  = $linha['diaria_id'];
+                                               $Numero		  = $linha['diaria_numero'];
+											   $DataPartida   = $linha['diaria_dt_saida'];
+											   $HoraPartida   = $linha['diaria_hr_saida'];
+											   $DataChegada   = $linha['diaria_dt_chegada'];
+											   $HoraChegada   = $linha['diaria_hr_chegada'];
+											   $Processo	  = $linha['diaria_processo'];
+											   $Status		  = $linha['diaria_st'];
+											   $Nome		  = $linha['pessoa_nm'];
+											   $Beneficiario  = $linha['diaria_beneficiario'];												
+											   $CodigoRegistro = $Codigo;																					
+											   $diaria_agrupada = $linha['diaria_agrupada'];																			
+											   $superSD = $linha['super_sd'];																			
+												
+												if($diaria_agrupada == 1 ){
+													$Numero = $superSD; 
+												}												
+												
+												switch ($Status){
+													case 100:
+														$StatusNome = "Pré-Autorização"; // Modificado por Erinaldo em 18/02/2011
+													break;	
+													case 0:
+														$StatusNome = "Autorização";
+													break;
+													case 1:
+														$StatusNome = "Aprova&ccedil;&atilde;o";
+													break;
+													case 2:
+														$StatusNome = "Empenho";
+													break;
+													case 3:
+														$StatusNome = "Execu&ccedil;&atilde;o";
+													break;
+													case 4:
+														$StatusNome = "Comprova&ccedil;&atilde;o";
+													break;
+													case 5:
+														$StatusNome = "Aprova&ccedil;&atilde;o de Comprova&ccedil;&atilde;o";
+													break;
+													case 6:
+														$StatusNome = "Aguardando Arquivamento";
+													break;
+													case 7:
+														$StatusNome = "Arquivada";
+													break;
+												} 
+ 
+												if (($linha['diaria_devolvida'] == "1") or ($diaria_devolvida == "1")){
+														$StatusNome .= "(Devolvida)";
+														$sqlConsultaMotivoDevolucao = "SELECT diaria_devolucao_ds, motivo_ds FROM diaria.diaria_devolucao d, diaria.motivo m WHERE (d.motivo_id = m.motivo_id) AND diaria_id = " .$Codigo. " ORDER BY diaria_devolucao_id DESC LIMIT 1";
+														$rsConsultaMotivoDevolucao = pg_query(abreConexao(),$sqlConsultaMotivoDevolucao);
+														$linhaMotivo=pg_fetch_assoc($rsConsultaMotivoDevolucao);
+														if($linhaMotivo){
+															if ($linhaMotivo['diaria_devolucao_ds'] != ""){
+																$labelDevolucao = $linhaMotivo['diaria_devolucao_ds'];
+															}
+															$MotivoDevolucao = $linhaMotivo['motivo_ds'];
+														}
+												}
+
+												if ($linha['diaria_cancelada'] == 1){
+													$StatusNome .= "(Cancelada)";
+												}
+												
+												if (($linha['diaria_comprovada'] == 1) &&  ($Status =="3" )){
+													$StatusNome =  $StatusNome." (Comprovada) ".$comprovada ;
+												}
+												if ($diaria_excluida == 1){
+													$StatusNome = "(Exclu&iacute;­da)";
+												}
+												
+												/* Colocar o numero de alterações feita na comprovação(BD)  e aqui na tela também para serem visualizadas*/
+												
+												echo "<tr height='20' bgcolor='#f2f2f2' onMouseOver=javascript:this.style.backgroundColor='#cccccc' onMouseOut=javascript:this.style.backgroundColor='#f2f2f2'>";																																		
+												echo "<td align='center'><a href='SolicitacaoConsultar.php?acao=consultar&cod=" .$Codigo."&pagina=SolicitacaoAlterarComprovacao'><img src='../Icones/ico_consultar.png' border='0' alt='Consultar'></a></td>";
+												echo "<td align='center'><a href='SolicitacaoAlterarComprovacao.php?cod=".$CodigoRegistro."&acao=consultar'><img src='../Icones/ico_comprovar.png'  alt='Comprovar' border='0'></a></td>";
+												echo "<td align='center'><a href='javascript:ImprimirDiaria(" .$Codigo.");'><img src='../Icones/ico_imprimir.png' border='0' alt='Imprimir Comprova&ccedil;&atilde;o'></a></td>"	;
+												
+												echo "<td class='GridPaginacaoLink' align='center'>".$Numero."</td>";
+												echo "<td class='GridPaginacaoLink' align='left'>&nbsp;" .substr($Nome,0,30)."</td>";
+												echo "<td class='GridPaginacaoLink' align='center'>" .$DataPartida." " .$HoraPartida."</td>";
+												echo "<td class='GridPaginacaoLink' align='center'>" .$DataChegada." " .$HoraChegada."</td>";
+												echo "<td class='GridPaginacaoLink' align='center'>" .$Processo."</td>";
+												
+												// Inserir Código de pré-Autorização aqui - Alteração Feita por Erinaldo em 21/02/2011
+												$sql = "SELECT diaria_local_solicitacao,diaria_st FROM diaria.diaria WHERE diaria_numero = '$Numero'";
+												$consulta = executar_SQL($sql);
+												$tupla= retorna_linha($consulta);
+												$local_diaria = $tupla["diaria_local_solicitacao"];
+												$Status = $tupla["diaria_st"];
+												if(($Status == 100) && ($local_diaria == "Coordenadoria" ))
+												{
+													$StatusNome = "Pré-Autorização";
+													echo "<td class='GridPaginacaoLink' align='center'><font color='#000099'>".$StatusNome."</font></td>";
+												}else{
+													echo "<td class='GridPaginacaoLink' align='center'><font color='#000099'>".$StatusNome."</font></td>";
+												}												
+												echo "</tr>";												
+
+											}
+										?>
+                                     </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+	</tr>
+</table>
+
+</form>
+
+</body>
+</html>

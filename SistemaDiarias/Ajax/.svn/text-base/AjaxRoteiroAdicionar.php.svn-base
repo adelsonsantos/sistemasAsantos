@@ -1,0 +1,321 @@
+<?php
+include "../../Include/Inc_Configuracao.php";
+
+$PodeInserir = 1;
+
+//VERIFICA SE O MUNICÍPIO DESTINO É DA BAHIA
+$sqlConsultaUF = "SELECT estado_uf, municipio_cd
+                            FROM dados_unico.municipio
+                            WHERE municipio_cd = ".$_GET['destino'];
+$rsConsultaUF = pg_query(abreConexao(),$sqlConsultaUF);
+$linha=pg_fetch_assoc($rsConsultaUF);
+
+//VERIFICA SE O ESTADO E O MUNICÍPIO DESTINO É SALVADOR E ESTADO DIFERENTE DA BA
+If (($linha['estado_uf'] != "BA") || ($linha['municipio_cd'] == '38490'))
+{
+    //VERIFICA O PERCENTUAL DO MUNICÍPIO PARA CALCULO
+    $sqlConsultaCidade = "SELECT percentual_ds 
+                                FROM diaria.percentual_capital pc,
+                                     diaria.percentual p
+                                WHERE (pc.percentual_id = p.percentual_id)
+                                    AND municipio_cd = ".$_GET['destino'];
+    $rsConsultaCidade = pg_query(abreConexao(),$sqlConsultaCidade);
+    $linhaCidade=pg_fetch_assoc($rsConsultaCidade);
+
+    //SE A PESQUISA ROTORNAR ALGUMA LINHA
+    if($linhaCidade)
+    {
+        $Percentual = $linhaCidade['percentual_ds'];
+    }
+    else
+    {
+        $sql3 = "SELECT percentual_ds
+                        FROM diaria.percentual
+                        WHERE percentual_id = 2";
+        $rs3 = pg_query(abreConexao(),$sql3);
+        $linhars3=pg_fetch_assoc($rs3);
+        //RECEBE VALOR PADRÃO DE CALCULO. 0,6
+        $Percentual = $linhars3['percentual_ds'];
+    }
+}
+else
+{
+    //VERIFICA SE O ESTADO E O MUNICÍPIO ORIGEM É SALVADOR E ESTADO BA
+    $sqlConsultaUF = "SELECT estado_uf, municipio_cd
+                            FROM dados_unico.municipio
+                            WHERE municipio_cd = ".$_GET['origem'];
+    $rsConsultaUF = pg_query(abreConexao(),$sqlConsultaUF);
+    $linhaUF=pg_fetch_assoc($rsConsultaUF);
+
+    if (($linhaUF['estado_uf'] != "BA"))
+    {
+        //VERIFICA O PERCENTUAL DO MUNICÍPIO PARA CALCULO
+        $sqlConsultaCidade = "SELECT percentual_ds 
+                                    FROM diaria.percentual_capital pc,
+                                         diaria.percentual p
+                                    WHERE (pc.percentual_id = p.percentual_id)
+                                        AND municipio_cd = " .$_GET['origem'];
+        $rsConsultaCidade = pg_query(abreConexao(),$sqlConsultaCidade);
+        $linhaCidade=pg_fetch_assoc($rsConsultaCidade);
+
+        //SE A PESQUISA ROTORNAR ALGUMA LINHA
+        if($linhaCidade)
+        {
+            $Percentual = $linhaCidade['percentual_ds'];
+        }
+        else
+        {
+            $sql3 = "SELECT percentual_ds
+                            FROM diaria.percentual
+                            WHERE percentual_id = 2";
+            $rs3 = pg_query(abreConexao(),$sql3);
+            $linhars3=pg_fetch_assoc($rs3);
+            //RECEBE VALOR PADRÃO DE CALCULO. 0,6
+            $Percentual = $linhars3['percentual_ds'];
+        }
+    }// FIM DO IF(($linhaUF['estado_uf'] != "BA"))
+    else
+    {
+        //CASO O ESTADO SEJA A BAHIA (($linhaUF['estado_uf'] != "BA"))
+        //NESTE MOMENTO O AJAX NÃO DEIXA INSERIR SALVADOR NOVAMENTE NO ROTEIRO
+        If (
+            (($linhaUF['estado_uf'] == "BA") && ($linhaUF['municipio_cd'] == '38490')) &&
+            (
+             (($_SESSION['ViagemOrigem'][count($_SESSION['ViagemOrigem'])]) != ($_GET['origem']))&&
+             (($_SESSION['ViagemOrigem'][1]) == ($_GET['destino']))
+            )
+           )
+        {
+            $sqlConsultaSalvador = "SELECT percentual_ds
+                                            FROM diaria.percentual_capital pc,
+                                                 diaria.percentual p
+                                            WHERE (pc.percentual_id = p.percentual_id)
+                                                AND municipio_cd = ".$linhaUF['municipio_cd'];
+            $rsConsultaSalvador = pg_query(abreConexao(),$sqlConsultaSalvador);
+            $linharsConsultaSalvador=pg_fetch_assoc($rsConsultaSalvador);
+
+            $PodeInserir = 0;
+            $Percentual = $linharsConsultaSalvador['percentual_ds'];
+        }
+        else
+        {
+            if (//NÃO DEIXA INSERIR A MESMA LINHA NOVAMENTE EX: SSA X ITABERABA; SSA X ITABERABA;
+                ($_SESSION['ViagemOrigem'][count($_SESSION['ViagemOrigem'])]) == ($_GET['origem']) &&
+                ($_SESSION['ViagemDestino'][count($_SESSION['ViagemDestino'])]) == ($_GET['destino'])
+               )
+            {
+                $PodeInserir = 0;
+                $Percentual = '0,0';
+            }
+            elseIf (($_SESSION['ViagemOrigem'][count($_SESSION['ViagemOrigem'])]) == ($_GET['origem']))
+            {//NÃO DEIXA INSERIR QUANDO A ULTIMA CIDADE ORIGEM QUE FOI INSERIDA FOR IGUAL A CIDADE QUE ESTA SENDO INSERIDA.
+                $PodeInserir = 0;
+                $Percentual = '0,0';
+            }
+            else
+            {
+                //NÃO ALTERA O CALCULO, SÓ PARA CIDADES DA BAHIA
+                $Percentual = 0;
+            }
+        }
+    }//FIM DO ELSE (($linhaUF['estado_uf'] != "BA"))
+}
+
+//******************************************************************************
+
+if ( strval($_SESSION['ValorPercentual']) == strval($Percentual))
+{
+    $PodeInserir = 1;
+}
+else
+{
+    If (
+        (($_SESSION['ViagemOrigem'][1]) == ($_GET['destino']))&&
+         (($_SESSION['ViagemOrigem'][count($_SESSION['ViagemOrigem'])]) != ($_GET['origem']) &&
+          ($_SESSION['ViagemDestino'][count($_SESSION['ViagemDestino'])]) != ($_GET['destino'])
+         )
+        )
+    {
+        $PodeInserir = 1;
+    }
+    Else
+    {
+        $PodeInserir = 0;
+    }
+}
+
+if ((strval($_SESSION['ValorPercentual'])== "") || ($PodeInserir == 1))
+{
+    if ($_SESSION['ContadorDestino'] == "")
+    {
+        $_SESSION['ContadorDestino'] = 1;
+    }
+    else
+    {
+        $_SESSION['ContadorDestino'] = $_SESSION['ContadorDestino'] + 1;
+    }
+
+    $RelacaoViagemOrigem[$_SESSION['ContadorDestino']] = $_GET['origem'];
+    $RelacaoViagemDestino[$_SESSION['ContadorDestino']] = $_GET['destino'];
+    $_SESSION['Origem'] = $RelacaoViagemOrigem[1];
+}
+
+echo "<table cellpadding=0 cellspacing=1 border=0 width=798>";
+echo "<tr height=21 class=dataLabel>";
+echo "<td width=50%>&nbsp;<b>De</b></td>";
+echo "<td width=50%>&nbsp;<b>Para</b></td>";
+echo "</tr>";
+
+For ($i = 1; $i<=$_SESSION['ContadorDestino'];$i++)
+{
+    if ($RelacaoViagemOrigem[$i] == "") 
+    {
+        $RelacaoViagemOrigem[$i] = $_SESSION['ViagemOrigem'][$i];
+    }
+    if ($RelacaoViagemDestino[$i] == "") 
+    {
+        $RelacaoViagemDestino[$i] = $_SESSION['ViagemDestino'][$i];
+    }
+
+    $sql1     = "SELECT *
+                        FROM dados_unico.municipio
+                        WHERE municipio_cd = ".$RelacaoViagemOrigem[$i];
+    $rs1      = pg_query(abreConexao(),$sql1);
+    $linhars1 = pg_fetch_assoc($rs1);
+
+    $sql2     = "SELECT *
+                        FROM dados_unico.municipio
+                        WHERE municipio_cd = ".$RelacaoViagemDestino[$i];
+    $rs2      = pg_query(abreConexao(),$sql2);
+    $linhars2 = pg_fetch_assoc($rs2);
+
+    echo "<tr height=21 class=dataField>";
+    echo "<td>&nbsp;" .$linhars1['estado_uf']. " - " .$linhars1['municipio_ds']."</td>";
+    echo "<td>&nbsp;" .$linhars2['estado_uf']. " - " .$linhars2['municipio_ds']."</td>";
+    echo "</tr>";
+}
+
+if ((strval($_SESSION['ValorPercentual']) == "" ) || ($PodeInserir == 1))
+{
+    $_SESSION['ViagemOrigem'] = $RelacaoViagemOrigem;
+    $_SESSION['ViagemDestino'] = $RelacaoViagemDestino;
+
+    //verifica se o municipio eh da bahia
+    $sqlConsultaUF = "SELECT estado_uf, municipio_cd 
+                            FROM dados_unico.municipio
+                            WHERE municipio_cd = " .$_SESSION['ViagemDestino'][1];
+    $rsConsultaUF = pg_query(abreConexao(),$sqlConsultaUF);
+
+    $linhaUF=pg_fetch_assoc($rsConsultaUF);
+
+    if (($linhaUF['estado_uf'] != "BA") or ($linhaUF['municipio_cd'] == '38490'))
+    {
+    //verifica o percentual do municipio para calculo
+        $sqlConsultaCidade = "SELECT percentual_ds 
+                                    FROM diaria.percentual_capital pc,
+                                        diaria.percentual p
+                                    WHERE (pc.percentual_id = p.percentual_id)
+                                        AND municipio_cd = " .$_SESSION['ViagemDestino'][1];
+        $rsConsultaCidade = pg_query(abreConexao(),$sqlConsultaCidade);
+
+        $linhaCidade=pg_fetch_assoc($rsConsultaCidade);
+
+        if($linhaCidade)
+        {
+            //QUANDO A DIARIA FOR SOLICITADA ANTES DA MUDANÇA E A COMPROVAÇÃO OCORRER
+            //DEPOIS NÃO CALCULA A DIÁRIA COM 80% PARA SALVADOR E SIM O 0% COMO ANTES.
+            if ($_GET['dataPartida'])// <= '11/08/2011')
+            {
+                $dataPartida = explode ('/', $_GET['dataPartida']);
+                $dataBanco   = $dataPartida[2].'-'.$dataPartida[1].'-'.$dataPartida[0];
+
+                $sqlConsultaData    = "SELECT classe_valor_id FROM diaria.classe_valor
+                                            WHERE classe_valor_st = 1
+                                                AND ".$dataBanco." BETWEEN classe_valor_dt_vigencia_inicio
+                                                AND classe_valor_dt_vigencia_fim";
+                $rsConsultaData     = pg_query(abreConexao(), $sqlConsultaData);
+                $linhaConsultaData  = pg_fetch_assoc ($rsConsultaData);
+
+                if ($linhaConsultaData)
+                {
+                    $Percentual = 0;
+                }
+            }
+            else
+            {
+                $Percentual = $linhaCidade['percentual_ds'];
+            }
+        }
+        else
+        {
+            $sql3 = "SELECT percentual_ds 
+                            FROM diaria.percentual
+                            WHERE percentual_id = 2";
+            $rs3 = pg_query(abreConexao(),$sql3);
+            $linhars3=pg_fetch_assoc($rs3);
+            $Percentual = $linhars3['percentual_ds']; //recebe valor padrao de calculo
+        }
+    }
+    else
+    {
+        //'verifica se o municipio eh da bahia
+        $sqlConsultaUF = "SELECT estado_uf, municipio_cd 
+                                FROM dados_unico.municipio
+                                WHERE municipio_cd = " .$_GET['origem'];
+        $rsConsultaUF = pg_query(abreConexao(),$sqlConsultaUF);
+        $linhaUF=pg_fetch_assoc($rsConsultaUF);
+
+        if (($linhaUF['estado_uf'] != "BA"))
+        {  //verifica o percentual do municipio para calculo
+            $sqlConsultaCidade = "SELECT percentual_ds 
+                                        FROM diaria.percentual_capital pc,
+                                            diaria.percentual p
+                                        WHERE (pc.percentual_id = p.percentual_id)
+                                            AND municipio_cd = " .$_GET['origem'];
+            $rsConsultaCidade = pg_query(abreConexao(),$sqlConsultaCidade);
+            $linhaCidade=pg_fetch_assoc($rsConsultaCidade);
+
+            if($linhaCidade)
+            {
+                $Percentual = $linhaCidade['percentual_ds'];
+            }
+            else 
+            {
+                $sql3 = "SELECT percentual_ds
+                                FROM diaria.percentual
+                                WHERE percentual_id = 2";
+                $rs3 = pg_query(abreConexao(),$sql3);
+                $linhars3=pg_fetch_assoc($rs3);
+
+                $Percentual = $linhars3['percentual_ds']; //recebe valor padrao de calculo
+            }
+        }
+        else
+        {
+            $Percentual = 0;// 'nao altera o calculo, so para cidades da bahia
+        }
+    }
+    $_SESSION['ValorPercentual'] = $Percentual;
+}
+else
+{
+    echo "<tr height=21 class=dataField>";
+    echo "<td class='MensagemErro' colspan='2'><b>&nbsp;O roteiro escolhido n&atilde;o &eacute; compat&iacute;vel, entre em contato com o GESTOR do sistema!</b></td>";
+    echo "</tr>";
+
+    $Percentual = $_SESSION['ValorPercentual'];
+}
+
+if ( ($_SESSION['ViagemOrigem'][1]) != ($_SESSION['ViagemDestino'][count($_SESSION['ViagemDestino'])]) )
+{
+    //MENSAGEM INFORMANDO QUE A PRIMEIRA ORIGEM É DIFERENTE DO ULTIMO DESTINO
+    echo "<tr height=21 class=dataField>";
+    echo "<td class='MensagemErro' colspan='2'><b>&nbsp;A cidade FINAL deve COINCIDIR com a cidade INICIAL!</b></td>";
+    echo "</tr>";
+}
+?>
+<tr>
+    <td colspan="2" class="dataLabel"><input type="hidden" name="txtPercentual" value="<?=$Percentual?>"></td>
+<?
+echo "</table>";
+?>

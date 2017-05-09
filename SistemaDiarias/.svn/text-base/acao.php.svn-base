@@ -1,0 +1,29 @@
+<?php
+include("../Include/conexao.class.php");
+
+function inverterData($data)
+{
+	return $data[6].$data[7].$data[8].$data[9]."-".$data[3].$data[4]."-".$data[0].$data[1];
+}
+
+$dataPartida = inverterData($_POST["dataPartida"]);
+$dataChegada = inverterData($_POST["dataChegada"]);
+
+//$conexao = new Conexao("10.105.12.28", "postgres", "ambiente", "bd_gestor");
+$conexao = new Conexao();
+$result = $conexao->query("SELECT feriado_id
+                           FROM dados_unico.feriado
+                           WHERE feriado_dt >= '$dataPartida'
+                           AND feriado_dt <= '$dataChegada'
+                           ORDER BY feriado_dt");
+
+if($result)
+{
+	if(pg_fetch_assoc($result))
+		echo "true";
+	else
+		echo "false";
+}
+else
+	echo "Query error!";
+?>

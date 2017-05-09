@@ -1,0 +1,202 @@
+<?php
+include "../Include/Inc_Configuracao.php";
+include "Classe/ClasseDiariaComprovacaoAprovacao.php";
+?>
+<html>
+
+<style type="text/css">@import url("../css/estilo.css"); </style>
+
+<script language="javascript" src="../JavaScript/ScriptFuncao.js"></script>
+<script language="javascript" src="../JavaScript/ScriptMenu.js"></script>
+
+<script language="javascript" charset="utf-8">
+<!--
+
+	function Foco(frm)
+	{
+		frm.txtFiltro.focus();
+	}
+
+	function FiltrarForm(frm)
+	{
+
+		for(cont=0; cont < frm.elements.length; cont++)
+			frm.elements[cont].style.backgroundColor = '';
+
+		if (frm.txtFiltro.value == "")
+		{
+			alert("Digite filtro para busca.");
+			frm.txtFiltro.focus();
+			frm.txtFiltro.style.backgroundColor='#B9DCFF';
+			return false;
+		}
+
+		frm.action = "ComprovacaoAprovacaoInicio.php?acao=buscar";
+		frm.submit();
+	}
+
+	function TodosForm(frm)
+	{
+		frm.txtFiltro.value = "";
+		frm.action = "ComprovacaoAprovacaoInicio.php";
+		frm.submit();
+	}
+
+	function Aprovar(codigo)
+	 {
+
+		var resposta = confirm('Tem certeza que deseja aprovar a comprovação?');
+
+		if (resposta == true)
+		{
+			document.Form.action="ComprovacaoAprovacaoInicio.php?cod="+codigo+"&acao=aprovar";
+			document.Form.submit();
+		}
+
+	 }
+
+
+-->
+</script>
+
+<body onLoad="WM_initializeToolbar();">
+
+<form name="Form" method="post">
+
+<table align="left" width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tr>
+       <td><?include "../Include/Inc_Topo.php"?></td>
+    </tr>
+    <tr>
+    	<td><?include "../Include/Inc_Aba.php"?></td>
+    </tr>
+    <tr>
+    	<td align="left">
+            <table width="990" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                    <td valign="top" align="left" width="190"><?include "../Include/Inc_Menu.php"?></td>
+                    <td valign="top" align="left">
+
+                        <?include "../Include/Inc_Titulo.php"?>
+
+                        <?include "../Include/Inc_Linha.php"?>
+
+                        <?include "../Include/Inc_Pesquisa_Sem_Filtro.php"?>
+
+                        <?include "../Include/Inc_Linha.php"?>
+
+                        <table cellpadding="0" cellspacing="0" width="800" border="0" class="GridPaginacao">
+                            <tr>
+                                <td>
+                                    <table border="0" cellpadding="1" cellspacing="1" width="798">
+                                        <tr height="20" class="GridPaginacaoRegistroCabecalho">
+                                            <td width="90" colspan="3"></td>
+                                            <td width="100" align="center">SD</td>
+                                            <td width="348" align="left">&nbsp;Nome</td>
+                                            <td width="130" align="center">Partida Efetiva</td>
+                                            <td width="130" align="center">Chegada Efetiva</td>
+	                                     </tr>
+									<?php
+										while($linha=pg_fetch_assoc($rsConsulta)){
+										
+											$Codigo			     = $linha['diaria_id'];
+											$Numero			     = $linha['diaria_numero'];
+											$DataPartida     = $linha['diaria_comprovacao_dt_saida'];
+											$HoraPartida     = $linha['diaria_comprovacao_hr_saida'];
+											$DataChegada     = $linha['diaria_comprovacao_dt_chegada'];
+											$HoraChegada     = $linha['diaria_comprovacao_hr_chegada'];
+											$Processo		     = $linha['diaria_processo'];
+											$Status			     = $linha['diaria_st'];
+											$Nome			       = $linha['pessoa_nm'];
+											$StatusDevolvida = $linha['diaria_devolvida'];
+
+											switch ($Status){
+												case 100:
+													$StatusNome = "Pré-Autorização"; // Modificado por Erinaldo em 18/02/2011
+												break;	
+												case 0:
+													$StatusNome = "Autorização";
+												break;
+												case 1:
+													$StatusNome = "Aprova&ccedil;&atilde;o";
+												break;
+												case 2:
+													$StatusNome = "Empenho";
+												break;
+												case 3:
+													$StatusNome = "Execu&ccedil;&atilde;o";
+												break;
+												case 4:
+													$StatusNome = "Comprova&ccedil;&atilde;o";
+												break;
+												case 5:
+													$StatusNome = "Aprova&ccedil;&atilde;o de Comprova&ccedil;&atilde;o";
+												break;
+												case 6:
+													$StatusNome = "Aguardando Arquivamento";
+												break;
+												case 7:
+													$StatusNome = "Arquivada";
+												break;
+											} 
+ 
+											if (($linha['diaria_devolvida'] == "1") or ($diaria_devolvida == "1")){
+												$StatusNome .= "<br/>(Devolvida)";
+
+												$sqlConsultaMotivoDevolucao = "SELECT diaria_devolucao_ds, motivo_ds FROM diaria.diaria_devolucao d, diaria.motivo m WHERE (d.motivo_id = m.motivo_id) AND diaria_id = " .$Codigo. " ORDER BY diaria_devolucao_id DESC LIMIT 1";
+												$rsConsultaMotivoDevolucao = pg_query(abreConexao(),$sqlConsultaMotivoDevolucao);
+												$linhaMotivo=pg_fetch_assoc($rsConsultaMotivoDevolucao);
+		
+												if($linhaMotivo){
+													if ($linhaMotivo['diaria_devolucao_ds'] != ""){
+														$labelDevolucao = $linhaMotivo['diaria_devolucao_ds'];
+													}
+													$MotivoDevolucao = $linhaMotivo['motivo_ds'];
+												}
+											}
+
+											if($linha['diaria_cancelada'] == 1){
+												$StatusNome .= "<br/>(Cancelada)";
+											}	
+
+											if(($linha['diaria_comprovada'] == 1) &&  ($Status =="3" )){
+												$StatusNome =  $StatusNome." (Comprovada) ".$comprovada ;
+											}
+	
+											if ($diaria_excluida == 1){
+												$StatusNome = "(Exclu&iacute;­da)";
+											}
+
+											echo "<tr height='20' bgcolor='#f2f2f2' class='GridPaginacaoLink' onMouseOver=javascript:this.style.backgroundColor='#cccccc' onMouseOut=javascript:this.style.backgroundColor='#f2f2f2'>";
+											echo "  <td align='center'><a href='ComprovacaoConsultar.php?acao=consultar&cod=".$Codigo."&pagina=ComprovacaoAprovacao'><img src='../Icones/ico_consultar.png' border='0' alt='Consultar'></a></td>"	;
+											echo "  <td align='center'><a href='ComprovacaoDevolver.php?cod=".$Codigo."&pagina=ComprovacaoAprovacao'><img src='../Icones/ico_devolver.png' border='0' alt='Devolver'></a></td>";
+											echo "<td align='center'><a href='javascript:Aprovar(".$Codigo.")'><img src='../Icones/ico_aceitar.png' border='0' alt='Aprovar'></a></td>";
+
+											echo "  <td align='center'>".$Numero."</td>";
+											echo "  <td>&nbsp;".$Nome."</a></td>";
+											echo "  <td align='center'>".$DataPartida." &agrave;s ".$HoraPartida."</td>";
+											echo "  <td align='center'>".$DataChegada." &agrave;s ".$HoraChegada."</td>";
+											echo "</tr>";
+
+ 											if (($StatusDevolvida== "1")&&  ($Status == 8)){
+												echo "<tr height='20' bgcolor='#f2f2f2'>";
+												echo "  <td class='GridPaginacaoLink'><img src='../icones/ico_aviso.gif' alt='Alerta' border='0'></td>";
+												echo "  <td class='GridPaginacaoLink' colspan='7'>&nbsp;&nbsp;&nbsp;<font color='#ff0000'>&nbsp;".$MotivoDevolucao.": ".$labelDevolucao."</font></td>";
+												echo "  <td>";
+												echo "</td>";
+											}
+										}
+									?>
+                              </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+	</tr>
+</table>
+</form>
+</body>
+</html>

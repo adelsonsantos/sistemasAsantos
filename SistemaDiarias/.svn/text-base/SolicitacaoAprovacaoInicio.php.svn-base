@@ -1,0 +1,208 @@
+<?php
+include "../Include/Inc_Configuracao.php";
+include "Classe/ClasseDiariaAprovacao.php";
+?>
+<html>
+
+<style type="text/css">@import url("../css/estilo.css"); </style>
+
+<script language="javascript" src="../JavaScript/ScriptFuncao.js"></script>
+<script language="javascript" src="../JavaScript/ScriptMenu.js"></script>
+
+<script language="javascript" charset="utf-8">
+<!--
+
+	function Foco(frm)
+	{
+		frm.txtFiltro.focus();
+	}
+
+	function FiltrarForm(frm)
+	{
+
+		for(cont=0; cont < frm.elements.length; cont++)
+			frm.elements[cont].style.backgroundColor = '';
+
+		if (frm.txtFiltro.value == "")
+		{
+			alert("Digite filtro para busca.");
+			frm.txtFiltro.focus();
+			frm.txtFiltro.style.backgroundColor='#B9DCFF';
+			return false;
+		}
+
+		frm.action = "SolicitacaoAprovacaoInicio.php?acao=buscar";
+		frm.submit();
+	}
+
+	function TodosForm(frm)
+	{
+		frm.txtFiltro.value = "";
+		frm.action = "SolicitacaoAprovacaoInicio.php";
+		frm.submit();
+	}
+
+	function Aprovar(codigo)
+	 {
+
+		var resposta = confirm('Tem certeza que deseja aprovar a diária?');
+
+		if (resposta == true)
+		{
+			document.Form.action="SolicitacaoAprovacaoInicio.php?cod="+codigo+"&acao=aprovar";
+			document.Form.submit();
+		}
+
+	 }
+
+
+-->
+</script>
+
+<body onLoad="WM_initializeToolbar();">
+
+<form name="Form" method="post">
+
+<table align="left" width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tr>
+       <td><?include "../Include/Inc_Topo.php"?></td>
+    </tr>
+    <tr>
+    	<td><?include "../Include/Inc_Aba.php"?></td>
+    </tr>
+    <tr>
+    	<td align="left">
+            <table width="990" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                    <td valign="top" align="left" width="190"><?include "../Include/Inc_Menu.php"?></td>
+                    <td valign="top" align="left">
+
+                        <?include "../Include/Inc_Titulo.php"?>
+
+                        <?include "../Include/Inc_Linha.php"?>
+
+                        <?include "../Include/Inc_Pesquisa_Sem_Filtro.php"?>
+
+                        <?include "../Include/Inc_Linha.php"?>
+
+                        <table cellpadding="0" cellspacing="0" width="800" border="0">
+                            <tr>
+							<?
+								If ($Roteiro == 0)
+                                {
+							?>
+                                <td align="right" class="dataLinha"><a href="SolicitacaoAprovacaoInicio.php?roteiro=1"><font color="#000099">Visualizar com roteiro</font></a></td>
+                            <?
+                                }
+                                Else
+                                {
+							?>
+                                <td align="right" class="dataLinha"><a href="SolicitacaoAprovacaoInicio.php?roteiro=0"><font color="#000099">Visualizar sem roteiro</font></a></td>
+                            <?
+                                }
+							?>
+                            </tr>
+                        </table>
+
+                        <?include "../Include/Inc_Linha.php"?>
+
+                        <table cellpadding="0" cellspacing="0" width="800" border="0" class="GridPaginacao">
+                            <tr>
+                                <td>
+                                    <table border="0" cellpadding="1" cellspacing="1" width="798">
+                                        <tr height="20" class="GridPaginacaoRegistroCabecalho">
+                                            <td width="120" colspan="4"></td>
+                                            <td width="100" align="center">SD</td>
+                                            <td width="318" align="left">&nbsp;Nome</td>
+                                            <td width="130" align="center">Partida Prevista</td>
+                                            <td width="130" align="center">Chegada Prevista</td>
+	                                     </tr>
+<?
+                                        while($linharsConsulta=pg_fetch_assoc($rsConsulta))
+                                        {
+                                            $Codigo		    = $linharsConsulta['diaria_id'];
+                                            $Numero		    = $linharsConsulta['diaria_numero'];
+                                            $DataPartida    = $linharsConsulta['diaria_dt_saida'];
+                                            $HoraPartida	= $linharsConsulta['diaria_hr_saida'];
+                                            $DataChegada	= $linharsConsulta['diaria_dt_chegada'];
+                                            $HoraChegada	= $linharsConsulta['diaria_hr_chegada'];
+                                            $Status		    = $linharsConsulta['diaria_st'];
+                                            $Nome		    = $linharsConsulta['pessoa_nm'];											
+
+                                            echo "<tr height='20' bgcolor='#f2f2f2' class='GridPaginacaoLink' onMouseOver=javascript:this.style.backgroundColor='#cccccc' onMouseOut=javascript:this.style.backgroundColor='#f2f2f2'>";
+                                            echo "<td align='center'><a href='SolicitacaoConsultar.php?acao=consultar&cod=".$Codigo."&pagina=SolicitacaoAprovacao'><img src='../Icones/ico_consultar.png' border='0' alt='Consultar'></a></td>";
+
+                                            If (($linharsConsulta['diaria_solicitante'] == $_SESSION['UsuarioCodigo']) || ($linharsConsulta['diaria_beneficiario'] == $_SESSION['UsuarioCodigo']))
+                                            {
+                                                echo "<td align='center'><a href='SolicitacaoCadastrar.php?cod=".$Codigo."&acao=consultar'><img src='../icones/ico_alterar.png' alt='Editar' border='0'></a></td>";
+                                            }
+                                            Else
+                                            {    echo "<td align='center'><img src='../icones/ico_alterar_off.png' alt='Editar' border='0'></td>";
+
+                                            }
+
+                                            echo "<td align='center'><a href='SolicitacaoDevolver.php?cod=" .$Codigo."&pagina=SolicitacaoAprovacao'><img src='../Icones/ico_devolver.png' border='0' alt='Devolver'></a></td>";
+                                            echo "<td align='center'><a href='SolicitacaoConsultar.php?acao=consultar&funcao=aprovar&cod=" .$Codigo."&pagina=SolicitacaoAprovacao'><img src='../Icones/ico_aceitar.png' border='0' alt='Aprovar'></a></td>";
+                                            echo "<td align='center'>".$Numero."</td>";
+                                            echo "<td>&nbsp;" .$Nome."</a></td>";
+                                            echo "<td align='center'>" .$DataPartida. " &agrave;s " .$HoraPartida. "</td>";
+                                            echo "<td align='center'>" .$DataChegada. " &agrave;s " .$HoraChegada. "</td>";
+                                            echo "</tr>";
+
+                                            If ($Roteiro == 1)
+                                            {
+
+                                                echo "<tr>";
+                                                echo "<td colspan=8 class=dataField align=center><b>Roteiro</b></td>";
+                                                echo "</tr>";
+                                                echo "<tr>";
+                                                echo "<td colspan=8>";
+                                                echo "<table width='100%' border=0 cellpadding=0>";
+                                                echo "<tr height=21 class=dataField>";
+                                                echo "<td width='50%'>&nbsp;Origem</td>";
+                                                echo "<td width='50%'>&nbsp;Destino</td>";
+                                                echo "</tr>";
+
+
+                                                $sqlRoteiro = "SELECT roteiro_origem, roteiro_destino FROM diaria.roteiro WHERE diaria_id = " .$Codigo;
+                                                $rsRoteiro = pg_query(abreConexao(),$sqlRoteiro);
+                                                while($linharsRoteiro=pg_fetch_assoc($rsRoteiro))
+                                                {
+                                                    $sqlRoteiroOrigem = "SELECT * FROM dados_unico.municipio WHERE municipio_cd = " .$linharsRoteiro['roteiro_origem'];
+                                                    $rsRoteiroOrigem = pg_query(abreConexao(),$sqlRoteiroOrigem);
+                                                    $linharsRoteiroOrigem=pg_fetch_assoc($rsRoteiroOrigem);
+
+                                                    $sqlRoteiroDestino = "SELECT * FROM dados_unico.municipio WHERE municipio_cd = " .$linharsRoteiro['roteiro_destino'];
+                                                    $rsRoteiroDestino = pg_query(abreConexao(),$sqlRoteiroOrigem);
+
+                                                    $linharsRoteiroDestino=pg_fetch_assoc($rsRoteiroDestino);
+
+                                                    echo "<tr class='dataField' height='21'>";
+                                                    echo "<td>&nbsp;" .$linharsRoteiroOrigem['estado_uf']." - " .$linharsRoteiroOrigem['municipio_ds']."</td>";
+                                                    echo "<td>&nbsp;" .$linharsRoteiroDestino['estado_uf']." - " .$linharsRoteiroDestino['municipio_ds']."</td>";
+                                                    echo "</tr>";
+
+                                                }
+
+
+												echo "</table></td></tr>";
+                                            }
+
+                                         }
+?>
+                                     </table>
+									  <input type="hidden" name="txtNumeroDiaria" value="<?=$linharsConsulta['diaria_numero'];?>">
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+	</tr>
+</table>
+
+</form>
+
+</body>
+</html>

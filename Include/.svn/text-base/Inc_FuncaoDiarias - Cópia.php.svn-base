@@ -1,0 +1,354 @@
+<?php
+/*
+Consulta os motivos das solicitacoes de diarias,
+por isso passa o parametro tipo (1-cancelamento, 2-devolucao, 3-solicitacao)
+ *
+
+ *
+ *
+ */
+function ComboMotivoDiaria($cod,$tipo,$javascript)
+{  echo "<select name=cmbMotivoDiaria style=width:310px ".$javascript.">";
+   $sql = "SELECT * FROM diaria.motivo WHERE (motivo_tipo_id = '".$tipo."'". ") AND (motivo_st = 0) AND (motivo_id <> 0) ORDER BY UPPER(motivo_ds)";
+   $rs=pg_query(abreConexao(),$sql);
+   echo	 "<option value=0>[-------------------------------------- Selecione -------------------------------------]</option>";
+   while($linha=pg_fetch_assoc($rs))
+   {  if ((int)$cod==(int)($linha['motivo_id']))
+      {  echo "<option value=" .$linha['motivo_id']." selected>".$linha['motivo_ds']."</option>";
+      }
+      else
+	  {  echo "<option value=".$linha['motivo_id'].">" .$linha['motivo_ds']. "</option>";
+      }
+   }
+   echo "</select>";
+}
+ 
+function ComboMotivoDiariaCadastro($cod,$javascript)
+{ echo "<select name=cmbMotivoDiaria style=width:310px " .$javascript.">";
+  $sql = "SELECT * FROM diaria.motivo WHERE (motivo_st = 0) AND (motivo_id <> 0) ORDER BY UPPER(motivo_ds)";
+  $rs=pg_query(abreConexao(),$sql);
+  echo "<option value=0>[-------------------------------------- Selecione -------------------------------------]</option>";
+  while($linha=pg_fetch_assoc($rs))
+  {	 if ((int)$cod==(int)($linha['motivo_id']))
+     {   echo "<option value=" .$linha['motivo_id']. " selected>" .$linha['motivo_ds']. "</option>";
+     }
+     else
+     {  echo "<option value=".$linha['motivo_id'].">" .$linha['motivo_ds']. "</option>";
+     }
+  }
+  echo "</select>";
+}
+/*
+
+Consulta os submotivos das solicitacoes de diarias,
+por isso passa o parametro motivo
+ *
+ * 
+ */
+ 
+function ComboSubMotivoDiaria($codigoEscolhido)
+{  echo "<select name=cmbSubMotivoDiaria style=width:310px>";
+   $sql = "SELECT * FROM diaria.sub_motivo WHERE (sub_motivo_st = 0) AND (sub_motivo_id <> 0) ORDER BY UPPER(sub_motivo_ds)";
+   $rs=pg_query(abreConexao(),$sql);
+   echo "<option value=0>[-------------------------------------- Selecione -------------------------------------]</option>";
+   while($linha=pg_fetch_assoc($rs))
+   {  if ((int)$codigoEscolhido==(int)($linha['sub_motivo_id']))
+      {   echo "<option value=" .$linha['sub_motivo_id']. " selected>" .$linha['sub_motivo_ds']. "</option>";
+      }
+      else
+      {  echo "<option value=".$linha['sub_motivo_id'].">" .$linha['sub_motivo_ds']. "</option>";
+      }
+   }
+   echo "</select>";
+}
+
+
+function ComboMotivoTipo($cod)
+{  echo "<select name=cmbMotivoTipo style=width:202px>";
+   $sql = "SELECT motivo_tipo_id, motivo_tipo_ds FROM diaria.motivo_tipo WHERE (motivo_tipo_st = 0) AND (motivo_tipo_id <> 0) ORDER BY UPPER(motivo_tipo_ds)";
+   $rs=pg_query(abreConexao(),$sql);
+   echo "<option value=0>[-------------------- Selecione -------------------]</option>";
+   while($linha=pg_fetch_assoc($rs))
+   {  if ((int)$cod==(int)($linha['motivo_tipo_id']))
+      {   echo "<option value=" .$linha['motivo_tipo_id']. " selected>" .$linha['motivo_tipo_ds']. "</option>";
+      }
+      else
+      {  echo "<option value=".$linha['motivo_tipo_id'].">" .$linha['motivo_tipo_ds']. "</option>";
+      }
+   }
+   echo "</select>";
+}
+/*
+**************************************************
+função para carregar tipos de acao
+**************************************************
+ *
+ */
+function f_ComboAcaoTipo($codigoEscolhido)
+{  switch ($codigoEscolhido)
+   {  case "D":
+           $AcaoD = "selected";
+           break;
+      case "NDC":
+           $AcaoNDC = "selected";
+           break;
+      case "NDNC":
+           $AcaoNDNC = "selected";
+           break;
+    }
+	echo "<select name=cmbAcaoTipo style=width:114px>"	;
+	echo "<option value=0>[----- Selecione -----]</option>";
+	echo "<option value=D ".$AcaoD. ">D</option>";
+	echo "<option value=NDC ".$AcaoNDC.">NDC</option>";
+	echo "<option value=NDNC ".$AcaoNDNC. ">NDNC</option>";
+	echo "</select>";
+}
+/*
+**************************************************
+projetos
+**************************************************
+ *
+ */
+function f_ComboProjeto($codigoEscolhido, $FuncaoJavaScript)
+{  echo "<select name=cmbProjeto style=width:785px " .$FuncaoJavaScript. ">";
+   $sql = "SELECT projeto_cd, projeto_ds FROM diaria.projeto WHERE projeto_st = 0 ORDER BY projeto_cd";
+   $rs=pg_query(abreConexao(),$sql);
+   echo "<option value=0>[--------------------------------------------------------------------------------------------------------------------- Selecione --------------------------------------------------------------------------------------------------------------------]</option>";
+   echo "<option value=0></option>";
+   while($linha=pg_fetch_assoc($rs))
+   {  if ($codigoEscolhido==($linha['projeto_cd']))
+      {   echo "<option value=".$linha['projeto_cd']. " selected>" .$linha['projeto_cd']. " ----> ".$linha['projeto_ds']."</option>";
+      }
+      else
+      {  echo "<option value=" .$linha['projeto_cd']. ">" .$linha['projeto_cd']. " ----> " .$linha['projeto_ds']. "</option>";
+      }
+   }
+   echo "</select>";
+}
+/*
+**************************************************
+acao
+**************************************************
+ *
+ */
+function f_ComboAcao($codigoEscolhido, $projeto, $FuncaoJavaScript)
+{  echo "<select name=cmbAcao style=width:785px " .$FuncaoJavaScript.">";
+   if($projeto=="")
+   {  $sql = "SELECT DISTINCT acao_cd, acao_ds FROM diaria.acao WHERE acao_st = 0 ORDER BY acao_cd";
+   }
+   else
+   {  $sql = "SELECT DISTINCT a.acao_cd, acao_ds FROM diaria.acao a, diaria.projeto_acao_territorio pat WHERE projeto_cd = '".$projeto."'". " AND (a.acao_cd = pat.acao_cd) AND acao_st = 0 ORDER BY acao_cd";
+   }
+   $rs=pg_query(abreConexao(),$sql);
+   echo "<option value=0>[--------------------------------------------------------------------------------------------------------------------- Selecione --------------------------------------------------------------------------------------------------------------------]</option>";
+   echo "<option value=0></option>";
+   while($linha=pg_fetch_assoc($rs))
+   {  if ($codigoEscolhido==($linha['acao_cd']))
+      {  echo "<option value=" .$linha['acao_cd']." selected>" .$linha['acao_cd']. " ----> " .$linha['acao_ds']. "</option>";
+      }
+	  else
+      {  echo "<option value=" .$linha['acao_cd'].">" .$linha['acao_cd']." ----> " .$linha['acao_ds']."</option>";
+      }
+   }
+   echo "</select>";
+}
+/*
+**************************************************
+territorio
+**************************************************
+ *
+ */
+function f_ComboTerritorio($acao, $codigoEscolhido, $FuncaoJavaScript, $Tamanho)
+{  echo "<select name=cmbTerritorio style=width:" .$Tamanho." ".$FuncaoJavaScript.">";
+   if ($acao == "")
+   {  $sql = "SELECT DISTINCT territorio_cd, territorio_ds FROM diaria.territorio WHERE territorio_st = 0 ORDER BY territorio_cd";
+   }
+   else
+   {  $sql = "SELECT DISTINCT t.territorio_cd, territorio_ds FROM diaria.territorio t, diaria.projeto_acao_territorio pat WHERE pat.acao_cd = '".$acao."' AND (t.territorio_cd = pat.territorio_cd) AND territorio_st = 0 ORDER BY t.territorio_cd";
+   }
+   $rs=pg_query(abreConexao(),$sql);
+   echo "<option value=0>[--------------------------------------------------------------------------------------------------------------------- Selecione --------------------------------------------------------------------------------------------------------------------]</option>";
+   echo "<option value=0></option>";
+   while($linha=pg_fetch_assoc($rs))
+   {  if ($codigoEscolhido==($linha['territorio_cd']))
+      {  echo "<option value=" .$linha['territorio_cd']." selected>" .$linha['territorio_cd']. " ----> " .$linha['territorio_ds']. "</option>";
+      }
+	  else
+      {  echo "<option value=" .$linha['territorio_cd'].">" .$linha['territorio_cd']." ----> " .$linha['territorio_ds']."</option>";
+      }
+   }
+   echo "</select>";
+}
+/*
+**************************************************
+meio de transporte
+**************************************************
+ *
+ */
+function f_ComboMeioTransporte($codigoEscolhido)
+{  echo "<select name=cmbMeioTransporte style=width:310px>";
+   $sql = "SELECT * FROM diaria.meio_transporte WHERE meio_transporte_st = 0 ORDER BY UPPER(meio_transporte_ds)";
+   $rs=pg_query(abreConexao(),$sql);
+   echo "<option value=0>[-------------------------------------- Selecione -------------------------------------]</option>";
+   echo "<option value=0></option>";
+   while($linha=pg_fetch_assoc($rs))
+   {  if ((int)$codigoEscolhido==(int)($linha['meio_transporte_id']))
+      {  echo "<option value=" .$linha['meio_transporte_id']." selected>" .$linha['meio_transporte_ds']. "</option>";
+      }
+	  else
+      {  echo "<option value=".$linha['meio_transporte_id']. ">" .$linha['meio_transporte_ds']."</option>";
+      }
+   }
+   echo "</select>";
+}
+/*
+**************************************************
+unidade de custo
+**************************************************
+ *
+ */
+
+function f_ComboAutorizador($codigoEscolhido,$Nome)
+{  echo "<select name=cmbAutorizador".$Nome." style=width:382px>";
+
+   $sql = "SELECT f.pessoa_id, pessoa_nm FROM dados_unico.pessoa p ,dados_unico.funcionario f, seguranca.usuario_tipo_usuario utu WHERE (p.pessoa_id = utu.pessoa_id) AND (p.pessoa_id = f.pessoa_id) AND pessoa_st = 0 AND (tipo_usuario_id = 5 or tipo_usuario_id = 6) ORDER BY UPPER(pessoa_nm)";
+   $rs=pg_query(abreConexao(),$sql);
+   echo "<option value=0>[--------------------------------------------------- Selecione ------------------------------------------------]</option>";
+   while($linha=pg_fetch_assoc($rs))
+   {  if($codigoEscolhido != "")
+      {  if ((int)$codigoEscolhido==(int)($linha['pessoa_id']))
+         {   echo "<option value=" .$linha['pessoa_id']." selected>" .$linha['pessoa_nm']. "</option>";
+         }
+         else
+         {  echo "<option value=" .$linha['pessoa_id']. ">" .$linha['pessoa_nm']. "</option>";
+         }
+      }
+      else
+      { echo "<option value=" .$linha['pessoa_id']. ">" .$linha['pessoa_nm']. "</option>";
+      }
+   }
+    echo "</select>";
+}
+
+/*
+**************************************************
+fonte
+**************************************************
+ *
+ */
+function f_ComboFonte($codigoEscolhido, $Tamanho)
+{  echo "<select name=cmbFonte style=width:".$Tamanho."px>";
+   $sql = "SELECT * FROM diaria.fonte WHERE fonte_st = 0 ORDER BY fonte_cd";
+   $rs=pg_query(abreConexao(),$sql);
+   echo "<option value=0>[--------------------------------------------------------------------------------------------------------------------- Selecione --------------------------------------------------------------------------------------------------------------------]</option>";
+   echo "<option value=0></option>";
+   while($linha=pg_fetch_assoc($rs))
+    {
+
+      if($codigoEscolhido == "")
+      {  
+          if (($linha['fonte_padrao'])===1)
+         {   echo "<option value='" .$linha['fonte_cd']. "' selected>" .$linha['fonte_cd']. " - " .$linha['fonte_ds']. "</option>";
+         
+
+         }
+         else
+         {  echo "<option value='"  .$linha['fonte_cd']. "'>" .$linha['fonte_cd']. " - "  .$linha['fonte_ds']. "</option>";
+         
+
+         }
+      }
+      else
+      { 
+        if ($codigoEscolhido===($linha['fonte_cd']))
+        {  echo "<option value='" .$linha['fonte_cd']. "' selected>" .$linha['fonte_cd']. " - " .$linha['fonte_ds']. "</option>";
+         
+
+        }
+        else
+        { echo "<option value='" .$linha['fonte_cd']. "'>" .$linha['fonte_cd']. " - " .$linha['fonte_ds']. "</option>";
+         
+
+        }
+      }
+   }
+    echo "</select>";
+}
+/*
+**************************************************
+municipio
+**************************************************
+ *
+ */
+function f_ComboMunicipioDiaria($codigoEscolhido)
+{  echo "<select name=cmbMunicipio style=width:785>";
+   $sql = "SELECT * FROM dados_unico.municipio WHERE estado_uf = '".$codigoEscolhido. "' ORDER BY UPPER(municipio_ds)";
+   $rs=pg_query(abreConexao(),$sql);
+   echo "<option value=0>[--------------------------------------------------------------------------------------------------------------------- Selecione --------------------------------------------------------------------------------------------------------------------]</option>";
+   echo "<option value=0></option>";
+    while($linha=pg_fetch_assoc($rs))
+	{	$codigo=$linha['municipio_cd'];
+		$descricao=$linha['municipio_ds'];
+        echo "<option value=".$codigo.">" .$descricao."</option>";
+    }
+	echo "</select>";
+}
+/*
+**************************************************
+Retorne o valor de referência do funcionário
+**************************************************
+ *
+ */
+function f_ValorReferencia($codigoEscolhido)
+{
+	$TemporarioValor = false;
+	$PermanenteValor = false;
+	$sql = "SELECT cargo_temporario, cargo_permanente FROM dados_unico.funcionario WHERE pessoa_id = '" .$codigoEscolhido."'";
+
+	$rs = pg_query(abreConexao(),$sql);
+	$linha = pg_fetch_assoc($rs);
+	if ($linha['cargo_temporario'] != 0)
+	{
+		$CargoTemporario = $linha['cargo_temporario'];
+		$sql1 = "SELECT classe_valor, classe_nm FROM dados_unico.cargo ca, diaria.classe cl WHERE (ca.classe_id = cl.classe_id) AND cargo_id = '" .$CargoTemporario."'";
+		$rs1 = pg_query(abreConexao(),$sql1);
+		$linha1 = pg_fetch_assoc($rs1);
+		$TemporarioValor = true;
+	}
+if($linha['cargo_permanente'] != 0)
+{
+	$CargoPermanente = $linha['cargo_permanente'];
+	$sql2 = "SELECT classe_valor, classe_nm FROM dados_unico.cargo ca, diaria.classe cl WHERE (ca.classe_id = cl.classe_id) AND cargo_id = '" .$CargoPermanente."'";
+	$rs2 = pg_query(abreConexao(),$sql2);
+	$linha2=pg_fetch_assoc($rs2);
+	$PermanenteValor = true;
+}
+
+if (($TemporarioValor) && ($PermanenteValor) )
+{
+	if ((int)($linha1['classe_valor']) > (int)($linha2['classe_valor']))
+	{
+		$ValorDiaria = $linha1['classe_valor'];
+		$ValorDiariaDescricao = $linha1['classe_nm'];
+	}
+	else
+	{
+		$ValorDiaria =$linha2['classe_valor'];
+		$ValorDiariaDescricao =$linha2['classe_nm'];
+	}
+}
+elseif($TemporarioValor)
+{
+	$ValorDiaria= $linha1['classe_valor'];
+	$ValorDiariaDescricao = $linha1['classe_nm'];
+}
+elseif($PermanenteValor)
+{
+	$ValorDiaria = $linha2['classe_valor'];
+	$ValorDiariaDescricao = $linha2['classe_nm'];
+}
+echo "<input type=hidden name=txtValorReferencia value=" .$ValorDiaria. " style=width:75px readonly>&nbsp;" .number_format($ValorDiaria, 2, ',', '.')." referente a Classe " .$ValorDiariaDescricao;
+
+}
+
+?>

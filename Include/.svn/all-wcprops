@@ -1,0 +1,203 @@
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/Gestor_Diarias/!svn/ver/16/trunk/Include
+END
+acoes.php
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/Gestor_Diarias/!svn/ver/2/trunk/Include/acoes.php
+END
+Inc_JavaScript.php
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/Gestor_Diarias/!svn/ver/2/trunk/Include/Inc_JavaScript.php
+END
+Inc_RegistroOpcoes.php
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/Gestor_Diarias/!svn/ver/2/trunk/Include/Inc_RegistroOpcoes.php
+END
+Inc_FuncaoDiarias.php
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/Gestor_Diarias/!svn/ver/2/trunk/Include/Inc_FuncaoDiarias.php
+END
+funcoes.php
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/Gestor_Diarias/!svn/ver/2/trunk/Include/funcoes.php
+END
+Inc_Topo.php
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/Gestor_Diarias/!svn/ver/2/trunk/Include/Inc_Topo.php
+END
+Inc_RegistroNova.php
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/Gestor_Diarias/!svn/ver/2/trunk/Include/Inc_RegistroNova.php
+END
+Inc_Paginacao.php
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/Gestor_Diarias/!svn/ver/2/trunk/Include/Inc_Paginacao.php
+END
+Inc_Aba.php
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/Gestor_Diarias/!svn/ver/2/trunk/Include/Inc_Aba.php
+END
+conecta.php
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/Gestor_Diarias/!svn/ver/22/trunk/Include/conecta.php
+END
+Inc_Pesquisa_Diarias.php
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/Gestor_Diarias/!svn/ver/2/trunk/Include/Inc_Pesquisa_Diarias.php
+END
+Inc_Pesquisa.php
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/Gestor_Diarias/!svn/ver/2/trunk/Include/Inc_Pesquisa.php
+END
+Inc_FuncaoCombo.php
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/Gestor_Diarias/!svn/ver/2/trunk/Include/Inc_FuncaoCombo.php
+END
+Inc_Linha.php
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/Gestor_Diarias/!svn/ver/2/trunk/Include/Inc_Linha.php
+END
+Inc_Pesquisa_Status.php
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Gestor_Diarias/!svn/ver/2/trunk/Include/Inc_Pesquisa_Status.php
+END
+Inc_Configuracao.php
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/Gestor_Diarias/!svn/ver/2/trunk/Include/Inc_Configuracao.php
+END
+Inc_Excluir_Multiplo.php
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/Gestor_Diarias/!svn/ver/2/trunk/Include/Inc_Excluir_Multiplo.php
+END
+Inc_Resumo_Login.php
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/Gestor_Diarias/!svn/ver/2/trunk/Include/Inc_Resumo_Login.php
+END
+Inc_Menu.php
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/Gestor_Diarias/!svn/ver/2/trunk/Include/Inc_Menu.php
+END
+Inc_Sistema.php
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/Gestor_Diarias/!svn/ver/2/trunk/Include/Inc_Sistema.php
+END
+conexao.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/Gestor_Diarias/!svn/ver/2/trunk/Include/conexao.class.php
+END
+Inc_ComboDiaria.php
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/Gestor_Diarias/!svn/ver/22/trunk/Include/Inc_ComboDiaria.php
+END
+Inc_DadosBancariosGER.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Gestor_Diarias/!svn/ver/2/trunk/Include/Inc_DadosBancariosGER.php
+END
+Inc_Funcao.php
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/Gestor_Diarias/!svn/ver/5/trunk/Include/Inc_Funcao.php
+END
+Inc_TituloExcluir.php
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/Gestor_Diarias/!svn/ver/2/trunk/Include/Inc_TituloExcluir.php
+END
+Inc_Pesquisa_Sem_Filtro.php
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Gestor_Diarias/!svn/ver/2/trunk/Include/Inc_Pesquisa_Sem_Filtro.php
+END
+Inc_Titulo.php
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/Gestor_Diarias/!svn/ver/16/trunk/Include/Inc_Titulo.php
+END
+Inc_Pesquisa_Validados.php
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Gestor_Diarias/!svn/ver/2/trunk/Include/Inc_Pesquisa_Validados.php
+END
+Inc_Resumo_Contrato.php
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Gestor_Diarias/!svn/ver/2/trunk/Include/Inc_Resumo_Contrato.php
+END
+Inc_FuncaoExibe.php
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/Gestor_Diarias/!svn/ver/2/trunk/Include/Inc_FuncaoExibe.php
+END
+Inc_RegistroDiarias.php
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Gestor_Diarias/!svn/ver/2/trunk/Include/Inc_RegistroDiarias.php
+END
+Inc_Conexao.php
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/Gestor_Diarias/!svn/ver/22/trunk/Include/Inc_Conexao.php
+END
+Inc_Registro.php
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/Gestor_Diarias/!svn/ver/2/trunk/Include/Inc_Registro.php
+END

@@ -1,0 +1,64 @@
+<?php
+
+	$Saida = $_GET['datasaida'];
+	$Chegada = $_GET['datachegada'];
+
+     $DataPartida= explode("-", $Saida);
+        //A função mktime recebe os argumentos (hora, minuto, segundos, mes, dia, ano).
+     $diaPartida = mktime(0,0,0,$DataPartida[1],$DataPartida[0],$DataPartida[2]);
+
+     $DataChegada=explode("-", $Chegada);
+     
+     $diaChegada = mktime(0,0,0,$DataChegada[1],$DataChegada[0],$DataChegada[2]);
+
+    $diferencaDataTempo = ($diaChegada-$diaPartida);
+        //converte o tempo em dias
+    $Dias = round(($diferencaDataTempo/60/60/24));
+
+    $Dias = $Dias + 1;
+
+	For ($x = 1;$x<$Dias;$x++)
+    {
+		$vetData= explode("-", $Saida);
+
+        $Dia = $vetData[0];
+        $Mes = $vetData[1];
+        $Ano = $vetData[2];
+
+        if(strlen($Dia)==1)
+        { $Dia = "0". $Dia;
+        }
+        if (strlen($Mes)==1)
+        {	$Mes = "0" . $Mes;
+        }
+
+        $Saida=implode("/", array($Dia,$Mes,$Ano));
+
+		echo "<tr height'21' class='dataField'><td>&nbsp;<input type='text' readonly class='oculto' value='" .$Saida."' size='9'>&nbsp;<input typy='text' name='txtResumo' maxlenght='100' size='140'></td></tr>";
+        //pega o ultimo dia do mes
+        $ultimoDiaDoMes = cal_days_in_month(CAL_GREGORIAN, $Mes, $Ano);
+
+        $ultimoDiaDoAno=cal_days_in_month(CAL_GREGORIAN, 12, $Ano);
+
+        // acrescenta-se mais um dia, se e somente se, ele nao for o ultimo dia do mes em questao!
+        if($Dia<$ultimoDiaDoMes)
+        {  $vetData[0]=$vetData[0]+1;
+           $Dia=$vetData[0];
+        }
+        // se o dia atingiu o ultimo dia do mes, muda-se para o proximo mes do ano!
+        else
+        {  $vetData[1]=$vetData[1]+1;
+           $Mes=$vetData[1];
+           $Dia="01";
+           $ultimoDiaDoMes = cal_days_in_month(CAL_GREGORIAN, $Mes, $Ano);
+        }
+        // se o dia atingiu o ultimo dia do mes, muda-se para o proximo mes, e se for o ultimo mes do ano,altera-se o ano
+        if(($Dia==$ultimoDiaDoAno)&&($Mes=="12"))
+        { $Dia="01";
+          $Mes="01";
+          $ultimoDiaDoAno=cal_days_in_month(CAL_GREGORIAN, 12, $Ano);
+          $vetData[2]=$vetData[2]+1;
+          $Ano=$vetData[2];
+        }
+    }
+?>

@@ -1,0 +1,157 @@
+<script type="text/javascript" src="../JavaScript/jquery-1.4.2.js"></script>
+
+<script type="text/javascript">
+	var erros = new Array("CPF Inválido!", "CPF já cadastrado!", "Matrícula já cadastrada!");
+	var bErros = new Array(0, 0, 0);
+	
+	
+	function showErros(){
+		var str="";
+		for(i=0; i < erros.length; i++){
+			if(bErros[i] == 1)
+				str += erros[i]+"<br>";
+		}
+		
+		$("#erro").html(str);
+	}
+	
+	function addErro(erro){
+		bErros[erro]=1;
+		showErros();
+	}
+	
+	function removeErro(erro){
+		bErros[erro]=0;
+		showErros();
+	}
+
+	$(document).ready(function(){
+		$("#cpf").keyup(function(){
+			if($(this).val().length == 14)
+			{
+				if(Verifica_CPF(document.Form) != false)
+				{
+					removeErro(0);
+					$.ajax({
+						type: 'POST',
+						url: "../Include/funcoes.php",
+						data: "acao=buscaCPF&cpf="+$(this).val(),
+						success: function(result){
+							<?php if(!isset($_GET["cod"])) { ?> 
+							if(result == "existe")
+								addErro(1);
+							else
+								removeErro(1);
+							<?php } else { ?>
+								removeErro(0);
+							<?php } ?>
+						},
+						error: function(){
+							alert("Erro");
+						}
+					});
+				} else { addErro(0); removeErro(1); }
+			}	else { addErro(0); removeErro(1); }
+		});
+		
+		$("#matricula").blur(function(){
+			$.ajax({
+				type: 'POST',
+				url: "../Include/funcoes.php",
+				data: "acao=buscaMatricula&matricula="+$(this).val(),
+				success: function(result){
+					<?php if(!isset($_GET["cod"])) { ?> 
+					if(result == "existe")
+						addErro(2);
+					else
+						removeErro(2);
+					<?php } else { ?>
+						removeErro(2);
+					<?php } ?>
+				},
+				error: function(){
+					alert("Erro");
+				}
+			});
+
+		});
+		
+	});
+</script>
+
+<table width="800" border="0" cellpadding="0" cellspacing="0" class="TabelaFormulario">
+    <tr>
+        <td>
+            <table width="798" border="0" cellpadding="0" cellspacing="1">
+                <tr height="21" class="dataLabel">
+                    <td width="150">&nbsp;CPF</td>
+                    <td width="150">&nbsp;Data de Nascimento</td>
+                    <td width="338">&nbsp;Nome</td>
+                    <td width="160" class="dataLabel">&nbsp;Sexo</td>
+                </tr>
+                <tr height="21" class="dataField">
+                    <td>&nbsp;<input name="txtCPF" id="cpf" maxlength="14" type="text" value="<?=$CPF?>" style=" width:120px;" onKeyPress="mascaraCPF(event, this);" >&nbsp;*</td>
+                    <td>&nbsp;<input name="txtDtNasc" maxlength="10" type="text" value="<?=$DataNascimento?>" style=" width:120px;" OnKeyUp="mascaraData(this.value, document.Form.txtDtNasc);" onKeyPress="mascaraNumero(event, this);">&nbsp;*</td>
+                    <td>&nbsp;<input name="txtNome" maxlength="200" type="text" value="<?=$Nome?>" style=" width:300px;">&nbsp;*</td>
+                    <td>&nbsp;<input name="rdSexo" type="radio" value="M" class="radio" <?=$SexoMasc?>>&nbsp;Masculino&nbsp;<input name="rdSexo" type="radio" value="F" class="radio" <?=$SexoFem?>>&nbsp;Feminino</td>
+                </tr>
+            </table>
+
+            <table width="798" border="0" cellpadding="0" cellspacing="1">
+                <tr height="21" class="dataLabel">
+                    <td width="150">&nbsp;RG</td>
+                    <td width="150">&nbsp;&Oacute;rg&atilde;o Emissor</td>
+                    <td width="120">&nbsp;UF do RG</td>
+                    <td width="218">&nbsp;Data de Expedi&ccedil;&atilde;o</td>
+                    <td width="160">&nbsp;Grupo Sangu&iacute;neo</td>
+                    <td width="72">&nbsp;Qtde Filho</td>
+                    <td width="72">&nbsp;Qtde Filha</td>
+                </tr>
+                <tr height="21" class="dataField">
+                    <td>&nbsp;<input name="txtRG" maxlength="20" type="text" value="<?=$RG?>" style=" width:120px;" onKeyPress="mascaraNumero(event, this);">&nbsp;*</td>
+                    <td>&nbsp;<input name="txtRGOrgao" maxlength="20" type="text" value="<?=$RGOrgao?>" style=" width:121px;"></td>
+                    <td>&nbsp;<?=f_ComboEstado("cmbRGUF","",$RGOrgaoUF)?></td>
+                    <td>&nbsp;<input name="txtRGDtExpedicao" maxlength="10" type="text" value="<?=$RGData?>" style=" width:120px;" OnKeyUp="mascaraData(this.value, document.Form.txtRGDtExpedicao);"></td>
+                    <td>&nbsp;<?=f_ComboGrupoSanguineo($Sangue)?></td>
+                    <td>&nbsp;<input name="txtFilho" maxlength="2" type="text" value="<?=$Filho?>" style=" width:25px;"></td>
+                    <td>&nbsp;<input name="txtFilha" maxlength="2" type="text" value="<?=$Filha?>" style=" width:25px;"></td>
+                </tr>
+            </table>
+
+            <table width="798" border="0" cellpadding="0" cellspacing="1">
+                <tr height="21" class="dataLabel">
+                    <td width="150">&nbsp;Estado Civil</td>
+                    <td width="150">Escolaridade</td>
+                    <td width="150">Semestre</td>                    
+                    <td width="150">Nome do Curso</td>
+                    <td width="150">Nome da Institui&ccedil;&atilde;o</td>
+                    <td width="150">Conselho / Numero</td>
+                </tr>
+             <tr height="21" class="dataField">
+              <td>&nbsp;<?=f_ComboEstadoCivil($EstadoCivil)?></td>
+              <td>&nbsp;<?=f_ComboNivelEscolar($NivelEscolar)?></td>
+              <td>&nbsp;<input name="txtNivelEscolarSemestre" maxlength="02" type="text" value="<?=$NivelTecnicoSemestre?>" style=" width:45px;"></td>
+              <td>&nbsp;<input name="txtNivelEscolarCurso" maxlength="850" type="text" value="<?=$NivelTecnicoCurso?>" style=" width:150px;"></td>
+              <td>&nbsp;<input name="txtNivelEscolarInstituicao" maxlength="850" type="text" value="<?=$NivelTecnicoInstituicao?>" style=" width:150px;"></td>
+              <td>&nbsp;<input name="txtNivelEscolarConselho" maxlength="850" type="text" value="<?=$NivelTecnicoConselho?>" style=" width:150px;"></td>
+             </tr>
+            </table>
+
+            <table width="798" border="0" cellpadding="0" cellspacing="1">
+                <tr height="21" class="dataLabel">
+                    <td width="200">&nbsp;Nome do Pai</td>
+                    <td width="200">&nbsp;Nome da M&atilde;e</td>
+                    <td width="120">&nbsp;Nacionalidade</td>
+					<td width="278" class="dataLabel" colspan="2">&nbsp;Naturalidade</td>
+                </tr>
+                <tr height="21" class="dataField">
+                    <td>&nbsp;<input name="txtPai" maxlength="200" type="text" value="<?=$NomePai?>" style=" width:190px;"></td>
+                    <td>&nbsp;<input name="txtMae" maxlength="200" type="text" value="<?=$NomeMae?>" style=" width:190px;"></td>
+                    <td>&nbsp;<?=f_ComboPais("cmbNacionalidade",$Nacionalidade)?></td>
+                    <td width="50">&nbsp;<?=f_ComboEstado("cmbNaturalidadeUF", "onChange=MandaID(this.value,'AjaxNaturalidade','estado_id')",$NaturalidadeUF)?></td>
+                    <td><div id="NaturalidadeCidade"><?=f_ComboMunicipio("cmbNaturalidade", $NaturalidadeUF, $Naturalidade)?></div></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>

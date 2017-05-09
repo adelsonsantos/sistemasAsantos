@@ -1,0 +1,138 @@
+<?php
+include "../Include/Inc_Configuracao.php";
+include "Classe/ClasseAssociarAutorizador.php";
+?>
+<html>
+
+<style type="text/css">@import url("../css/estilo.css"); </style>
+
+<script language="javascript" src="../JavaScript/ScriptMenu.js"></script>
+
+<script language="javascript">
+<!--
+
+	function GravarForm(frm,j)
+	{
+
+		for (cont=0; cont < frm.elements.length; cont++)
+			frm.elements[cont].style.backgroundColor = '';
+
+/*		for (i=0; i < frm.elements.length; i++)
+		{
+
+			if (frm.elements[i].type == "select-one")
+			{
+				if (frm.elements[i].value == "0")
+				{
+					alert("Campo AUTORIZADOR em branco.");
+					frm.elements[i].focus();
+					frm.elements[i].style.backgroundColor='#B9DCFF';
+					return false;
+		 		}
+			}
+		} */
+		frm.action = "AssociarAutorizador.php?acao=alterar&i="+j;
+		frm.submit();
+
+	}
+
+-->
+</script>
+
+
+<body onLoad="WM_initializeToolbar();">
+
+<form name="Form" method="post">
+
+<table align="left" width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tr>
+       <td><?include "../Include/Inc_Topo.php"?></td>
+    </tr>
+    <tr>
+    	<td><?include"../Include/Inc_Aba.php"?></td>
+    </tr>
+    <tr>
+    	<td align="left">
+            <table width="990" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                    <td valign="top" align="left" width="190"><?include "../Include/Inc_Menu.php"?></td>
+                    <td valign="top" align="left">
+
+                        <?include "../Include/Inc_Titulo.php"?>
+
+                        <?include "../Include/Inc_Linha.php"?>
+
+						<?
+
+
+							$i = 0;
+                            echo "<table cellpadding=0 cellspacing=0 width=800 border=0 class=GridPaginacao>";
+                            echo "<tr>";
+                            echo "<td>" ;
+                            echo "<table border=0 cellpadding=1 cellspacing=1 width=798>";
+                            echo "<tr height=21 class=dataLabel>";
+                            echo "<td width=300>&nbsp;Unidade</td>";
+                            echo "<td width=498>&nbsp;Autorizador</td>";
+                            echo "</tr>";
+
+                            While ($linharsACP=pg_fetch_assoc($rsACP))
+                            {
+                                $i++;
+
+                                $sql = "SELECT pessoa_id FROM diaria.autorizador_acp WHERE est_organizacional_id = ".$linharsACP['est_organizacional_id'];
+                         
+
+                                $rs = pg_query(abreConexao(),$sql);
+                                $linhars=pg_fetch_assoc($rs);
+
+                                If($linhars)
+                                {
+                                    $CodigoPessoa = $linhars['pessoa_id'];
+                                }
+                                Else
+                                {    $CodigoPessoa = 0;
+
+                                }
+
+                                echo "<tr height=21 class=GridPaginacaoRegistroCabecalho>";
+                                echo "<td class=dataField>&nbsp;";
+                                echo $linharsACP['est_organizacional_centro_custo_num']."&nbsp;" .$linharsACP['est_organizacional_sigla'];
+                                echo "<input type=hidden name=txtUnidade".$i." value=".$linharsACP['est_organizacional_id'].">";
+                                echo "</td>";
+                                echo "<td class=dataField>&nbsp;";
+                                echo f_ComboAutorizador($CodigoPessoa,$i);
+                                echo "</td>";
+                                echo "</tr>";
+                            }
+
+                            echo "</table>";
+                            echo "</td>";
+                            echo "</tr>";
+                            echo "</table>";
+
+						?>
+<?
+					If ($_GET['sucesso'] == 1)
+                    {
+						echo "<table width=800><tr><td align=right class=MensagemErro>Associ&ccedil;&atilde;o realizada com sucesso</td></tr></table>";
+                    }
+
+?>
+                        <table border="0" cellpadding="1" cellspacing="1" width="800">
+                            <tr height="25">
+                                <td align="right"><button style="width:70px" onClick="Javascript:GravarForm(document.Form,'<?=$i?>');" name="btnGravar" class="botao">Gravar</button></td>
+                            </tr>
+                        </table>
+
+                    </td>
+                </tr>
+            </table>
+        </td>
+	</tr>
+</table>
+
+</form>
+
+</body>
+</html>
+
