@@ -26,7 +26,7 @@ include "Classe/ClasseAcao.php";
 
 		if (frm.txtNumero.value == "")
 		{
-			alert("Campo NÚMERO em Branco.");
+			alert("Campo Nï¿½MERO em Branco.");
 			frm.txtNumero.focus();
 			frm.txtNumero.style.backgroundColor='#B9DCFF';
 			return false;
@@ -42,7 +42,7 @@ include "Classe/ClasseAcao.php";
 
 		if (frm.txtDescricao.value == "")
 		{
-			alert("Campo DESCRIÇÃO em Branco.");
+			alert("Campo DESCRIï¿½ï¿½O em Branco.");
 			frm.txtDescricao.focus();
 			frm.txtDescricao.style.backgroundColor='#B9DCFF';
 			return false;
