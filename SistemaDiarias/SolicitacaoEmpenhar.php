@@ -30,7 +30,6 @@ include "IncludeLocal/Inc_Dados_Resumo_Comprovacao.php";
             {
                 frm.txtEmpenho.focus();
             }
-
             function GravarForm(frm,dataSaida,dataEmpenho,StatusDiaria)
             {
                 for(cont=0; cont < frm.elements.length; cont++)
@@ -45,7 +44,6 @@ include "IncludeLocal/Inc_Dados_Resumo_Comprovacao.php";
                         frm.txtEmpenho.style.backgroundColor='#B9DCFF';
                         return false;
                     }
-
                     if (frm.txtDataEmpenho.value == "")
                     {
                         alert("Digite a DATA DO EMPENHO.");
@@ -53,7 +51,6 @@ include "IncludeLocal/Inc_Dados_Resumo_Comprovacao.php";
                         frm.txtDataEmpenho.style.backgroundColor='#B9DCFF';
                         return false;
                     }
-
                     data1 = dataSaida.substring(6,10) + "/" + dataSaida.substring(3,5) + "/" + dataSaida.substring(0,2);
                     data2 = dataEmpenho.substring(6,10) + "/" + dataEmpenho.substring(3,5) + "/" + dataEmpenho.substring(0,2);
                     if (frm.txtIndenizacao.value == 0)
@@ -76,7 +73,6 @@ include "IncludeLocal/Inc_Dados_Resumo_Comprovacao.php";
                     frm.action = "SolicitacaoEmpenhar.php?acao=2empenhar";
                     frm.submit();
                 }
-
             }
             function AdcionarDocumento(frm)
             {
@@ -94,7 +90,6 @@ include "IncludeLocal/Inc_Dados_Resumo_Comprovacao.php";
                     frm.txtNumDoc.style.backgroundColor='#B9DCFF';
                     return false;
                 }
-
                 frm.action = "SolicitacaoEmpenhar.php?acao=AdcionarDocumento";
                 frm.submit();
             }
@@ -144,7 +139,6 @@ include "IncludeLocal/Inc_Dados_Resumo_Comprovacao.php";
                                             $Status = $linharsConsulta['diaria_st'];
                                             $Codigo = $linharsConsulta['diaria_id'];
                                             $DiariaAgrupada = $linharsConsulta['diaria_agrupada'];
-
                                             if($Status == 2)
                                             {
                                                 echo "<td width='110' align='center'>Partida Prevista</td>";
@@ -154,7 +148,6 @@ include "IncludeLocal/Inc_Dados_Resumo_Comprovacao.php";
                                         </tr>
                                         <?php 
                                         echo "<tr height='20' bgcolor='#f2f2f2' onMouseOver=javascript:this.style.backgroundColor='#cccccc' onMouseOut=javascript:this.style.backgroundColor='#f2f2f2'>";
-
                                         if($DiariaAgrupada == 0)
                                         {
                                             echo "<td class='GridPaginacaoLink' align='center'>" .$linharsConsulta['diaria_numero']. "</td>";
@@ -163,9 +156,7 @@ include "IncludeLocal/Inc_Dados_Resumo_Comprovacao.php";
                                         {
                                             echo "<td class='GridPaginacaoLink' align='center'>" .$linharsConsulta['super_sd']. "</td>";
                                         }
-
                                         echo "<td class='GridPaginacaoLink' align='left'>&nbsp;" .$linharsConsulta['pessoa_nm']. "</td>";
-
                                         //VERIFICA SE A DIAIRIA É PARA O PRIMEIRO EMPENHO
                                         if($Status == 2)
                                         {
@@ -313,7 +304,6 @@ include "IncludeLocal/Inc_Dados_Resumo_Comprovacao.php";
                                             echo "<td width='150'>Recebimento</td>";
                                             echo "<td width='10'>&nbsp;</td>";
                                         echo "</tr>";
-
                                     $sqlTPDocumento = "SELECT * FROM diaria.diaria_historico_doc D,diaria.diaria_tipo_doc T where D.diaria_tipo_doc_id = T.diaria_tipo_doc_id and diaria_id = ".$Codigo." and diaria_historico_doc_st =0";
                                     $rsTPDocumento  = pg_query(abreConexao(),$sqlTPDocumento);
                                     $cont=1;

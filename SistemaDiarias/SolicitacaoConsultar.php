@@ -270,7 +270,11 @@ if (isset($_GET["funcao"]))
                                                 <table width='800' border='0' cellpadding='0' cellspacing='0'>
                                                     <tr class='dataLabel'>
                                                         <td height='21'>&nbsp;Quantidade total de diárias: <span id='qtdeTotal' name='qtdeTotal' disabled='disabled'></span></td>
-                                                        <td height='21'>Valor Total: <span id='totalDiarias' name='totalDiarias' disabled='disabled'></span></td>
+                                                        <td height='21'>Valor Total: <?='R$' . number_format($linhaDiaria['valor_total'], 2, ',', '.');?>
+                                                            <!--<span id='totalDiarias' name='totalDiarias' disabled='disabled'></span>-->
+                                                        </td>
+														
+														<!--<td height='21'>Valor Total: <span id='totalDiarias' name='totalDiarias' disabled='disabled'></span></td>-->
                                                     </tr>
                                                 </table>                                                
                                             </div>

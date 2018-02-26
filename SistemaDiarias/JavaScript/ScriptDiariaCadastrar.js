@@ -1111,12 +1111,38 @@ function CalcularTotalDiarias()
         controle = controle - 1;
     }
     
+	 //console.log(valorTotal);
+    function formatReal( int )
+    {
+        var tmp = int+'';
+        tmp = tmp.replace(/([0-9]{2})$/g, ",$1");
+        if( tmp.length > 6 )
+            tmp = tmp.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2");
+
+        return tmp;
+    }
+
+    var str =  valorTotal.toString();
+    str = str.charAt(str.length-1);
+    var totalNumInteiro = parseInt(str);
+    if(totalNumInteiro === 5){
+        $('#totalDiarias').val('R$ '+formatReal(valorTotal*100));
+    }
+    else{
+        $('#totalDiarias').val('R$ '+formatReal(valorTotal*100));
+    }
     $('#qtdeTotal').val(qtdeTotal);
-    $('#totalDiarias').val('R$ '+Math.ceil(valorTotal)+',00');
     $('#resultCalculoTotal').show();
     $('#alterarTotalDiarias').val(1);
     $('#calculoTotalDiarias').val(1);    
-    $('#NovoValorTotalDiarias').val(Math.ceil(valorTotal));    
+    $('#NovoValorTotalDiarias').val(valorTotal);
+	
+    //$('#qtdeTotal').val(qtdeTotal);
+    //$('#totalDiarias').val('R$ '+Math.ceil(valorTotal)+',00');
+    //$('#resultCalculoTotal').show();
+    //$('#alterarTotalDiarias').val(1);
+    //$('#calculoTotalDiarias').val(1);    
+    //$('#NovoValorTotalDiarias').val(Math.ceil(valorTotal));    
 }
 
 $(document).ready(function()

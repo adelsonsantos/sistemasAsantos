@@ -132,7 +132,7 @@ $_SESSION['HoraChegada'][$cont] = $HoraChegada;
             $ValorTotal = $ValorTotal/2;
         }
 
-        $ValorTotal = round($ValorTotal);
+        //$ValorTotal = round($ValorTotal);
     }
     
     //chama funcao que percorre o periodo da viagem para busca de feriados

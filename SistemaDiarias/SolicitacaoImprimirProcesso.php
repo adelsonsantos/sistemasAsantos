@@ -37,7 +37,7 @@ include "Classe/ClasseImprimirProcesso.php";
 
             function ImprimirProcesso(codigo)
             {
-                window.open ("SolicitacaoProcessoPDF.php?acao=imprimir&cod="+codigo);
+                window.open ("SolicitacaoImprimirJPG.php?acao=imprimir&cod="+codigo);
             }
             // Fim das Novas funções acresentadas por conta da Mudança de Perfil de Autorizador para Imprimir o processo e a diária.  
         </script>
@@ -128,7 +128,7 @@ include "Classe/ClasseImprimirProcesso.php";
                                                       </td>";
                                                 echo "<td height='20' align='center'>
                                                         <a href='javascript:ImprimirProcesso(" . $Codigo . ");'>
-                                                            <img src='../Icones/ico_imprimir_processo.png' border='0' alt='Imprimir Processo'/>
+                                                            <img src='../Icones/blue-download.png' border='0' alt='Imprimir Processo'/>
                                                         </a>
                                                       </td>";
                                                 echo "<td height='20' align='center'>" . $Numero . "</td>";

@@ -27,7 +27,7 @@ if ($AcaoSistema == "preautorizar")
     $Time   = date("H:i:s");
 
     // Executa consulta de alteração na Tabela Diaria para mudar o status da Diaria
-    $sqlAlterar = "UPDATE diaria.diaria SET diaria_st = 0 WHERE diaria_id = $Codigo AND id_coordenadoria = $idCoordenadoria";
+    $sqlAlterar = "UPDATE diaria.diaria SET diaria_st = 0 WHERE diaria_id = $Codigo";
     pg_query(abreConexao(), $sqlAlterar);
     
     //Consulta feita para pegar o ID do funcionário que está logado
