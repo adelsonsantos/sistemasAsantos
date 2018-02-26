@@ -35,7 +35,7 @@ ElseIf ($AcaoSistema == "aprovar")
 
     $numeroProcesso = f_NumeroProcesso($numeroSD);
 
-    $sqlAltera = "UPDATE diaria.diaria SET diaria_st = 2, diaria_processo = '$numeroProcesso' WHERE diaria_id IN (" . $Codigo . ")";
+    $sqlAltera = "UPDATE diaria.diaria SET diaria_st = 2 WHERE diaria_id IN (" . $Codigo . ")";
     pg_query(abreConexao(), $sqlAltera);
     
     if ($_SESSION['Administrador'] != 1) 

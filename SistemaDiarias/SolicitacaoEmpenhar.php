@@ -30,7 +30,7 @@ include "IncludeLocal/Inc_Dados_Resumo_Comprovacao.php";
             {
                 frm.txtEmpenho.focus();
             }
-            function GravarForm(frm,dataSaida,dataEmpenho,StatusDiaria)
+            function GravarForm(frm,dataSaida,dataEmpenho,StatusDiaria, NumeroProcesso)
             {
                 for(cont=0; cont < frm.elements.length; cont++)
                     frm.elements[cont].style.backgroundColor = '';
@@ -49,6 +49,13 @@ include "IncludeLocal/Inc_Dados_Resumo_Comprovacao.php";
                         alert("Digite a DATA DO EMPENHO.");
                         frm.txtDataEmpenho.focus();
                         frm.txtDataEmpenho.style.backgroundColor='#B9DCFF';
+                        return false;
+                    }
+					if (frm.txtNumeroProcesso.value == "")
+                    {
+                        alert("Digite o Número do Processo do SEI.");
+                        frm.txtNumeroProcesso.focus();
+                        frm.txtNumeroProcesso.style.backgroundColor='#B9DCFF';
                         return false;
                     }
                     data1 = dataSaida.substring(6,10) + "/" + dataSaida.substring(3,5) + "/" + dataSaida.substring(0,2);
@@ -199,12 +206,13 @@ include "IncludeLocal/Inc_Dados_Resumo_Comprovacao.php";
                                         if ($Status == 2) 
                                         {?>
                                         <tr class="GridPaginacaoRegistroCabecalho" height="21">
-                                            <td colspan="4" align="left">Primeiro Empenho</td>
+                                            <td colspan="5" align="left">Primeiro Empenho</td>
                                         </tr>
                                         <tr class="dataLabel" height="21">
                                             <td width="150">Nº do Empenho *</td>
                                             <td width="140" colspan="2">Data do Empenho *</td>
-                                            <td width="508">&nbsp;</td>
+                                            <td width="200" style="text-align: center">Nº do Processo (SEI) *</td>
+                                            <td width="308">&nbsp;</td>
                                         </tr>
                                         <tr class="dataField" height="21">
                                         <?php 
@@ -245,7 +253,10 @@ include "IncludeLocal/Inc_Dados_Resumo_Comprovacao.php";
                                             } // fim do else 
                                             ?>
                                                 <td height="21" width="20"><a href="#" onClick="javascript:displayCalendar(document.getElementById('txtDataEmpenho'),'dd/mm/yyyy',this);"><img src="../Icones/ico_calendario.gif" border="0" align="Mostrar Calendário" width="18" height="21" /></a></td>                                            
-                                            <td>&nbsp;</td>
+                                           
+                                            <td height="21" width="105" ><input id="txtNumeroProcesso" type="text" name="txtNumeroProcesso" maxlength="10" style=" width:100px;height:18px; margin-left: 42px"  value="<?=$linharsConsulta['diaria_processo'];?>"/></td>
+                                            <td>&nbsp;
+                                            </td>
                                         <?php 
                                         }
                                         else 
@@ -337,7 +348,7 @@ include "IncludeLocal/Inc_Dados_Resumo_Comprovacao.php";
                                             }
                                             else
                                             {?>
-                                                <input type="button" style="width:70px" onClick="Javascript:GravarForm(document.Form,document.Form.txtDataPartida.value,document.Form.txtData2Empenho.value,document.Form.txtStatus.value,'');" name="btnGravar" class="botao" value="Gravar"/>
+                                                <input type="button" style="width:70px" onClick="Javascript:GravarForm(document.Form,document.Form.txtDataPartida.value,document.Form.txtData2Empenho.value,document.Form.txtStatus.value,, document.Form.txtNumeroProcesso.value,'');" name="btnGravar" class="botao" value="Gravar"/>
                                             <?php
                                             }?>
                                                 <input type="button" style="width:70px" onClick="Javascript:window.location.href='<?=$PaginaLocal?>inicio.php';" name="btnConsultar" class="botao" value="Voltar"/>

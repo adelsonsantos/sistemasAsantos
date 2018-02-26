@@ -227,7 +227,8 @@ elseif ($AcaoSistema == "empenhar")
     $Codigo 	 	 = $_POST['txtCodigo'];
     $Empenho 	 	 = $_POST['txtEmpenho'];
     $DataEmpenho 	 = dataToDB($_POST['txtDataEmpenho']);    
-    $Numero_diaria 	 = $_POST['txtNumeroDiaria'];    
+    $Numero_diaria 	 = $_POST['txtNumeroDiaria'];   
+	$Numero_processo 	 = $_POST['txtNumeroProcesso'];	
 	
     $sql = "Select diaria_processo, super_sd, diaria_agrupada from diaria.diaria where diaria_id = $Codigo";
     $rsConsulta = pg_query(abreConexao(),$sql);
@@ -240,11 +241,11 @@ elseif ($AcaoSistema == "empenhar")
     {	// Diarias N�o Agrupadas - N�o Tem SUPER SD
         if( $processo_diaria == "")
         {
-            $Processo_diaria  = f_NumeroProcesso($Numero_diaria);
+            //$Processo_diaria  = f_NumeroProcesso($Numero_diaria);
             $sqlAltera = "UPDATE diaria.diaria SET  diaria_devolvida = 0,
                                 diaria_empenho = '".$Empenho."',
                                 diaria_dt_empenho = '".$DataEmpenho."',
-                                diaria_processo = '".$Processo_diaria."',
+                                diaria_processo = '".$Numero_processo."',
                                 diaria_hr_empenho = '".date("H:i:s")."',                                            
                                 diaria_empenho_pessoa_id = '".$_SESSION['UsuarioCodigo']."'
                                 WHERE diaria_id = ".$Codigo;
@@ -253,7 +254,8 @@ elseif ($AcaoSistema == "empenhar")
         {
             $sqlAltera = "UPDATE diaria.diaria SET  diaria_devolvida = 0,
                                 diaria_empenho = '".$Empenho."',
-                                diaria_dt_empenho = '".$DataEmpenho."',                                           
+                                diaria_dt_empenho = '".$DataEmpenho."', 
+								diaria_processo = '".$Numero_processo."',								
                                 diaria_hr_empenho = '".date("H:i:s")."',                                            
                                 diaria_empenho_pessoa_id = '".$_SESSION['UsuarioCodigo']."'
                                 WHERE diaria_id = ".$Codigo;
@@ -269,7 +271,7 @@ elseif ($AcaoSistema == "empenhar")
         $TamanhoSD    = strlen ($Super_SD);
         $NumDiaria    = substr($Super_SD,6,$TamanhoSD);		
 
-        $Processo_diaria  = $DTAno.$Zeros.$NumDiaria;
+        $Processo_diaria  = $Numero_processo;
 
         $sqlAltera = "UPDATE diaria.diaria SET  diaria_devolvida = 0,
                                   diaria_empenho = '".$Empenho."',
