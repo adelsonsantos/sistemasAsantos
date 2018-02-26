@@ -37,6 +37,7 @@ include "Classe/ClasseImprimirProcesso.php";
 
             function ImprimirProcesso(codigo)
             {
+				location.reload();
                 window.open ("SolicitacaoImprimirJPG.php?acao=imprimir&cod="+codigo);
             }
             // Fim das Novas funções acresentadas por conta da Mudança de Perfil de Autorizador para Imprimir o processo e a diária.  
