@@ -89,8 +89,7 @@ include "Fpdf.php";
     <div>
         <table style="height: 50px; width: 98%; margin-right: 10%">
             <tr>
-                <td style="width: 20%; text-align: center"><img src="http://localhost/php/sistemasAdab/image/adab.png"
-                                                                style="width: 80px; margin-bottom: 10px; margin-top: 10px"></td>
+                <td style="width: 20%; text-align: center"><img src="../Imagens/adab.png" style="width: 80px; margin-bottom: 10px; margin-top: 10px"></td>
                 <td style="width: 600px; text-align: center">
                     <h2>Solicitação de Diárias</h2>
                 </td>
