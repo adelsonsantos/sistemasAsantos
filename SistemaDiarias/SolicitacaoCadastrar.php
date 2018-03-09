@@ -558,13 +558,13 @@ if (($PaginaLocal == "Solicitacao" && $diaria_devolvida != "1") && $acaoSistema 
                                                                 <table width="100%" cellpadding="0" cellspacing="1" border="0">
                                                                     <tr>
                                                                         <td height="21" width="50%" class="dataLabel">&nbsp;Detalhe do Motivo</td>
-                                                                        <td height="21" width="50%" class="dataLabelSemBold" align="right">M&aacute;ximo permitido 300 caracteres&nbsp;<input type="text" id="QtdDescricao" name="QtdDescricao" style=" width:35px;" readonly class="Oculto"/>&nbsp;</td>
+                                                                        <td height="21" width="50%" class="dataLabelSemBold" align="right">M&aacute;ximo permitido 600 caracteres&nbsp;<input type="text" id="QtdDescricao" name="QtdDescricao" style=" width:35px;" readonly class="Oculto"/>&nbsp;</td>
                                                                     </tr>
                                                                 </table>
                                                             </td>
                                                         </tr>
                                                         <tr class="dataField">
-                                                            <td height="21">&nbsp;<textarea name="txtDescricao" id="txtDescricao" style=" width:789px; height:45px" maxlenght="300" onKeyUp="ContarDescricao(this,300)"><?= $linhaDiaria['diaria_descricao']?></textarea></td>
+                                                            <td height="21">&nbsp;<textarea name="txtDescricao" id="txtDescricao" style=" width:789px; height:45px" maxlenght="600" onKeyUp="ContarDescricao(this,600)"><?= $linhaDiaria['diaria_descricao']?></textarea></td>
                                                         </tr>
                                                     </table>
                                                     <table width="100%" border="0" cellpadding="0" cellspacing="1">
