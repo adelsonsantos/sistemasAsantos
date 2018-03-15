@@ -190,10 +190,10 @@ If ($ContadorVirtual > 2)
             </table>";
 }
 
-If ($ContadorAtraso > 1)
+If ($ContadorAtraso > 2)
 {
     $PossuiBloqueio = 1;
-    
+
     $html.= "<table width='100%' border='0' cellpadding='0' cellspacing='1'>
                 <tr class='dataLabelSemBold'>
                     <td class='MensagemErro'>&nbsp;BLOQUEADO - Beneficiário com solicitação pendente de comprovação. Número(s) da(s) SD: ".$NumeroDiariaAtrasada."</td>

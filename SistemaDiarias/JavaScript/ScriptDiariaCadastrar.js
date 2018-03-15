@@ -45,7 +45,8 @@ function ConsultaBloqueioDiaria(beneficiario)
         url : "Ajax/AjaxRegraBloqueio.php",
         data: "beneficiario="+beneficiario+"&diaria_id="+$('#txtCodigo').val()+"&dataPartida="+$('#dataPartida').val()+"&dataChegada="+$('#dataChegada').val(),
         success: function(result)
-        {                         
+        {
+            console.log(result);
             $('#tableBloqueio').html(result);             
         },
         error: function()
@@ -922,7 +923,7 @@ function RoteiroAdicional(cont)
 {    
     var dados;   
     
-    if($('#controleRoteiro').val() == 6)
+    if($('#controleRoteiro').val() == 4)
     {
         alert('Não é possível adicionar mais roteiros!');
         $('#btnAdicionarRoteiro'+cont).hide();
@@ -1106,7 +1107,12 @@ function CalcularTotalDiarias()
                 qtdeDiaria = $('#hdQtdeDiaria'+controle).val();                
             }
             qtdeTotal  = parseFloat(qtdeTotal) + parseFloat(qtdeDiaria);
-            valorTotal = parseFloat(valorTotal) + parseFloat(valorDiaria);                                    
+            valorTotal = parseFloat(valorTotal) + parseFloat(valorDiaria);
+
+            if(qtdeTotal > 15){
+                alert('A quantidade de diárias não pode ultrapassar 15 diárias, quantidate atual: '+qtdeTotal);
+                return false;
+            }
         } 
         controle = controle - 1;
     }
