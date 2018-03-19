@@ -385,9 +385,6 @@ include "Fpdf.php";
             $i++;
         }
         $Roteiro = $Inicio.$Meio.$Final;
-
-
-
             ?>
 
         <fieldset style="margin-top: 25px; width: 96%; margin-right: 10%">
@@ -485,8 +482,6 @@ include "Fpdf.php";
                     </thead>
 
                 </table>
-
-
             </fieldset>
         </div>
     </div>

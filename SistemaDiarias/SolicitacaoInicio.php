@@ -62,7 +62,7 @@ else
                                         ?>   
                                         </tr>
                                         <tr class="dataLabel">
-                                            <td height="20" width="110" align="center" colspan="6">A&ccedil;&otilde;es</td>
+                                            <td height="20" width="110" align="center" colspan="7">A&ccedil;&otilde;es</td>
                                             <td height="20" width="76" align="center">SD</td>
                                             <td height="20" width="218" align="left">Funcion&aacute;rio</td>
                                             <td height="20" width="99" align="center">Partida</td>

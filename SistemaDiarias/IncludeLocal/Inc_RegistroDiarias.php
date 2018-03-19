@@ -132,7 +132,7 @@ echo "<td width='20' align='center'>";
     }
 echo "</td>";
 
-echo"<td align='center'>";
+echo"<td align='center' width='20'>";
     if(($diariaComprovada == "1")&&(($status >='4')&&($status <= '8')))
     {
         echo "<a href='SolicitacaoComprovacaoImprimirPDF.php?cod=".$codigoRegistro."'; target='_blank';><img src='../Icones/ico_imprimir.png' border='0' alt='Imprimir Comprovação'/></a>"	;
@@ -141,5 +141,16 @@ echo"<td align='center'>";
     {
         echo "<img src='../Icones/ico_imprimir_off.png' alt='Imprimir Comprovação' border='0'/>";
     }
+echo "</td>";
+
+echo"<td align='center' width='20'>";
+if(($diariaComprovada == "1")&&(($status >='4')&&($status <= '8')))
+{
+    echo "<a href='SolicitacaoComprovacaoImprimirJPG.php?cod=".$codigoRegistro."'; target='_blank';><img src='../Icones/ico_imprimir_jpg.png' border='0' alt='Imprimir Comprovação JPG'/></a>"	;
+}
+else
+{
+    echo "<img src='../Icones/ico_imprimir_off.png' alt='Imprimir Comprovação JPG' border='0'/>";
+}
 echo "</td>";
 ?>
