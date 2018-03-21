@@ -86,3 +86,61 @@ function GerarRelatorio(frm)
         }                    
     }
 }
+
+function GerarRelatorioDesconto(frm)
+{
+    if ($('#cmbBeneficiario').val() == '0')
+    {
+        if(($('#dataInicio').val() != '')&&($('#dataFim').val() != ''))
+        {
+            console.log($("#coordenadoria").is(":checked"));
+            if($("#coordenadoria").is(":checked")==true)
+            {
+                window.open("RelatorioDiariaDescontoPDF.php?dataInicio="+$('#dataInicio').val()+"&dataFim="+$('#dataFim').val()+"&tipoRelatorio=coordenadoria&local="+$('#combo_coordenadoria :selected').text()+"&comboCoordenadoria="+$('#combo_coordenadoria').val());
+                frm.submit();
+            }
+            else if($("#todos").is(":checked")==true)
+            {
+                window.open("RelatorioDiariaDescontoPDF.php?dataInicio="+$('#dataInicio').val()+"&dataFim="+$('#dataFim').val()+"&tipoRelatorio=todas");
+                frm.submit();
+            }
+            else
+            {
+                alert("Escolha um tipo de relatório!");
+                return false;
+            }
+        }
+        else
+        {
+            alert("Informe o período!");
+            return false;
+        }
+    }
+    else
+    {
+        if(($('#dataInicio').val() != '')&&($('#dataFim').val() != ''))
+        {
+            console.log($("#coordenadoria").is(":checked"));
+            if($("#coordenadoria").is(":checked")==true)
+            {
+                window.open("RelatorioDiariaDescontoPDF.php?cmbBeneficiario="+$('#cmbBeneficiario').val()+"&dataInicio="+$('#dataInicio').val()+"&dataFim="+$('#dataFim').val()+"&tipoRelatorio=coordenadoria&local="+$('#combo_coordenadoria :selected').text()+"&comboCoordenadoria="+$('#combo_coordenadoria').val());
+                frm.submit();
+            }
+            else if($("#todos").is(":checked")==true)
+            {
+                window.open("RelatorioDiariaDescontoPDF.php?cmbBeneficiario="+$('#cmbBeneficiario').val()+"&dataInicio="+$('#dataInicio').val()+"&dataFim="+$('#dataFim').val()+"&tipoRelatorio=todas");
+                frm.submit();
+            }
+            else
+            {
+                alert("Escolha um tipo de relatório!");
+                return false;
+            }
+        }
+        else
+        {
+            alert("Informe o período!");
+            return false;
+        }
+    }
+}
