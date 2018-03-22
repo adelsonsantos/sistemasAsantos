@@ -117,7 +117,7 @@ JOIN DIARIA.COORDENADORIA C ON C.ID_COORDENADORIA = U.ID_COORDENADORIA
 WHERE D.DIARIA_ST IN (4, 5, 6, 7, 300)
 ".$where2."  
 ORDER BY PESSOA_NM";
-ini_set('max_execution_time', 5000);
+ini_set('max_execution_time', 1000);
 $rsConsulta = pg_query(abreConexao(),$sqlConsulta);
 
 //Calculo por valor da Diaria
