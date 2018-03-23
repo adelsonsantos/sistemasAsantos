@@ -142,9 +142,6 @@ while($linha = pg_fetch_assoc($rsConsulta))
         $pessoaNome = $linha['pessoa_nm'];
         $funcionario_matricula = $linha['funcionario_matricula'];
         $quantidade_diarias    = $linha['quantidade_diarias'];
-        $valor_diarias    = $linha['valor_diarias'];
-        $tiket    = $linha['tiket'];
-        $transporte    = $linha['transporte'];
         $valor_total    = $linha['valor_total'];
     }
     elseif($pessoaId == $linha['pessoa_id'])
@@ -153,9 +150,6 @@ while($linha = pg_fetch_assoc($rsConsulta))
         $pessoaNome = $linha['pessoa_nm'];
         $funcionario_matricula = $linha['funcionario_matricula'];
         $quantidade_diarias    = $linha['quantidade_diarias'];
-        $valor_diarias    = $linha['valor_diarias'];
-        $tiket    = $linha['tiket'];
-        $transporte    = $linha['transporte'];
         $valor_total    = $linha['valor_total'];
     }
     elseif($pessoaId != $linha['pessoa_id'])
