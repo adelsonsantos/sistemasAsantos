@@ -183,11 +183,11 @@ $a = 0;
 
 while($a < $posicoes)
 {
-    $pdf->Cell(71,5,utf8_decode(substr($arrayPessoa[$a]['pessoaNome'], 0, 42)),1,0,'L');
-    $pdf->Cell(40,5,$arrayPessoa[$a]['funcionario_matricula'],1,0,'C');
-    $pdf->Cell(39,5,$arrayPessoa[$a]['quantidade_diarias'],1,0,'C');
+  //  $pdf->Cell(71,5,utf8_decode(substr($arrayPessoa[$a]['pessoaNome'], 0, 42)),1,0,'L');
+   // $pdf->Cell(40,5,$arrayPessoa[$a]['funcionario_matricula'],1,0,'C');
+    //$pdf->Cell(39,5,$arrayPessoa[$a]['quantidade_diarias'],1,0,'C');
 
-    $pdf->Cell(40,5,"R$ ".number_format($arrayPessoa[$a]['valor_total'],2,',','.'),1,1,'C');
+    //$pdf->Cell(40,5,"R$ ".number_format($arrayPessoa[$a]['valor_total'],2,',','.'),1,1,'C');
     $a++;
 }
 
