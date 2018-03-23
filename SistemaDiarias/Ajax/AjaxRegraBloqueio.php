@@ -69,12 +69,15 @@ if($dataPartida != '')
     $rsQtdMes = pg_query(abreConexao(),$sqlQtdMes);							 
 
     $qtdSomaMes  = 0;
+    $acressimoServidor = 5;
 
     while($linhaQtdMes = pg_fetch_assoc($rsQtdMes))
     {        
-        $qtdSomaMes = $qtdSomaMes + $linhaQtdMes['diaria_qtde'];       
+        $qtdSomaMes = $qtdSomaMes + $linhaQtdMes['diaria_qtde'];
     }
     // }
+
+    //$qtdSomaMes = $qtdSomaMes - $acressimoServidor;
 }
 
 While($linha = pg_fetch_assoc($rsBloqueio))
@@ -214,13 +217,26 @@ if($qtdSoma >= 180)
 
 if($qtdSomaMes >= 15)
 {
-    $PossuiBloqueio = 1;
-    
-    $html.= " <table width='100%' border='0' cellpadding='0' cellspacing='1'>
+    if($Beneficiario == 1550 || $Beneficiario == 2219){
+        if($qtdSomaMes >= 20){
+            $PossuiBloqueio = 1;
+
+            $html .= " <table width='100%' border='0' cellpadding='0' cellspacing='1'>
                  <tr class='dataLabelSemBold'>
-                     <td class='MensagemErro'>&nbsp;BLOQUEADO - O Beneficiário excedeu o limite mensal de Diárias.</td>
+                     <td class='MensagemErro'>&nbsp;BLOQUEADO - O Beneficiário excedeu o limite mensal de " . $qtdSomaMes . " Diárias.</td>
                  </tr>
               </table> ";
+        }
+    }
+    else {
+        $PossuiBloqueio = 1;
+
+        $html .= " <table width='100%' border='0' cellpadding='0' cellspacing='1'>
+                 <tr class='dataLabelSemBold'>
+                     <td class='MensagemErro'>&nbsp;BLOQUEADO - O Beneficiário excedeu o limite mensal de " . $qtdSomaMes . " Diárias.</td>
+                 </tr>
+              </table> ";
+    }
 }
 
 $html.= "<input type='hidden' id='txtBloqueio' name='txtBloqueio' style= 'width:35px;' class='Oculto' value = '".$PossuiBloqueio."' />
