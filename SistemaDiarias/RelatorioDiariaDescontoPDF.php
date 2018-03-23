@@ -160,7 +160,7 @@ while($linha = pg_fetch_assoc($rsConsulta))
     }
     elseif($pessoaId != $linha['pessoa_id'])
     {
-        $arrayPessoa[$i] = //array('valor_total' => $valor_total, 'pessoaNome' => $pessoaNome, 'funcionario_matricula' => $funcionario_matricula);
+        $arrayPessoa[$i] = array('valor_total' => $valor_total, 'pessoaNome' => $pessoaNome, 'funcionario_matricula' => $funcionario_matricula);
 
             [
                 'pessoaNome' => $pessoaNome,
