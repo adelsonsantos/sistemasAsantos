@@ -134,7 +134,7 @@ $valor_total = 0;
 $arrayPessoa[] = 0;
 $i      = 0;
 
-while($linha = pg_fetch_assoc($rsConsulta))
+/*while($linha = pg_fetch_assoc($rsConsulta))
 {
     if($pessoaId == '')
     {
@@ -176,8 +176,10 @@ while($linha = pg_fetch_assoc($rsConsulta))
         $valor_total    = $linha['valor_total'];
         $i++;
     }
-}
 
+
+}*/
+/*
 $arrayPessoa[$i] =   [
     'pessoaNome' => $pessoaNome,
     'funcionario_matricula' => $funcionario_matricula,
@@ -185,9 +187,9 @@ $arrayPessoa[$i] =   [
     'valor_total' => $valor_total
 ];
 $posicoes = count($arrayPessoa);
-$a = 0;
+$a = 0;*/
 
-while($a < $posicoes)
+/*while($a < $posicoes)
 {
     $pdf->Cell(71,5,utf8_decode(substr($arrayPessoa[$a]['pessoaNome'], 0, 42)),1,0,'L');
     $pdf->Cell(40,5,$arrayPessoa[$a]['funcionario_matricula'],1,0,'C');
@@ -195,7 +197,7 @@ while($a < $posicoes)
 
     $pdf->Cell(40,5,"R$ ".number_format($arrayPessoa[$a]['valor_total'],2,',','.'),1,1,'C');
     $a++;
-}
+}*/
 
 $pdf->Close();
 $pdf->Output();
