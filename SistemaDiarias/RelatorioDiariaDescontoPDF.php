@@ -134,9 +134,16 @@ $valor_total = 0;
 $arrayPessoa[] = 0;
 $i      = 0;
 
-/*while($linha = pg_fetch_assoc($rsConsulta))
+while($linha = pg_fetch_assoc($rsConsulta))
 {
-    if($pessoaId == '')
+
+    $pdf->Cell(71,5,utf8_decode(substr($linha['pessoa_nm'], 0, 42)),1,0,'L');
+    $pdf->Cell(40,5,$linha['funcionario_matricula'],1,0,'C');
+    $pdf->Cell(39,5,$linha['quantidade_diarias'],1,0,'C');
+
+    $pdf->Cell(40,5,"R$ ".number_format($linha['valor_total'],2,',','.'),1,1,'C');
+}
+/*    if($pessoaId == '')
     {
         $pessoaId   = $linha['pessoa_id'];
         $pessoaNome = $linha['pessoa_nm'];
