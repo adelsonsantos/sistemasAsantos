@@ -264,7 +264,7 @@ function GravarFormDiaria(frm)
 
     if(totalDiariasMensal > 15)
     {
-        if($('#cmbBeneficiario').val() == 2219 || $('#cmbBeneficiario').val() == 1550)
+        if($('#cmbBeneficiario').val() == 2219 || $('#cmbBeneficiario').val() == 1550 || $('#cmbBeneficiario').val() == 1788)
         {
             var dateInicio = "01/04/2018";
             var dateFim = "30/06/2018";
@@ -296,7 +296,6 @@ function GravarFormDiaria(frm)
                 return false;
             }
         }else {
-            alert($('#cmbBeneficiario').val());
             var qtdRestanteMes = 15 - parseFloat($('#QtdDiariaMes').val());
             qtdRestanteMes = qtdRestanteMes.toFixed(1);
             alert("BENEFICIÁRIO BLOQUEADO. Restando apenas " + qtdRestanteMes + " Diárias para atingir o limite total mensal.");
