@@ -264,7 +264,7 @@ function GravarFormDiaria(frm)
 
     if(totalDiariasMensal > 15)
     {
-        if($('#cmbBeneficiario').val() == 2219 || $('#cmbBeneficiario').val() == 1550 || $('#cmbBeneficiario').val() == 1788 || $('#cmbBeneficiario').val() == 2105)
+        if($('#cmbBeneficiario').val() == 2219 || $('#cmbBeneficiario').val() == 1550 || $('#cmbBeneficiario').val() == 1788 || $('#cmbBeneficiario').val() == 2105 || $('#cmbBeneficiario').val() == 1644)
         {
             var dateInicio = "01/04/2018";
             var dateFim = "30/06/2018";
