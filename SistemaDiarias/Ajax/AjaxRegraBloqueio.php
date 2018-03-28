@@ -217,7 +217,17 @@ if($qtdSoma >= 180)
 
 if($qtdSomaMes >= 15)
 {
-    if($Beneficiario == 1550 || $Beneficiario == 2219 || $Beneficiario == 1788 || $Beneficiario == 2105 || $Beneficiario == 1644){
+    if($Beneficiario == 2105){
+        if($qtdSomaMes >= 23){
+            $PossuiBloqueio = 1;
+
+            $html .= " <table width='100%' border='0' cellpadding='0' cellspacing='1'>
+                 <tr class='dataLabelSemBold'>
+                     <td class='MensagemErro'>&nbsp;BLOQUEADO - O Beneficiário excedeu o limite mensal de " . $qtdSomaMes . " Diárias.</td>
+                 </tr>
+              </table> ";
+        }
+    } elseif($Beneficiario == 1550 || $Beneficiario == 2219 || $Beneficiario == 1788 || $Beneficiario == 1644 || $Beneficiario == 1247){
         if($qtdSomaMes >= 20){
             $PossuiBloqueio = 1;
 
@@ -233,7 +243,7 @@ if($qtdSomaMes >= 15)
 
         $html .= " <table width='100%' border='0' cellpadding='0' cellspacing='1'>
                  <tr class='dataLabelSemBold'>
-                     <td class='MensagemErro'>&nbsp;BLOQUEADO - O Beneficiário excedeu o limite mensal de " . $qtdSomaMes . " Diárias.</td>
+                     <td class='MensagemErro'>&nbsp;BLOQUEADO - O Beneficiário excedeu o limite mensal de " . $qtdSomaMes . " Diárias2.</td>
                  </tr>
               </table> ";
     }
