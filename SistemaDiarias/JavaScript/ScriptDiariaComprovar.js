@@ -809,8 +809,8 @@ function CalcularComprovacao(datasaida, datachegada, horasaida, horachegada, ben
     $('#txtNovaChegada').val(datachegada);
     $('#txtAlterouCalculo'+controle).val(1);
     
-    valor = $('#txtValorReferencia').val();    
-    
+    valor = $('#txtValorReferencia').val();
+
     $.ajax
     ({
         type: 'POST',
