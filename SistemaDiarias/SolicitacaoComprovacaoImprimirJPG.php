@@ -456,7 +456,7 @@ include "Classe/ClasseDiariaImpressao.php";
                 </table>
             </fieldset>
         <?php } else {
-            $sqlRoteiro = "SELECT roteiro_origem, roteiro_destino FROM diaria.roteiro WHERE diaria_id = " . $Codigo;
+            $sqlRoteiro = "SELECT roteiro_origem, roteiro_destino FROM diaria.roteiro_comprovacao WHERE diaria_id = " . $Codigo;
 
             $rsRoteiro = pg_query(abreConexao(), $sqlRoteiro);
 
@@ -467,11 +467,11 @@ include "Classe/ClasseDiariaImpressao.php";
             $Meio = "";
 
             While ($linharsRoteiro = pg_fetch_assoc($rsRoteiro)) {
-                $sqlRoteiroOrigem = "SELECT * FROM dados_unico.municipio WHERE municipio_cd = " . $linharsRoteiro['roteiro_origem'];
+                $sqlRoteiroOrigem = "SELECT * FROM dados_unico.municipio WHERE municipio_cd = " . $linharsRoteiro['roteiro_comprovacao_origem'];
                 $rsRoteiroOrigem = pg_query(abreConexao(), $sqlRoteiroOrigem);
                 $linharsRoteiroOrigem = pg_fetch_assoc($rsRoteiroOrigem);
 
-                $sqlRoteiroDestino = "SELECT * FROM dados_unico.municipio WHERE municipio_cd = " . $linharsRoteiro['roteiro_destino'];
+                $sqlRoteiroDestino = "SELECT * FROM dados_unico.municipio WHERE municipio_cd = " . $linharsRoteiro['roteiro_comprovacao_destino'];
                 $rsRoteiroDestino = pg_query(abreConexao(), $sqlRoteiroDestino);
                 $linharsRoteiroDestino = pg_fetch_assoc($rsRoteiroDestino);
 
