@@ -279,7 +279,7 @@ include "Classe/ClasseDiariaImpressao.php";
                             $Final = " / " . $linharsRoteiroDestino['municipio_ds'] . " - (" . $linharsRoteiroDestino['estado_uf'] . ")";
                         }
 
-                       // $RoteiroComprovacao .= " " . $linharsRoteiroOrigem['municipio_ds'] . " - " . $linharsRoteiroOrigem['estado_uf'] ;
+                        // $RoteiroComprovacao .= " " . $linharsRoteiroOrigem['municipio_ds'] . " - " . $linharsRoteiroOrigem['estado_uf'] ;
                         $i++;
                     }
                     $RoteiroComprovacao = $Inicio . $Meio . $Final;
@@ -456,11 +456,7 @@ include "Classe/ClasseDiariaImpressao.php";
                 </table>
             </fieldset>
         <?php } else {
-<<<<<<< HEAD
             $sqlRoteiro = "SELECT roteiro_comprovacao_origem, roteiro_comprovacao_destino FROM diaria.roteiro_comprovacao WHERE diaria_id = " . $Codigo;
-=======
-            $sqlRoteiro = "SELECT roteiro_origem, roteiro_destino FROM diaria.roteiro_comprovacao WHERE diaria_id = " . $Codigo;
->>>>>>> 98ca826f0ee519e5a994e0627bbad96115a89993
 
             $rsRoteiro = pg_query(abreConexao(), $sqlRoteiro);
 
