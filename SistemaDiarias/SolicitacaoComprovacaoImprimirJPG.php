@@ -460,6 +460,12 @@ include "Classe/ClasseDiariaImpressao.php";
 
             $rsRoteiro = pg_query(abreConexao(), $sqlRoteiro);
 
+            $sqlEfetiva = "SELECT DIARIA_COMPROVACAO_DT_SAIDA, DIARIA_COMPROVACAO_HR_SAIDA, DIARIA_COMPROVACAO_DT_CHEGADA, DIARIA_COMPROVACAO_HR_CHEGADA, DIARIA_COMPROVACAO_VALOR_REF, DIARIA_COMPROVACAO_DESCONTO, DIARIA_COMPROVACAO_QTDE, DIARIA_COMPROVACAO_VALOR, DIARIA_COMPROVACAO_SALDO, DIARIA_COMPROVACAO_SALDO_TIPO
+                           FROM DIARIA.DIARIA_COMPROVACAO WHERE DIARIA_ID = " . $Codigo;
+
+            $rsEfetiva = pg_query(abreConexao(), $sqlEfetiva);
+            $linharsEfetiva = pg_fetch_assoc($rsEfetiva);
+
             $qtdDeRegistro = pg_num_rows($rsRoteiro);
             $Contador = $qtdDeRegistro;
             $i = 1;
@@ -558,12 +564,12 @@ include "Classe/ClasseDiariaImpressao.php";
                     <tbody>
                     <tr>
                         <td style="white-space: nowrap; text-align: center">
-                            <?= $DataPartida . " às " . $HoraPartida; ?>
+                            <?= $linharsEfetiva['diaria_comprovacao_dt_saida'] . " às " . $linharsEfetiva['diaria_comprovacao_hr_saida']; ?>
                             <hr>
                             <?= $DiaSemanaPartida; ?>
                         </td>
                         <td style="white-space: nowrap; text-align: center">
-                            <?= $DataChegada . " às " . $HoraChegada; ?>
+                            <?= $linharsEfetiva['diaria_comprovacao_dt_chegada'] . " às " . $linharsEfetiva['diaria_comprovacao_hr_chegada']; ?>
                             <hr>
                             <?= $DiaSemanaChegada; ?>
                         </td>
@@ -576,9 +582,9 @@ include "Classe/ClasseDiariaImpressao.php";
                                 <th class="th-left" style="white-space: nowrap; text-align: center">Unitário</th>
                                 </thead>
                                 <tbody>
-                                <td style="white-space: nowrap; text-align: center"><?= $Qtde; ?></td>
-                                <td style="white-space: nowrap; text-align: center"><?= $Valor; ?></td>
-                                <td style="white-space: nowrap; text-align: center"><?= $ValorRef; ?></td>
+                                <td style="white-space: nowrap; text-align: center"><?= $linharsEfetiva['diaria_comprovacao_qtde']; ?></td>
+                                <td style="white-space: nowrap; text-align: center"><?= $linharsEfetiva['diaria_comprovacao_valor']; ?></td>
+                                <td style="white-space: nowrap; text-align: center"><?= $linharsEfetiva['diaria_comprovacao_valor_ref']; ?></td>
                                 </tbody>
                             </table>
                         </td>
