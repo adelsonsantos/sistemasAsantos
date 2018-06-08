@@ -126,7 +126,6 @@ If (($_SESSION['PercentualRecebido'][$cont] == $PercentualRecebido) || ($_SESSIO
     }
     else
     {
-        $ValorReferencia = round($ValorReferencia);    
         $ValorTotal	= ($ValorReferencia)*((double)($NumeroDiarias));
 
         If ($Desconto == "on") //se checkbox desconto 50% marcado
@@ -134,8 +133,7 @@ If (($_SESSION['PercentualRecebido'][$cont] == $PercentualRecebido) || ($_SESSIO
             $ValorTotal = $ValorTotal/2;
         }
 
-        $ValorTotal = round($ValorTotal);                
-        $saldo      = ($ValorTotal - round($diariaValorOld));          	
+        $saldo      = ($ValorTotal - $diariaValorOld);
     }
     //CALCULAR SALDO
     if ($saldo == 0)
