@@ -150,7 +150,7 @@ If (($_SESSION['PercentualRecebido'][$cont] == $PercentualRecebido) || ($_SESSIO
         $saldo     = $saldo;
         $saldoTipo = "C";
     }
-        
+    
     //chama funcao que percorre o periodo da viagem para busca de feriados
     $PossuiFeriado   = f_PossuiFeriado($DataPartida,$DataChegada);
 

@@ -9,7 +9,8 @@ $numeroSD     = $_POST['numeroSd'];
 
 $sqlBloqueio    = "SELECT diaria_id, diaria_dt_chegada, diaria_st, diaria_numero,diaria_comprovada 
                      FROM diaria.diaria 
-                    WHERE ((diaria_st >= 3 ) AND (diaria_st <= 5)) 
+                    --WHERE ((diaria_st >= 3 ) AND (diaria_st <= 5)) 
+                    WHERE diaria_st in (3, 4, 5, 10) 
                       AND diaria_excluida = 0 
                       AND (diaria_beneficiario = " .$Beneficiario. ")
                       AND diaria_numero <> '$numeroSD'";
@@ -18,6 +19,7 @@ $rsBloqueio             = pg_query(abreConexao(),$sqlBloqueio);
 $ContadorAtraso         = 0;
 $ContadorVirtual        = 0;
 $PossuiBloqueio         = 0;
+$BloqueioSei            = 0;
 $NumeroDiariaVirtual    = "";
 $NumeroDiariaAtrasada   = "";
 
@@ -169,7 +171,7 @@ if(($dataPartida != '') && ($dataChegada != ''))
             $periodoConflito = $linhaConflito['diaria_dt_saida']." / ".$linhaConflito['diaria_dt_chegada'];   
         }        
     }
-    
+
     if(pg_num_rows($rsConflito) > 0)
     {
         $PossuiBloqueio = 1;

@@ -28,6 +28,9 @@ switch ($Status)
 		case 7:
 			$StatusNome = "Arquivada";
 			break;
+		case 10:
+			$StatusNome = "Aprovação de Comprovação SEI";
+			break;
 	} 
  
 	if (($linha['diaria_devolvida'] == "1") or ($diaria_devolvida == "1"))

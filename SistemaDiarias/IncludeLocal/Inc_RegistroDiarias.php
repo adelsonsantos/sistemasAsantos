@@ -144,7 +144,7 @@ echo"<td align='center' width='20'>";
 echo "</td>";
 
 echo"<td align='center' width='20'>";
-if(($diariaComprovada == "1")&&(($status >='4')&&($status <= '8')))
+if(($diariaComprovada == "1")&&(($status >='4')&&($status <= '10')))
 {
     echo "<a href='SolicitacaoComprovacaoImprimirJPG.php?cod=".$codigoRegistro."'; target='_blank';><img src='../Icones/ico_imprimir_jpg.png' border='0' alt='Imprimir Comprovação JPG'/></a>"	;
 }

@@ -29,6 +29,9 @@ switch ($linhaDiaria['diaria_st'])
     case 7:
         $StatusNome = "Arquivada";
         break;
+    case 10:
+        $StatusNome = "Comprovação Aprovação SEI";
+        break;
 }
 
 //TRATAMENTO DAS EXEÇÕES DO STATUS
@@ -56,5 +59,11 @@ if ($diaria_Excluida == 1)
 if (($Status == 100) && ($diariaLocal == "Coordenadoria" )) 
 {
     $StatusNome = "Pré Autorização";
-} 
+}
+
+if ($Status == 10)
+{
+    $StatusNome = "Comprovação Aprovação SEI";
+}
+
 ?>
