@@ -76,6 +76,10 @@
                                         {
                                             $StatusSolicitacao9 = "Selected";
                                         }                                        
+                                        elseif ($StatusSolicitacao == 10)
+                                        {
+                                            $StatusSolicitacao10 = "Selected";
+                                        }
 
                                         echo "<select name='cmbStatusSolicitacao' onchange='Redirect(document.Form);'>";
                                             echo "<option value='0' ".$StatusSolicitacao0.">Autoriza&ccedil;&atilde;o </option>";
@@ -88,6 +92,7 @@
                                             echo "<option value='7' ".$StatusSolicitacao7.">Arquivada </option>";
                                             echo "<option value='8' ".$StatusSolicitacao8.">Devolvida</option>";
                                             echo "<option value='9' ".$StatusSolicitacao9.">Excluida</option>";
+                                            echo "<option value='10' ".$StatusSolicitacao9.">Comprovação Aprovação SEI</option>";
                                         echo "</select>";
                                         ?>
                                         Ano                                        

@@ -179,6 +179,14 @@ include "Classe/ClasseDiariaConsultaGlobal.php";
                                                         }
                                                     }
 
+                                                    if($linhaConsulta['diaria_st'] == "10"){
+                                                        if($linhaConsulta['diaria_excluida'] == "0"){
+                                                            $StatusNome = "Comprovação Aprovação SEI";
+                                                        }else{
+                                                            $StatusNome = "Excluída";
+                                                        }
+                                                    }
+
                                                     echo "<td align='center'>".$Numero."</td>";
                                                     echo "<td align='left'>".substr($Nome,0,30)."</td>";
                                                     echo "<td align='center'>".$DataPartida." ".$HoraPartida."</td>";
