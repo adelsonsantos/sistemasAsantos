@@ -106,7 +106,8 @@ ElseIf ($AcaoSistema == "imprimir")
         $Processo               = $linhaConsulta['diaria_processo'];
         $Empenho 		= $linhaConsulta['diaria_empenho'];
         $DataEmpenho            = $linhaConsulta['diaria_dt_empenho'];
-	$TipoUsuario            = $linhaConsulta['funcionario_tipo_ds'];        
+	$TipoUsuario            = $linhaConsulta['funcionario_tipo_ds'];
+	$etapa                  = $linhaConsulta["etapa_id"];
 
         $DataDaSolicitacao      = f_FormataData($DataDaSolicitacao);
 	$ValorRef               = 'R$ '.number_format($ValorRef, 2, ',', '.');

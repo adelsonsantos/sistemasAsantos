@@ -199,14 +199,19 @@ include "Fpdf.php";
         </fieldset>
         <fieldset style="margin-top: 25px; width: 96%; margin-right: 10%">
             <legend>Projeto</legend>
-            <table class="table"
+
+                <table class="table"
                    style="width: 102%; margin-bottom: -11px; margin-left: -1%; px font-size: 13px;">
                 <thead>
                 <tr class="vendorListHeading">
                     <th class="th-left">Projeto</th>
                     <th class="th-left">Produto</th>
                     <th class="th-left">Território</th>
-                    <th class="th-left">Fonte</th>
+                    <th class="th-left">Fonte </th>
+                    <?php if($etapa !== "0"){
+                        echo "<th class='th-left'>Meta </th>".
+                             "<th class='th-left'>Etapa </th>";
+                    }?>
                 </tr>
                 </thead>
                 <tbody>
@@ -215,9 +220,20 @@ include "Fpdf.php";
                     <td><?=$Acao;?></td>
                     <td><?=$Territorio;?></td>
                     <td><?=$Fonte;?></td>
+                    <?php
+                    if($etapa !== "0"){
+                        $sqlEtapa = "select etapa_id, etapa_meta, etapa_codigo from diaria.etapa where etapa_id = ".$etapa;
+                        $rsEtapa = pg_query(abreConexao(),$sqlEtapa);
+                        $linharsEtapa = pg_fetch_assoc($rsEtapa);
+                        echo "<td>".$linharsEtapa['etapa_meta']." </td>".
+                             "<td>".$linharsEtapa['etapa_codigo']." </td>";
+                    }?>
                 </tr>
-                </tbody>
+            </tbody>
             </table>
+
+
+
         </fieldset>
 
         <fieldset style="margin-top: 25px; width: 96%; margin-right: 10%">
