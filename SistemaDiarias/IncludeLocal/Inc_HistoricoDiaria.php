@@ -65,7 +65,7 @@ if($linhaDiaria['diaria_st'] == '7')
     }
 }
 
-if(($linhaDiaria['diaria_st'] > '5')&&($linhaDiaria['diaria_st'] < '10'))
+if(($linhaDiaria['diaria_st'] > '5')&&($linhaDiaria['diaria_st'] < '11'))
 {
     /* Aprovação de Comprovação */
     $sqlHistorico = "SELECT to_char(diaria_aprovacao_dt,'DD/MM/YYYY') AS diaria_aprovacao_dt,
@@ -94,7 +94,7 @@ if(($linhaDiaria['diaria_st'] > '5')&&($linhaDiaria['diaria_st'] < '10'))
     }
 }
 
-if(($linhaDiaria['diaria_st'] > '3')&&($linhaDiaria['diaria_st'] < '10'))
+if(($linhaDiaria['diaria_st'] > '3')&&($linhaDiaria['diaria_st'] < '11'))
 {
     /* Comprovação */
     $sqlHistorico = "SELECT to_char(diaria_comprovacao_dt,'DD/MM/YYYY') AS diaria_comprovacao_dt, 
@@ -120,7 +120,7 @@ if(($linhaDiaria['diaria_st'] > '3')&&($linhaDiaria['diaria_st'] < '10'))
     }
 }
 
-if(($linhaDiaria['diaria_st'] > '2')&&($linhaDiaria['diaria_st'] < '10'))
+if(($linhaDiaria['diaria_st'] > '2')&&($linhaDiaria['diaria_st'] < '11'))
 {
     /* Execução */
     $sqlHistorico = "SELECT to_char(diaria_execucao_dt,'DD/MM/YYYY') AS diaria_execucao_dt,
@@ -146,7 +146,7 @@ if(($linhaDiaria['diaria_st'] > '2')&&($linhaDiaria['diaria_st'] < '10'))
     }
 }
 
-if(($linhaDiaria['diaria_st'] > '2')&&($linhaDiaria['diaria_st'] < '10'))
+if(($linhaDiaria['diaria_st'] > '2')&&($linhaDiaria['diaria_st'] < '11'))
 {
     /* Liquidação */
     $sqlHistorico  = "SELECT to_char(diaria_liquidacao_dt,'DD/MM/YYYY') AS diaria_liquidacao_dt,
@@ -172,7 +172,7 @@ if(($linhaDiaria['diaria_st'] > '2')&&($linhaDiaria['diaria_st'] < '10'))
     }
 }
 
-if(($linhaDiaria['diaria_st'] > '2')&&($linhaDiaria['diaria_st'] < '10'))
+if(($linhaDiaria['diaria_st'] > '2')&&($linhaDiaria['diaria_st'] < '11'))
 {
     /* Pré-Liquidação */
     $sqlHistorico = "SELECT to_char(diaria_preliquidacao_dt,'DD/MM/YYYY') AS diaria_preliquidacao_dt,
@@ -198,7 +198,7 @@ if(($linhaDiaria['diaria_st'] > '2')&&($linhaDiaria['diaria_st'] < '10'))
     }
 }
 
-if(($linhaDiaria['diaria_st'] > '1')&&($linhaDiaria['diaria_st'] < '10'))
+if(($linhaDiaria['diaria_st'] > '1')&&($linhaDiaria['diaria_st'] < '11'))
 {
     /* Empenho */
     $sqlHistorico = "SELECT to_char(diaria_dt_empenho,'DD/MM/YYYY') AS diaria_dt_empenho,
@@ -221,7 +221,7 @@ if(($linhaDiaria['diaria_st'] > '1')&&($linhaDiaria['diaria_st'] < '10'))
     }
 }
 
-if(($linhaDiaria['diaria_st'] > '0')&&($linhaDiaria['diaria_st'] < '10'))
+if(($linhaDiaria['diaria_st'] > '0')&&($linhaDiaria['diaria_st'] < '11'))
 {   
     /* Aprovação */
     if($linhaDiaria['diaria_st'] > '5')
