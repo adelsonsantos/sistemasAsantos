@@ -186,6 +186,13 @@ include "Classe/ClasseDiariaConsultaGlobal.php";
                                                             $StatusNome = "Excluída";
                                                         }
                                                     }
+                                                    if($linhaConsulta['diaria_st'] == "100"){
+                                                        if($linhaConsulta['diaria_excluida'] == "0"){
+                                                            $StatusNome = "Pré Autorização";
+                                                        }else{
+                                                            $StatusNome = "Excluída";
+                                                        }
+                                                    }
 
                                                     echo "<td align='center'>".$Numero."</td>";
                                                     echo "<td align='left'>".substr($Nome,0,30)."</td>";

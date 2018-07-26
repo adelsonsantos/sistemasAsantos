@@ -261,7 +261,7 @@ function Consultar()
                         territorio_cd,
                         fonte_cd,
                         diaria_st,
-                        diaria_valor_ref,
+                        d.diaria_valor_ref,
                         diaria_cancelada,
                         diaria_devolvida,
                         diaria_dt_criacao,

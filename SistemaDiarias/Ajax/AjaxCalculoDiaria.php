@@ -108,8 +108,62 @@ $_SESSION['HoraChegada'][$cont] = $HoraChegada;
     ElseIf ($PercentualRecebido == 1)
     {
         $ValorReferencia = (double)($ValorReferencia) + (double)($ValorReferencia);
-    }  
-    
+    }
+
+switch ($ValorReferencia) {
+    case '571,9' :
+        $ValorReferencia = '571';
+        break;
+    case '541,8' :
+        $ValorReferencia = '542';
+        break;
+    case '481,6' :
+        $ValorReferencia = '481';
+        break;
+    case '427,5' :
+        $ValorReferencia = '427';
+        break;
+    case '340,1' :
+        $ValorReferencia = '339';
+        break;
+    case '322,2' :
+        $ValorReferencia = '321';
+        break;
+    case '286,4' :
+        $ValorReferencia = '286';
+        break;
+    case '324,9' :
+        $ValorReferencia = '326';
+        break;
+    case '307,8' :
+        $ValorReferencia = '308';
+        break;
+    case '273,6' :
+        $ValorReferencia = '274';
+        break;
+    case '324.9' :
+        $ValorReferencia = '326';
+        break;
+    case '277,4' :
+        $ValorReferencia = '277';
+        break;
+    case '262,8' :
+        $ValorReferencia = '262';
+        break;
+    case '233,6' :
+        $ValorReferencia = '234';
+        break;
+    case '235,6' :
+        $ValorReferencia = '235';
+        break;
+    case '223,2' :
+        $ValorReferencia = '222';
+        break;
+    case '198,4' :
+        $ValorReferencia = '198';
+        break;
+}
+
     if($totalRoteiros > 0)
     {
         $ValorReferencia = $ValorReferencia;    
