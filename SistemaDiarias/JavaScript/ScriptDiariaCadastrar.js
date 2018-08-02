@@ -264,10 +264,10 @@ function GravarFormDiaria(frm)
 
     if(totalDiariasMensal > 15)
     {
-        if($('#cmbBeneficiario').val() == 2219 || $('#cmbBeneficiario').val() == 1550 || $('#cmbBeneficiario').val() == 1788 || $('#cmbBeneficiario').val() == 1644 || $('#cmbBeneficiario').val() == 1247 || $('#cmbBeneficiario').val() == 2105 || $('#cmbBeneficiario').val() == 1190 || $('#cmbBeneficiario').val() == 5588)
+        if($('#cmbBeneficiario').val() == 2219)
         {
-            var dateInicio = "01/04/2018";
-            var dateFim = "30/06/2018";
+            var dateInicio = "01/08/2018";
+            var dateFim = "30/09/2018";
             var periodoInicio = $('#dataPartida').val();
             var periodoFim = $('#dataChegada').val();
             var d1 = dateInicio.split("/");
@@ -281,7 +281,7 @@ function GravarFormDiaria(frm)
             var checkFim = new Date(cf[2], parseInt(cf[1])-1, cf[0]);
             if((checkInicio > from && checkInicio < to) && (checkFim > from && checkFim < to)){
                 if(totalDiariasMensal > 20){
-                    if($('#cmbBeneficiario').val() == 2105  || $('#cmbBeneficiario').val() == 1190 || $('#cmbBeneficiario').val() == 5588){
+                    if($('#cmbBeneficiario').val() == 2219){
                         if(totalDiariasMensal > 23){
                             var qtdRestanteMes = 23 - parseFloat($('#QtdDiariaMes').val());
                             qtdRestanteMes = qtdRestanteMes.toFixed(1);
