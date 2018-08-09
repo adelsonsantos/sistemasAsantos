@@ -281,6 +281,7 @@ function GravarFormDiaria(frm)
             var checkFim = new Date(cf[2], parseInt(cf[1])-1, cf[0]);
             if((checkInicio > from && checkInicio < to) && (checkFim > from && checkFim < to)){
                 if(totalDiariasMensal > 20){
+                alert('aquii');
                     if($('#cmbBeneficiario').val() == 2219){
                         if(totalDiariasMensal > 23){
                             var qtdRestanteMes = 23 - parseFloat($('#QtdDiariaMes').val());
@@ -299,19 +300,26 @@ function GravarFormDiaria(frm)
                 }
 
             }else {
-                var qtdRestanteMes = 15 - parseFloat($('#QtdDiariaMes').val());
-                qtdRestanteMes = qtdRestanteMes.toFixed(1);
-                alert("BENEFICIÁRIO BLOQUEADO. Restando apenas "+qtdRestanteMes+" Diárias para atingir o limite total mensal.");
-                $('#cmbBeneficiario').css('backgroundColor', 'B9DCFF');
-                return false;
+
+                    var qtdRestanteMes = 15 - parseFloat($('#QtdDiariaMes').val());
+                    qtdRestanteMes = qtdRestanteMes.toFixed(1);
+                    alert("BENEFICIÁRIO BLOQUEADO. Restando apenas " + qtdRestanteMes + " Diárias para atingir o limite total mensal.");
+                    $('#cmbBeneficiario').css('backgroundColor', 'B9DCFF');
+                    return false;
+
             }
         }
         else {
-            var qtdRestanteMes = 15 - parseFloat($('#QtdDiariaMes').val());
-            qtdRestanteMes = qtdRestanteMes.toFixed(1);
-            alert("BENEFICIÁRIO BLOQUEADO. Restando apenas " + qtdRestanteMes + " Diárias para atingir o limite total mensal.");
-            $('#cmbBeneficiario').css('backgroundColor', 'B9DCFF');
-            return false;
+
+            if($('#cmbBeneficiario').val() === 2303 || $('#cmbBeneficiario').val() === 1066 || $('#cmbBeneficiario').val() === 1869 || $('#cmbBeneficiario').val() === 1567){
+
+            } else {
+                var qtdRestanteMes = 15 - parseFloat($('#QtdDiariaMes').val());
+                qtdRestanteMes = qtdRestanteMes.toFixed(1);
+                alert("BENEFICIÁRIO BLOQUEADO. Restando apenas " + qtdRestanteMes + " Diárias para atingir o limite total mensal.");
+                $('#cmbBeneficiario').css('backgroundColor', 'B9DCFF');
+                return false;
+            }
         }
     }
 
