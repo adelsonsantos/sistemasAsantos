@@ -229,7 +229,7 @@ if($qtdSomaMes >= 15)
                  </tr>
               </table> ";
         }
-    } elseif($Beneficiario == 1550 || $Beneficiario == 2219 || $Beneficiario == 1788 || $Beneficiario == 1644 || $Beneficiario == 1247 || $Beneficiario == 5588 || $Beneficiario == 1190){
+    } elseif($Beneficiario == 2303 || $Beneficiario == 1550 || $Beneficiario == 2219 || $Beneficiario == 1788 || $Beneficiario == 1644 || $Beneficiario == 1247 || $Beneficiario == 5588 || $Beneficiario == 1190){
         if($qtdSomaMes >= 20){
             $PossuiBloqueio = 1;
 
