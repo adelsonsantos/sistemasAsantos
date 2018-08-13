@@ -544,8 +544,8 @@ include "Classe/ClasseDiariaImpressao.php";
                                 </thead>
                                 <tbody>
                                 <td style="white-space: nowrap; text-align: center"><?= $Qtde; ?></td>
-                                <td style="white-space: nowrap; text-align: center"><?= 'R$ ' . number_format($Valor, 2); ?></td>
-                                <td style="white-space: nowrap; text-align: center"><?= 'R$ ' . number_format($ValorRef, 2); ?></td>
+                                <td style="white-space: nowrap; text-align: center"><?= $Valor; ?></td>
+                                <td style="white-space: nowrap; text-align: center"><?= $ValorRef; ?></td>
                                 </tbody>
                             </table>
                         </td>
