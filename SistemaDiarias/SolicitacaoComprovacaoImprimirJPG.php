@@ -232,7 +232,7 @@ include "Classe/ClasseDiariaImpressao.php";
         if ($qtdeRoteiros > 0) {
             $controle = 0;
             while ($controle < $qtdeRoteiros) {
-                $sqlConsultaMultiplo = " SELECT drm.diaria_dt_saida,drm.diaria_hr_saida,drm.diaria_dt_chegada,drm.diaria_hr_chegada,drm.diaria_qtde, drm.diaria_valor, drm.diaria_desconto,
+                $sqlConsultaMultiplo = " SELECT  dc.diaria_comprovacao_valor_ref, drm.diaria_dt_saida,drm.diaria_hr_saida,drm.diaria_dt_chegada,drm.diaria_hr_chegada,drm.diaria_qtde, drm.diaria_valor, drm.diaria_desconto,
                                         drmc.dados_roteiro_comprovacao_id, drmc.diaria_comprovacao_dt_saida,drmc.diaria_comprovacao_hr_saida,drmc.diaria_comprovacao_dt_chegada,drmc.diaria_comprovacao_hr_chegada,drmc.diaria_comprovacao_qtde,drmc.diaria_comprovacao_valor,drmc.diaria_resumo_comprovacao,drmc.dados_roteiro_comprovacao_id,drmc.diaria_comprovacao_desconto,drmc.diaria_comprovacao_saldo,drmc.diaria_comprovacao_saldo_tipo,diaria_roteiro_comprovacao_complemento,
                                         dc.diaria_comprovacao_qtde AS qtde_total, dc.diaria_comprovacao_valor AS valor_total, dc.diaria_comprovacao_saldo AS saldo_total ,dc.diaria_comprovacao_saldo_tipo AS saldo_tipo_total
                                  FROM diaria.dados_roteiro_multiplo drm
@@ -332,7 +332,7 @@ include "Classe/ClasseDiariaImpressao.php";
                                     <tbody>
                                     <td style="white-space: nowrap; text-align: center"><?= $linhaConsultaMultiplo['diaria_qtde']; ?></td>
                                     <td style="white-space: nowrap; text-align: center"><?= 'R$ ' . number_format($linhaConsultaMultiplo['diaria_valor'], 2, ',', '.'); ?></td>
-                                    <td style="white-space: nowrap; text-align: center"><?= $ValorRef; ?></td>
+                                    <td style="white-space: nowrap; text-align: center"><?= '' .$ValorRef; ?></td>
                                     </tbody>
                                 </table>
                             </td>
@@ -371,7 +371,7 @@ include "Classe/ClasseDiariaImpressao.php";
                                     <tbody>
                                     <td style="white-space: nowrap; text-align: center"><?= $linhaConsultaMultiplo['diaria_comprovacao_qtde']; ?></td>
                                     <td style="white-space: nowrap; text-align: center"><?= 'R$ ' . number_format($linhaConsultaMultiplo['diaria_comprovacao_valor'], 2, ',', '.'); ?></td>
-                                    <td style="white-space: nowrap; text-align: center"><?= $ValorRef; ?></td>
+                                    <td style="white-space: nowrap; text-align: center"><?= 'R$ ' . number_format($linhaConsultaMultiplo['diaria_comprovacao_valor_ref'], 2); ?></td>
                                     </tbody>
                                 </table>
                             </td>
@@ -393,8 +393,8 @@ include "Classe/ClasseDiariaImpressao.php";
                                     <th class="th-left" style="white-space: nowrap; text-align: center">A Restituir</th>
                                     </thead>
                                     <tbody>
-                                    <td style="white-space: nowrap; text-align: center"><?= 'R$ ' . $saldoReceber; ?></td>
-                                    <td style="white-space: nowrap; text-align: center"><?= 'R$ ' . $saldoRestituir; ?></td>
+                                    <td style="white-space: nowrap; text-align: center"><?= 'R$ ' . number_format($saldoReceber, 2); ?></td>
+                                    <td style="white-space: nowrap; text-align: center"><?= 'R$ ' . number_format($saldoRestituir, 2); ?></td>
                                     </tbody>
                                 </table>
                             </td>
@@ -544,8 +544,8 @@ include "Classe/ClasseDiariaImpressao.php";
                                 </thead>
                                 <tbody>
                                 <td style="white-space: nowrap; text-align: center"><?= $Qtde; ?></td>
-                                <td style="white-space: nowrap; text-align: center"><?= $Valor; ?></td>
-                                <td style="white-space: nowrap; text-align: center"><?= $ValorRef; ?></td>
+                                <td style="white-space: nowrap; text-align: center"><?= 'R$ ' . number_format($Valor, 2); ?></td>
+                                <td style="white-space: nowrap; text-align: center"><?= 'R$ ' . number_format($ValorRef, 2); ?></td>
                                 </tbody>
                             </table>
                         </td>
@@ -583,8 +583,8 @@ include "Classe/ClasseDiariaImpressao.php";
                                 </thead>
                                 <tbody>
                                 <td style="white-space: nowrap; text-align: center"><?= $linharsEfetiva['diaria_comprovacao_qtde']; ?></td>
-                                <td style="white-space: nowrap; text-align: center"><?= $linharsEfetiva['diaria_comprovacao_valor']; ?></td>
-                                <td style="white-space: nowrap; text-align: center"><?= $linharsEfetiva['diaria_comprovacao_valor_ref']; ?></td>
+                                <td style="white-space: nowrap; text-align: center"><?= 'R$ ' . number_format($linharsEfetiva['diaria_comprovacao_valor'], 2); ?></td>
+                                <td style="white-space: nowrap; text-align: center"><?= 'R$ ' . number_format($linharsEfetiva['diaria_comprovacao_valor_ref'], 2); ?></td>
                                 </tbody>
                             </table>
                         </td>
