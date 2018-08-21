@@ -108,7 +108,7 @@ echo "<td width='20' align='center'>";
                 {
                     if($diariaDevolvida == "0")
                     {                       
-                        echo "<a href='SolicitacaoImprimirGER.php?cod=".$codigoRegistro."'; target='_blank';><img src='../Icones/ico_imprimir_ger.png' border='0' alt='Imprimir GER'/></a>";
+                        echo "<a href='http://sistemas.sefaz.ba.gov.br/sistemas/arasp/nt/modulos/dae/nt/dae_nt.aspx'; target='_blank';><img src='../Icones/ico_imprimir_ger.png' border='0' alt='Imprimir GER'/></a>";
                     }
                     else
                     {
