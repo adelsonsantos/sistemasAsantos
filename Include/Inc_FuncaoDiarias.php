@@ -363,10 +363,6 @@ function f_ValorReferencia($codigoEscolhido,$DataPartida)
 
         if (!empty($DataPartida))
         {
-            $NewDataPartida =  date_converter($DataPartida);
-            $dateDecreto = '2018-04-11';
-
-            if($NewDataPartida > $dateDecreto){
                 $sql1   =  "SELECT cv.classe_valor, classe_nm FROM dados_unico.cargo ca, diaria.classe cl, diaria.classe_valor cv  WHERE (ca.classe_id = cl.classe_id) AND cargo_id = '" .$CargoTemporario."' ";
                 $sql1  .= "AND (cl.classe_id = cv.classe_id) AND '".$DataPartida."' BETWEEN classe_valor_dt_vigencia_inicio AND classe_valor_dt_vigencia_fim";
                 $rs1    = pg_query(abreConexao(),$sql1);
@@ -379,20 +375,6 @@ function f_ValorReferencia($codigoEscolhido,$DataPartida)
                     $rs1    = pg_query(abreConexao(),$sql1);
                     $linha1 = pg_fetch_assoc($rs1);
                 }
-            }else{
-                $sql1   =  "SELECT cv.classe_valor, classe_nm FROM dados_unico.cargo ca, diaria.classe cl, diaria.classe_valor cv  WHERE (ca.classe_id = cl.classe_id) AND cargo_id = '" .$CargoTemporario."' ";
-                $sql1  .= "AND (cl.classe_id = cv.classe_id) AND '".$DataPartida."' BETWEEN classe_valor_dt_vigencia_inicio AND classe_valor_dt_vigencia_fim";
-                $rs1    = pg_query(abreConexao(),$sql1);
-                $linha1 = pg_fetch_assoc($rs1);
-
-                if (!$linha1)
-                {
-                    $sql1   = "SELECT cv.classe_valor, classe_nm FROM dados_unico.cargo ca, diaria.classe cl, diaria.classe_valor cv  WHERE (ca.classe_id = cl.classe_id) AND cargo_id = '" .$CargoTemporario."' ";
-                    $sql1  .="AND (cl.classe_id = cv.classe_id) AND classe_valor_st = 1 ";
-                    $rs1    = pg_query(abreConexao(),$sql1);
-                    $linha1 = pg_fetch_assoc($rs1);
-                }
-            }
         }
         else
         {
@@ -410,10 +392,6 @@ function f_ValorReferencia($codigoEscolhido,$DataPartida)
 
         if (!empty($DataPartida))
         {
-            $NewDataPartida =  date_converter($DataPartida);
-            $dateDecreto = '2018-04-11';
-
-            if($NewDataPartida > $dateDecreto){
                 $sql2   = "SELECT cv.classe_valor, classe_nm FROM dados_unico.cargo ca, diaria.classe cl, diaria.classe_valor cv  WHERE (ca.classe_id = cl.classe_id) AND cargo_id = '" .$CargoPermanente."' ";
                 $sql2  .="and (cl.classe_id = cv.classe_id) and '".$DataPartida."' between classe_valor_dt_vigencia_inicio and classe_valor_dt_vigencia_fim";
                 $rs2    = pg_query(abreConexao(),$sql2);
@@ -426,20 +404,6 @@ function f_ValorReferencia($codigoEscolhido,$DataPartida)
                     $rs2    = pg_query(abreConexao(),$sql2);
                     $linha2 = pg_fetch_assoc($rs2);
                 }
-            }else{
-                $sql2   = "SELECT cv.classe_valor, classe_nm FROM dados_unico.cargo ca, diaria.classe cl, diaria.classe_valor cv  WHERE (ca.classe_id = cl.classe_id) AND cargo_id = '" .$CargoPermanente."' ";
-                $sql2  .="and (cl.classe_id = cv.classe_id) and '".$DataPartida."' between classe_valor_dt_vigencia_inicio and classe_valor_dt_vigencia_fim";
-                $rs2    = pg_query(abreConexao(),$sql2);
-                $linha2 = pg_fetch_assoc($rs2);
-
-                if (!$linha2)
-                {
-                    $sql2   = "SELECT cv.classe_valor, classe_nm FROM dados_unico.cargo ca, diaria.classe cl, diaria.classe_valor cv  WHERE (ca.classe_id = cl.classe_id) AND cargo_id = '" .$CargoPermanente."' ";
-                    $sql2  .="and (cl.classe_id = cv.classe_id) and classe_valor_st = 1 ";
-                    $rs2    = pg_query(abreConexao(),$sql2);
-                    $linha2 = pg_fetch_assoc($rs2);
-                }
-            }
         }
         else
         {
