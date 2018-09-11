@@ -333,7 +333,7 @@ include "Classe/ClasseDiariaImpressao.php";
                                     <td style="white-space: nowrap; text-align: center"><?= $linhaConsultaMultiplo['diaria_qtde']; ?></td>
                                     <td style="white-space: nowrap; text-align: center"><?= 'R$ ' . number_format($linhaConsultaMultiplo['diaria_valor'], 2, ',', '.'); ?></td>
                                     <td style="white-space: nowrap; text-align: center">
-                                        <?= !empty($linhaConsultaMultiplo['solicitacaoreferencia']) ? number_format($linhaConsultaMultiplo['solicitacaoreferencia'], 2) : number_format($ValorRef, 2); ?>
+                                        <?= !empty($linhaConsultaMultiplo['solicitacaoreferencia']) ? number_format($linhaConsultaMultiplo['solicitacaoreferencia'], 2) : $ValorRef; ?>
                                     </td>
                                     </tbody>
                                 </table>
