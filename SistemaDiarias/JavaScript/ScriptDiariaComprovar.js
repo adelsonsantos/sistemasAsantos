@@ -826,7 +826,7 @@ function CalcularComprovacao(datasaida, datachegada, horasaida, horachegada, ben
             {
                 controle = 0;
             }  
-            if($('#roteiroExcluido'+controle).val() == 1)
+            if($('#roteiroExcluido'+controle).val() == 1)SolicitacaoComprovacaoImprimirJPG
             {
                 $('#roteiroExMsg'+controle).html('');
                 $('#roteiroExcluido'+controle).val(0);
