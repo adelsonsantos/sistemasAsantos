@@ -505,6 +505,8 @@ function Comprovar($PaginaLocal)
     $diariaDevolvida          = $_POST['diariaDevolvida'];    
     $valorRef                 = $_POST['txtNovoValorRef'];  
     $controle                 = $_POST['controleRoteiro'];
+
+
     
     if($diariaSt == '4')
     {
@@ -537,7 +539,8 @@ function Comprovar($PaginaLocal)
         $DataPartida  = $_POST['txtDataPartida'];
         $HoraPartida  = $_POST['txtHoraPartida'];
         $DataChegada  = $_POST['txtDataChegada'.$controleRoteiro];
-        $HoraChegada  = $_POST['txtHoraChegada'.$controleRoteiro];                        
+        $HoraChegada  = $_POST['txtHoraChegada'.$controleRoteiro];
+        $valorRef     = $_POST['txtNovoValorRef'.$controleRoteiro];
         $cont         = 0;
         $TxtResumo    = '';
         
@@ -572,6 +575,7 @@ function Comprovar($PaginaLocal)
                 $saldoValor[$cont]         = $_POST['txtSaldo'];
                 $saldoTipo[$cont]          = $_POST['txtSaldoTipo'];
                 $alterarRoteiro[$cont]     = $_POST['alterarRoteiro'];
+                $valorRef[$cont]           = $_POST['txtNovoValorRef'];
                 
                 If ($_POST['chkDesconto'] == "on") 
                 {
@@ -596,7 +600,8 @@ function Comprovar($PaginaLocal)
                 $saldoValor[$cont]         = $_POST['txtSaldo'.$cont];
                 $saldoTipo[$cont]          = $_POST['txtSaldoTipo'.$cont];
                 $alterarRoteiro[$cont]     = $_POST['alterarRoteiro'.$cont];
-                
+                $valorRef[$cont]           = $_POST['txtNovoValorRef'.$cont];
+
                 If ($_POST['chkDesconto'.$cont] == "on") 
                 {
                     $desconto[$cont] = "S";                    
@@ -609,7 +614,7 @@ function Comprovar($PaginaLocal)
                 $Desconto = $desconto[$cont];
             }          
             $cont ++;
-        } 
+        }
     }
     else
     {
@@ -625,8 +630,16 @@ function Comprovar($PaginaLocal)
         $TxtResumo          = TrataSqlInj($_POST['txtResumo']);
         $AlterarRoteiro     = $_POST['alterarRoteiro'];
         $RoteiroComplemento = $_POST['txtRoteiroComplemento'];
-    }   
-    
+        $valorRef           = $_POST['txtNovoValorRef'];
+    }
+
+
+    if($controle > 0){
+        $newValorRef = $valorRef[0];
+    }else{
+        $newValorRef = $_POST['txtNovoValorRef'];
+    }
+
     //VERIFICA SE O STATUS DA DI�RIA ESTA CORRETO
     if($diariaSt == '4')
     {
@@ -644,7 +657,7 @@ function Comprovar($PaginaLocal)
                                         diaria_comprovacao_hr, diaria_comprovacao_st, diaria_comprovacao_empenho, diaria_comprovacao_dt_empenho, 
                                         diaria_comprovacao_resumo, diaria_comprovacao_complemento, diaria_comprovacao_complemento_justificativa, diaria_comprovacao_relatorio, diaria_comprovacao_controle) 
                                 VALUES (".$codigo.", ".$_SESSION['UsuarioCodigo'].", '".$DataPartida."', '".$HoraPartida."', '".$DataChegada."', 
-                                        '".$HoraChegada."', '".$valorRef."', '".$Desconto."', '".$Qtde."', '".$Valor."', '".$justificativaFeriado."', 
+                                        '".$HoraChegada."', '".$newValorRef."', '".$Desconto."', '".$Qtde."', '".$Valor."', '".$justificativaFeriado."', 
                                         '".$justificativaFimSemana."', '".$Saldo."', '".$SaldoTipo."', '".$date."', '".$time."', NULL, NULL, NULL, 
                                         '".$TxtResumo."', 0, '".$complementoJustificativa."', NULL, $controle)";            
                         
@@ -661,7 +674,7 @@ function Comprovar($PaginaLocal)
                               diaria_comprovacao_hr_saida                   = '".$HoraPartida."',
                               diaria_comprovacao_dt_chegada                 = '".$DataChegada."',
                               diaria_comprovacao_hr_chegada                 = '".$HoraChegada."',
-                              diaria_comprovacao_valor_ref                  = '".$valorRef."',
+                              diaria_comprovacao_valor_ref                  = '".$newValorRef."',
                               diaria_comprovacao_desconto                   = '".$Desconto."',
                               diaria_comprovacao_qtde                       = '".$Qtde."',
                               diaria_comprovacao_valor                      = '".$Valor."',
@@ -694,7 +707,7 @@ function Comprovar($PaginaLocal)
                                     diaria_comprovacao_hr, diaria_comprovacao_st, diaria_comprovacao_empenho, diaria_comprovacao_dt_empenho, 
                                     diaria_comprovacao_resumo, diaria_comprovacao_complemento, diaria_comprovacao_complemento_justificativa, diaria_comprovacao_relatorio) 
                              VALUES (".$codigo.", ".$_SESSION['UsuarioCodigo'].", '".$DataPartida."', '".$HoraPartida."', '".$DataChegada."', 
-                                    '".$HoraChegada."', '".$valorRef."', '".$Desconto."', '".$Qtde."', '".$Valor."', '".$justificativaFeriado."', 
+                                    '".$HoraChegada."', '".$newValorRef."', '".$Desconto."', '".$Qtde."', '".$Valor."', '".$justificativaFeriado."', 
                                     '".$justificativaFimSemana."', '".$Saldo."', '".$SaldoTipo."', '".$date."', '".$time."', NULL, NULL, NULL, 
                                     '".$TxtResumo."', 0, '".$complementoJustificativa."', NULL)";       
         
@@ -722,7 +735,8 @@ function Comprovar($PaginaLocal)
                     controle_roteiro_comprovacao,
                     dados_roteiro_comprovacao_status,
                     diaria_comprovacao_saldo,
-                    diaria_comprovacao_saldo_tipo)
+                    diaria_comprovacao_saldo_tipo,
+                    diaria_comprovacao_valor_ref)
                 VALUES 
                 (
                     ".$codigo.",
@@ -738,7 +752,8 @@ function Comprovar($PaginaLocal)
                     $cont,
                     0,
                     '$saldoValor[$cont]',
-                    '$saldoTipo[$cont]'
+                    '$saldoTipo[$cont]',
+                    '$valorRef[$cont]'                  
                 )"; 
                 pg_query(abreConexao(), $sqlDadosRoteiro);
                 
@@ -830,7 +845,7 @@ function Comprovar($PaginaLocal)
                               diaria_comprovacao_hr_saida                   = '".$HoraPartida."',
                               diaria_comprovacao_dt_chegada                 = '".$DataChegada."',
                               diaria_comprovacao_hr_chegada                 = '".$HoraChegada."',
-                              diaria_comprovacao_valor_ref                  = '".$valorRef."',
+                              diaria_comprovacao_valor_ref                  = '".$newValorRef."',
                               diaria_comprovacao_desconto                   = '".$Desconto."',
                               diaria_comprovacao_qtde                       = '".$Qtde."',
                               diaria_comprovacao_valor                      = '".$Valor."',
@@ -885,7 +900,8 @@ function Comprovar($PaginaLocal)
                         diaria_resumo_comprovacao = '$txtResumo[$cont]',                        
                         dados_roteiro_comprovacao_status = 0,
                         diaria_comprovacao_saldo = '$saldoValor[$cont]',
-                        diaria_comprovacao_saldo_tipo = '$saldoTipo[$cont]'
+                        diaria_comprovacao_saldo_tipo = '$saldoTipo[$cont]',
+                        diaria_comprovacao_valor_ref = '$valorRef[$cont]'
                   WHERE diaria_id = ".$codigo."
                     AND controle_roteiro_comprovacao = $cont";                
      
