@@ -109,7 +109,7 @@ $_SESSION['HoraChegada'][$cont] = $HoraChegada;
     {
         $ValorReferencia = (double)($ValorReferencia) + (double)($ValorReferencia);
     }
-echo $ValorReferencia;
+
 switch ($ValorReferencia) {
     case '571,9' :
         $ValorReferencia = '571';

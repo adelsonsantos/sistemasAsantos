@@ -23,6 +23,25 @@ $BloqueioSei            = 0;
 $NumeroDiariaVirtual    = "";
 $NumeroDiariaAtrasada   = "";
 
+
+$sqlBloqueioFinanceiro ="SELECT pessoa_bloq_diaria from dados_unico.pessoa where pessoa_bloq_diaria = 1 and pessoa_id = ".$Beneficiario;
+
+$rsBloqueioFinanceiro = pg_query(abreConexao(),$sqlBloqueioFinanceiro);
+
+
+if(pg_num_rows($rsBloqueioFinanceiro) > 0)
+{
+    $PossuiBloqueio = 1;
+
+    $html = "<table width='100%' border='0' cellpadding='0' cellspacing='1'>
+                    <tr class='dataLabelSemBold'>
+                        <td class='MensagemErro'>&nbsp;BLOQUEADO - Servidor bloqueado pelo Financeiro.</td>
+                    </tr>
+                </table>";
+}
+
+
+
 if($diaria_id != '')
 {
     $condicaoAlteracao = " AND diaria_id <> ".$diaria_id." ";
