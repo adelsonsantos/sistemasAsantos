@@ -72,7 +72,7 @@ function Buscar()
                              JOIN diaria.diaria d
                                ON d.diaria_beneficiario = p.pessoa_id
                             WHERE (diaria_beneficiario = " . $_SESSION['UsuarioCodigo'] . " OR diaria_solicitante = " . $_SESSION['UsuarioCodigo'] . ") 
-                              AND diaria_excluida = 0 AND diaria_comprovada = 1 AND (diaria_st = 5) AND (pessoa_nm ILIKE '%".$RetornoFiltro."%' 
+                              AND diaria_excluida = 0 AND diaria_comprovada = 1 AND (diaria_st = 10) AND (pessoa_nm ILIKE '%".$RetornoFiltro."%' 
                                OR diaria_numero ILIKE '%".$RetornoFiltro."%') 
                          ORDER BY TO_DATE(diaria_dt_saida,'DD/MM/YYYY') DESC, diaria_hr_saida ASC";            
         } 
@@ -99,7 +99,7 @@ function Buscar()
                              JOIN diaria.diaria d
                                ON d.diaria_beneficiario = p.pessoa_id
                             WHERE (diaria_beneficiario = " . $_SESSION['UsuarioCodigo'] . " OR diaria_solicitante = " . $_SESSION['UsuarioCodigo'] . ") 
-                              AND diaria_excluida = 0 AND diaria_comprovada = 1 AND (diaria_st = 5) 
+                              AND diaria_excluida = 0 AND diaria_comprovada = 1 AND (diaria_st = 10) 
                          ORDER BY TO_DATE(diaria_dt_saida,'DD/MM/YYYY') DESC, diaria_hr_saida ASC";
         }
     }
@@ -127,7 +127,7 @@ function Buscar()
                                ON f.pessoa_id = p.pessoa_id
                              JOIN diaria.diaria d
                                ON d.diaria_beneficiario = p.pessoa_id
-                            WHERE diaria_excluida = 0 AND diaria_comprovada = 1 AND (diaria_st = 5) 
+                            WHERE diaria_excluida = 0 AND diaria_comprovada = 1 AND (diaria_st = 10) 
                               AND (pessoa_nm ILIKE '%".$RetornoFiltro."%' OR diaria_numero ILIKE '%".$RetornoFiltro."%') 
                               AND date_part('Year', diaria_dt_criacao) NOT IN (2011,2010)
                          ORDER BY TO_DATE(diaria_dt_saida,'DD/MM/YYYY') DESC, diaria_hr_saida ASC";
@@ -154,7 +154,7 @@ function Buscar()
                                ON f.pessoa_id = p.pessoa_id
                              JOIN diaria.diaria d
                                ON d.diaria_beneficiario = p.pessoa_id
-                            WHERE diaria_excluida = 0 AND diaria_comprovada = 1 AND (diaria_st = 5) 
+                            WHERE diaria_excluida = 0 AND diaria_comprovada = 1 AND (diaria_st = 10) 
                               AND date_part('Year', diaria_dt_criacao) NOT IN (2011,2010) 
                          ORDER BY TO_DATE(diaria_dt_saida,'DD/MM/YYYY') DESC, diaria_hr_saida ASC";
         }
@@ -512,7 +512,7 @@ function Comprovar($PaginaLocal)
     {
         $controleRoteiro = $_POST['controleRoteiro'];
     }
-    elseif($diariaSt == '5')
+    elseif($diariaSt == '10')
     {
         if($controle > 0)
         {
@@ -663,7 +663,7 @@ function Comprovar($PaginaLocal)
                         
             pg_query(abreConexao(), $sqlInsere);            
             //ALTERA O STATUS DA DI�RIA INDICANDO QUE A MESMA FOI COMPROVADA
-            $sqlAltera = "UPDATE diaria.diaria SET diaria_st = 5, diaria_comprovada = 1, diaria_devolvida = 0 WHERE diaria_id = " . $codigo;
+            $sqlAltera = "UPDATE diaria.diaria SET diaria_st = 10, diaria_comprovada = 1, diaria_devolvida = 0 WHERE diaria_id = " . $codigo;
             pg_query(abreConexao(), $sqlAltera);
         }
         else
@@ -695,7 +695,7 @@ function Comprovar($PaginaLocal)
         
             pg_query(abreConexao(), $sqlAltera);
             //ALTERA O STATUS DA DI�RIA INDICANDO QUE A MESMA FOI COMPROVADA
-            $sqlAltera = "UPDATE diaria.diaria SET diaria_st = 5, diaria_comprovada = 1, diaria_devolvida = 0 WHERE diaria_id = " . $codigo;
+            $sqlAltera = "UPDATE diaria.diaria SET diaria_st = 10, diaria_comprovada = 1, diaria_devolvida = 0 WHERE diaria_id = " . $codigo;
             pg_query(abreConexao(), $sqlAltera);
         }
         //INSERE A COMPROVA��O NA TABELA DE HIST�RICO
@@ -833,7 +833,7 @@ function Comprovar($PaginaLocal)
         }
         exit;
     }
-    elseif($diariaSt == '5')
+    elseif($diariaSt == '10')
     {        
         $BeginTrans = "BEGIN WORK";
         pg_query(abreConexao(), $BeginTrans);
