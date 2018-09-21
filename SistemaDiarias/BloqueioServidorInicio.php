@@ -164,7 +164,7 @@ include "../SistemaDiarias/Classe/ClasseBloqueioServidor.php";
                                     echo "<td height='40' align='center'>".$EstruturaAtuacao. "</td>";
                                     if($_SESSION['TipoUsuario'] != '32')
                                     {
-                                        echo "<td height='20' align='center'><a href=BloqueioServidorInicio.php?acao=alterarStatus&cod=".$Codigo. "&status=" .$StatusNumero. "><font color='#065387'>".$StatusNome. "</font></a></td>";
+                                        echo "<td height='20' align='center'><font color='#065387'>".$StatusNome. "</font></a></td>";
                                     }
                                     else
                                     {
