@@ -28,6 +28,11 @@ $sqlBloqueioFinanceiro ="SELECT pessoa_bloq_diaria from dados_unico.pessoa where
 
 $rsBloqueioFinanceiro = pg_query(abreConexao(),$sqlBloqueioFinanceiro);
 
+$sqlConsultaUltimoBloqueio = "SELECT * FROM diaria.bloqueio_servidor blo  WHERE (blo.pessoa_id = ".$Beneficiario.") order by bloqueio_servidor_id desc limit 1";
+$rsConsultaUltimoBloqueio  = pg_query(abreConexao(),$sqlConsultaUltimoBloqueio);
+$linha7             = pg_fetch_assoc($rsConsultaUltimoBloqueio);
+
+$descricaoBloqueio = $linha7['bloqueio_descricao'];
 
 if(pg_num_rows($rsBloqueioFinanceiro) > 0)
 {
@@ -35,7 +40,7 @@ if(pg_num_rows($rsBloqueioFinanceiro) > 0)
 
     $html = "<table width='100%' border='0' cellpadding='0' cellspacing='1'>
                     <tr class='dataLabelSemBold'>
-                        <td class='MensagemErro'>&nbsp;BLOQUEADO - Servidor bloqueado pelo Financeiro.</td>
+                        <td class='MensagemErro'>&nbsp;BLOQUEADO - $descricaoBloqueio.</td>
                     </tr>
                 </table>";
 }
