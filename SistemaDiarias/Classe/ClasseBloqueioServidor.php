@@ -221,6 +221,8 @@ ElseIf ($AcaoSistema == "consultar")
         $rsConsultaArquivo  = pg_query(abreConexao(),$sqlConsultaArquivo);
         $linha5             = pg_fetch_assoc($rsConsultaArquivo);
 
+
+
         if($linha5)
         {
             $Funcionario_id = $linha5['funcionario_id'];
@@ -231,6 +233,21 @@ ElseIf ($AcaoSistema == "consultar")
             $Posicao        = $linha5['posicao'];
         }
         //fim
+
+        $sqlConsultaOrganizacional = "SELECT * FROM dados_unico.est_organizacional est  WHERE (est.est_organizacional_id = ".$EstruturaAtuacao.")";
+        $rsConsultaOrganizacional  = pg_query(abreConexao(),$sqlConsultaOrganizacional);
+        $linha6             = pg_fetch_assoc($rsConsultaOrganizacional);
+
+        if($linha6){
+            $EstruturaSigla = $linha6['est_organizacional_sigla'];
+            $EstruturaDescricao = $linha6['est_organizacional_ds'];
+        }
+
+        $sqlConsultaUltimoBloqueio = "SELECT * FROM diaria.bloqueio_servidor blo  WHERE (blo.pessoa_id = ".$Codigo.") order by bloqueio_servidor_id desc limit 1";
+        $rsConsultaUltimoBloqueio  = pg_query(abreConexao(),$sqlConsultaUltimoBloqueio);
+        $linha7             = pg_fetch_assoc($rsConsultaUltimoBloqueio);
+
+        $descricaoBloqueio = $linha7['bloqueio_descricao'];
 
         //se pessoa possuir dados bancarios
         $sqlConsultaBanco = "SELECT *
@@ -254,11 +271,52 @@ ElseIf ($AcaoSistema == "consultar")
     }
 }
 
+ElseIf($AcaoSistema == "incluir"){
+    $Codigo      = $_POST['txtCodigo'];
+    $Bloqueio      = $_POST['txtBloqueio'];
+    $StatusCod	   = $_POST['txtStatus'];
+    $DataAlteracao = date("Y-m-d");
+    $dataHora = new DateTime();
+
+    if($StatusCod == 1){
+        $sqlConsultaUltimoBloqueio = "SELECT * FROM diaria.bloqueio_servidor blo  WHERE (blo.pessoa_id = ".$Codigo.")order by bloqueio_servidor_id desc limit 1";
+        $rsConsultaUltimoBloqueio  = pg_query(abreConexao(),$sqlConsultaUltimoBloqueio);
+        $linhaBloqueado             = pg_fetch_assoc($rsConsultaUltimoBloqueio);
+
+
+        if(!empty($linhaBloqueado)){
+            $sqlAltera = "UPDATE diaria.bloqueio_servidor SET pessoa_id = ".$Codigo.",bloqueio_data_hora = '" .$dataHora->format('Y-m-d H:i:s')."', bloqueio_descricao = '".$Bloqueio."', usuario_bloqueio = ".$_SESSION['UsuarioCodigo']." WHERE bloqueio_servidor_id = ".$linhaBloqueado['bloqueio_servidor_id'];
+
+            pg_query(abreConexao(),$sqlAltera);
+        }
+    }else{
+        $sqlAltera = "UPDATE dados_unico.pessoa SET pessoa_bloq_diaria = 1, pessoa_dt_alteracao = '" .$DataAlteracao."' WHERE pessoa_id = " .$Codigo;
+        pg_query(abreConexao(),$sqlAltera);
+
+        $sqlInsere = "INSERT INTO diaria.bloqueio_servidor (pessoa_id, bloqueio_descricao, usuario_bloqueio, bloqueio_data_hora ) VALUES (".$Codigo.", '".$Bloqueio."', ".$_SESSION['UsuarioCodigo'].", '".$dataHora->format('Y-m-d H:i:s')."')";
+        pg_query(abreConexao(), $sqlInsere);
+
+    }
+
+
+
+    If ($Err != 0)
+    { //error occurred
+        $bSuccess = False;
+    }
+    Else
+    {
+        $bSuccess = True;
+        echo "<script>window.location = 'BloqueioServidorInicio.php ';</script>";
+    }
+}
+
 Elseif ($AcaoSistema == "alterarStatus")
 {
     $DataAlteracao = date("Y-m-d");
     $Codigo 	   = $_GET['cod'];
     $StatusCod	   = $_GET['status'];
+    $dataHora = new DateTime();
 
     if ($StatusCod == 0)
     {
@@ -271,6 +329,13 @@ Elseif ($AcaoSistema == "alterarStatus")
 
     $sqlAltera = "UPDATE dados_unico.pessoa SET pessoa_bloq_diaria = " .$StatusCod.", pessoa_dt_alteracao = '" .$DataAlteracao."' WHERE pessoa_id = " .$Codigo;
     pg_query(abreConexao(),$sqlAltera);
+
+    $sqlConsultaUltimoBloqueio = "SELECT * FROM diaria.bloqueio_servidor blo  WHERE (blo.pessoa_id = ".$Codigo.")order by bloqueio_servidor_id desc limit 1";
+    $rsConsultaUltimoBloqueio  = pg_query(abreConexao(),$sqlConsultaUltimoBloqueio);
+    $linhaBloqueado             = pg_fetch_assoc($rsConsultaUltimoBloqueio);
+
+    $sqlAlteraBloqueio = "UPDATE diaria.bloqueio_servidor SET desbloqueio_data_hora = '" .$dataHora->format('Y-m-d H:i:s')."', usuario_desbloqueio = ".$_SESSION['UsuarioCodigo']." WHERE bloqueio_servidor_id = ".$linhaBloqueado['bloqueio_servidor_id'];
+    pg_query(abreConexao(),$sqlAlteraBloqueio);
 
     echo "<script>window.location = 'BloqueioServidorInicio.php ';</script>";
 }

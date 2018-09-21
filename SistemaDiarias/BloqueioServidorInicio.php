@@ -121,6 +121,7 @@ include "../SistemaDiarias/Classe/ClasseBloqueioServidor.php";
                                     <td height="20" width="443" align="left">Nome</td>
                                     <td height="20" width="130" align="center">Estrutura / Atua&ccedil;&atilde;o</td>
                                     <td height="20" width="140" align="center">Status</td>
+                                    <td height="20" width="40" colspan="2">&nbsp;Ações</td>
                                 </tr>
                                 <?php
                                 $paginaAtual = (int) $_GET['PaginaMostrada'];
@@ -156,15 +157,6 @@ include "../SistemaDiarias/Classe/ClasseBloqueioServidor.php";
                                     $CodigoRegistro = $Codigo;
 
                                     echo "<tr class='dataField' onMouseOver=javascript:this.style.backgroundColor='#cccccc' onMouseOut=javascript:this.style.backgroundColor='#f2f2f2'>";
-                                   /* if($_SESSION['TipoUsuario'] != '32')
-                                    {
-                                        include "../Include/Inc_Registro.php";
-                                    }
-                                    else
-                                    {
-                                        echo "<td width='20' align='center'><input type='checkbox' class='checkbox' name='checkbox' disabled='disabled'/></td>";
-                                        echo "<td width='20' align='center'><a href='".$PaginaLocal."Consultar.php?cod=".$CodigoRegistro."&acao=consultar&acaoTitulo=Consultar'><img src='../Icones/ico_consultar.png' alt='Consultar' border='0'></a></td>";
-                                    }*/
 
                                     echo "<td height='40'>" .$Matricula. "</td>";
                                     echo "<td height='40'>" .$Nome. "</font></td>";
@@ -178,6 +170,19 @@ include "../SistemaDiarias/Classe/ClasseBloqueioServidor.php";
                                     {
                                         echo "<td height='20' align='center'>$StatusNome</td>";
                                     }
+
+                                    echo $StatusNumero == "0" ?
+                                        "<td width='20' align='center'><img src='../Icones/ico_alterar_off.png' alt='Editar' border='0'/></td>" :
+                                        "<td width='20' align='center'><a href='BloqueioServidorCadastrar.php?cod=".$CodigoRegistro."&acao=consultar&acaoTitulo=Consultar'><img src='../Icones/ico_alterar.png' alt='Editar' border='0'/></td>" ;
+
+                                    echo $StatusNumero == "0" ?
+                                         "<td width='20' align='center'><a href='BloqueioServidorCadastrar.php?cod=".$CodigoRegistro."&acao=consultar&acaoTitulo=Consultar'><img src='../Icones/ico_bloquear.png' alt='Editar' border='0'/></td>" :
+                                         "<td width='20' align='center'><a href=BloqueioServidorInicio.php?acao=alterarStatus&cod=".$Codigo. "&status=" .$StatusNumero. "><img src='../Icones/ico_desbloquear.png' alt='Editar' border='0'/></td>";
+
+
+
+
+
                                     echo "</tr>";
 
                                     $qtdIndice++;
