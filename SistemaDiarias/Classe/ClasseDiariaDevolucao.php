@@ -44,7 +44,7 @@ ElseIf ($AcaoSistema == "devolver")
     {
         $sqlAltera = "UPDATE diaria.diaria SET diaria_st = 2, diaria_devolvida = 1 WHERE diaria_id = " . $Codigo;
     }
-    ElseIf($Status == 5)
+    ElseIf($Status == 10)
     {
         $sqlAltera = "UPDATE diaria.diaria SET diaria_st = 4, diaria_devolvida = 1 WHERE diaria_id = " . $Codigo;
         $sqlAnulaComprovacao = "UPDATE diaria.diaria_comprovacao SET diaria_comprovacao_st = 2 WHERE diaria_ id = ".$Codigo;
@@ -52,7 +52,7 @@ ElseIf ($AcaoSistema == "devolver")
     }
     ElseIf ($Status == 6) 
     {
-        $sqlAltera = "UPDATE diaria.diaria SET diaria_st = 5, diaria_devolvida = 1 WHERE diaria_id = " . $Codigo;
+        $sqlAltera = "UPDATE diaria.diaria SET diaria_st = 4, diaria_devolvida = 1 WHERE diaria_id = " . $Codigo;
     }
     ElseIf($Status == 100)
     {
