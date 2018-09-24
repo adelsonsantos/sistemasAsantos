@@ -157,7 +157,8 @@ include "Classe/ClasseDiariaImpressao.php";
                 <tbody>
                 <tr class="">
                     <td><?= $CPF; ?></td>
-                    <td><?= "Banco: " . $Banco . " - Agencia: " . $Agencia . " - CC: " . $Conta; ?></td>
+                    <?php $ContaTipo = $ContaTipo == 'C' ? 'CC' : 'CP'?>
+                    <td><?= "Banco: " . $Banco . " - Agencia: " . $Agencia . " - ".$ContaTipo.": " . $Conta; ?></td>
                 </tr>
                 </tbody>
             </table>

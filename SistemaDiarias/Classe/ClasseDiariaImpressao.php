@@ -243,6 +243,7 @@ if($linhaConsulta)
 
     $Agencia = $linharsDadosBancarios['dados_bancarios_agencia'];
     $Conta	 = $linharsDadosBancarios['dados_bancarios_conta'];
+    $ContaTipo	 = $linharsDadosBancarios['dados_bancarios_conta_tipo'];
 
     $sqlTransporte = "SELECT meio_transporte_ds FROM diaria.meio_transporte WHERE meio_transporte_id = ".$MeioTransporte;
     $rsTransporte = pg_query(abreConexao(),$sqlTransporte);
