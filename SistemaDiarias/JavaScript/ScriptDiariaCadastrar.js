@@ -310,15 +310,15 @@ function GravarFormDiaria(frm)
             }
         }
         else {
-            /*if($('#cmbBeneficiario').val() == 1822 || $('#cmbBeneficiario').val() == 1011 || $('#cmbBeneficiario').val() == 1891 || $('#cmbBeneficiario').val() == 1685 || $('#cmbBeneficiario').val() == 1628 || $('#cmbBeneficiario').val() == 2233 || $('#cmbBeneficiario').val() == 1644 ||$('#cmbBeneficiario').val() == 1788 || $('#cmbBeneficiario').val() == 2303 || $('#cmbBeneficiario').val() == 1066 || $('#cmbBeneficiario').val() == 1869 || $('#cmbBeneficiario').val() == 1567){
+            if($('#cmbBeneficiario').val() == 2402 || $('#cmbBeneficiario').val() == 1427 || $('#cmbBeneficiario').val() == 5567){
 
-            } else {*/
+            } else {
                 var qtdRestanteMes = 15 - parseFloat($('#QtdDiariaMes').val());
                 qtdRestanteMes = qtdRestanteMes.toFixed(1);
                 alert("BENEFICIÁRIO BLOQUEADO. Restando apenas " + qtdRestanteMes + " Diárias para atingir o limite total mensal.");
                 $('#cmbBeneficiario').css('backgroundColor', 'B9DCFF');
                 return false;
-          //  }
+            }
         }
     }
 

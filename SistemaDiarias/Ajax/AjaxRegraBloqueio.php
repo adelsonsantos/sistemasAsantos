@@ -253,7 +253,7 @@ if($qtdSomaMes >= 15)
                  </tr>
               </table> ";
         }
-    } /*elseif($Beneficiario == 1822 || $Beneficiario == 1891 || $Beneficiario == 1011 || $Beneficiario == 1011 || $Beneficiario == 1685 || $Beneficiario == 1628 || $Beneficiario == 2233 || $Beneficiario == 2303 || $Beneficiario == 1066 || $Beneficiario == 1869 || $Beneficiario == 1567 || $Beneficiario == 1550 || $Beneficiario == 2219 || $Beneficiario == 1788 || $Beneficiario == 1644 || $Beneficiario == 1247 || $Beneficiario == 5588 || $Beneficiario == 1190){*/
+    } elseif($Beneficiario == 2402 || $Beneficiario == 1427 || $Beneficiario == 5567){
         if($qtdSomaMes >= 20){
             $PossuiBloqueio = 1;
 
@@ -263,7 +263,7 @@ if($qtdSomaMes >= 15)
                  </tr>
               </table> ";
         }
-    //}
+    }
     else {
         $PossuiBloqueio = 1;
 
