@@ -208,6 +208,16 @@ if(($dataPartida != '') && ($dataChegada != ''))
     }
 }
 
+if(pg_num_rows($rsBloqueio) > 2){
+    $PossuiBloqueio = 1;
+
+    $html = "<table width='100%' border='0' cellpadding='0' cellspacing='1'>
+                <tr class='dataLabelSemBold'>
+                    <td class='MensagemErro'>&nbsp;BLOQUEADO - Beneficiário com comprovação pendente de comprovação no SEI. Número(s) da(s) SD: ".$NumeroDiariaVirtual."</td>
+                </tr>
+            </table>";
+}
+
 If ($ContadorVirtual > 2)
 {
     $PossuiBloqueio = 1;
