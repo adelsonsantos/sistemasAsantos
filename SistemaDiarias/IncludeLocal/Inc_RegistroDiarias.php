@@ -133,7 +133,7 @@ echo "<td width='20' align='center'>";
 echo "</td>";
 
 echo"<td align='center' width='20'>";
-    if(($diariaComprovada == "1")&&(($status >='4')&&($status <= '8')))
+    if(($diariaComprovada == "1")&&(($status >='4')&&($status <= '8') || ($status <= '10')))
     {
         echo "<a href='SolicitacaoComprovacaoImprimirPDF.php?cod=".$codigoRegistro."'; target='_blank';><img src='../Icones/ico_imprimir.png' border='0' alt='Imprimir Comprovação'/></a>"	;
     }
