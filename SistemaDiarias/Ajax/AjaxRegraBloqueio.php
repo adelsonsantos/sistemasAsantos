@@ -112,10 +112,10 @@ While($linha = pg_fetch_assoc($rsBloqueio))
     If ($linha['diaria_comprovada'] == "1")// diaria comprovada, mas nao autorizada nem aprovada
     {	
         $ContadorVirtual = $ContadorVirtual + 1;
-        $NumeroDiariaVirtual = $NumeroDiariaVirtual. "(" .$linha['diaria_numero']. ") ";
     }
     Else
-    {	
+    {
+
         $dataBanco = $linha['diaria_dt_chegada'];
         $dataBanco = explode("-", $dataBanco); 
         //A função mktime recebe os argumentos (hora, minuto, segundos, mes, dia, ano).
@@ -140,6 +140,7 @@ While($linha = pg_fetch_assoc($rsBloqueio))
             $NumeroDiariaAtrasada = $NumeroDiariaAtrasada."(" .$linha['diaria_numero'].") ";
         }
     }
+    $NumeroDiariaVirtual = $NumeroDiariaVirtual. "(" .$linha['diaria_numero']. ") ";
 }
 
 if(($dataPartida != '') && ($dataChegada != ''))
@@ -213,7 +214,7 @@ if(pg_num_rows($rsBloqueio) > 2){
 
     $html = "<table width='100%' border='0' cellpadding='0' cellspacing='1'>
                 <tr class='dataLabelSemBold'>
-                    <td class='MensagemErro'>&nbsp;BLOQUEADO - Beneficiário com comprovação pendente de comprovação no SEI. Número(s) da(s) SD: ".$NumeroDiariaVirtual."</td>
+                    <td class='MensagemErro'>&nbsp;BLOQUEADO - Beneficiário com pendência de comprovação. Número(s) da(s) SD(s): ".$NumeroDiariaVirtual."</td>
                 </tr>
             </table>";
 }
