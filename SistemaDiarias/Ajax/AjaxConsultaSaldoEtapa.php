@@ -81,7 +81,7 @@ if(($etapaAnt == '')||($etapaAnt == 0))
                     </table>"; 
         }
     }
-    elseif($valorReferencia < '115')
+    elseif($valorReferencia < '125')
     {
         $nivel                = 'medio';
         $saldoMedioInicial    = $linhaSaldo['saldo_medio_inicio'];
@@ -158,7 +158,7 @@ else
 
         if($valorRefAnt == $valorReferencia)
         {
-            if($valorReferencia > '114')
+            if($valorReferencia > '124')
             {
                 $nivel = 'superior';
                 $saldoSuperiorAntAtual = $linhaSaldoAnt['saldo_superior'] - (int)trim($valorDiariaAnt);
@@ -186,7 +186,7 @@ else
                             </table>"; 
                 }
             }
-            elseif($valorReferencia < '115')
+            elseif($valorReferencia < '125')
             {
                 $nivel = 'medio';                
                 $saldoMedioAntAtual = $linhaSaldoAnt['saldo_medio'] - (int)trim($valorDiariaAnt);
@@ -217,7 +217,7 @@ else
         }
         else
         {
-            if($valorRefAnt > '114')
+            if($valorRefAnt > '124')
             {
                 $nivelAnt              = 'superior';
                 $saldoSuperiorAntAtual = $linhaSaldoAnt['saldo_superior'] - (int)trim($valorDiariaAnt);
@@ -246,7 +246,7 @@ else
                             </table>"; 
                 }
             }
-            elseif($valorRefAnt < '115')
+            elseif($valorRefAnt < '125')
             {
                 $nivelAnt           = 'medio';
                 $saldoMedioAntAtual = $linhaSaldoAnt['saldo_medio'] - (int)trim($valorDiariaAnt);
@@ -281,7 +281,7 @@ else
     {
         if(($valorRefAnt == $valorReferencia)&&($valorDiaria != $valorDiariaAnt))
         {
-            if($valorReferencia > '114')
+            if($valorReferencia > '124')
             {
                 $nivel = 'superior';
                 
@@ -317,7 +317,7 @@ else
                             </table>"; 
                 }
             }
-            elseif($valorReferencia < '115')
+            elseif($valorReferencia < '125')
             {
                 $nivel = 'medio';
                 
@@ -356,7 +356,7 @@ else
         }
         elseif($valorRefAnt != $valorReferencia)
         {
-            if($valorRefAnt > '114')
+            if($valorRefAnt > '124')
             {
                 $nivelAnt              = 'superior';
                 $saldoSuperiorAntAtual = $linhaSaldo['saldo_superior'] - (int)trim($valorDiariaAnt);
@@ -385,7 +385,7 @@ else
                             </table>"; 
                 }
             }
-            elseif($valorRefAnt < '115')
+            elseif($valorRefAnt < '125')
             {
                 $nivelAnt           = 'medio';
                 $saldoMedioAntAtual = $linhaSaldo['saldo_medio'] - (int)trim($valorDiariaAnt);
