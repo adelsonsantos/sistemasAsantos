@@ -15,7 +15,7 @@ $linhaSaldo       = pg_fetch_assoc($rsConsultaSaldo);
 
 if(($etapaAnt == '')||($etapaAnt == 0))
 {
-    if($valorReferencia > '114')
+    if($valorReferencia > '124')
     {
         $nivel                = 'superior';  
         $saldoSuperiorInicial = $linhaSaldo['saldo_superior_inicio'];
