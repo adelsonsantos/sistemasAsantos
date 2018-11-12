@@ -162,8 +162,6 @@ include "Classe/ClasseDiariaImpressao.php";
                 </tr>
                 </tbody>
             </table>
-
-
         </fieldset>
         <fieldset style="margin-top: 25px; width: 96%; margin-right: 10%">
             <legend>Projeto</legend>
