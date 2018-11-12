@@ -132,7 +132,7 @@ if (isset($_GET["funcao"]))
                                                     {
                                                         echo "<td>&nbsp;<font color=\"#ff0000\">$StatusNome</font></td>";
                                                     }
-                                                    
+
                                                     if(substr($linhaDiaria['pessoa_fisica_cpf'],3,-10) == '.')
                                                     {                                                        
                                                         $chars = array(".","/","-");
