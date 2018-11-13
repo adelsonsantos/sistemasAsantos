@@ -275,26 +275,31 @@ function f_ComboFonte($codigoEscolhido, $Tamanho, $FuncaoJavaScript)
 
     while($linha=pg_fetch_assoc($rs))
     {
+
         if($codigoEscolhido === "")
         {
             if (($linha['fonte_padrao'])===1)
-            {
-                echo "<option value='" .$linha['fonte_cd']. "' selected>" .$linha['fonte_cd']. " - " .$linha['fonte_ds']. "</option>";
+            {   echo "<option value='" .$linha['fonte_cd']. "' selected>" .$linha['fonte_cd']. " - " .$linha['fonte_ds']. "</option>";
+
+
             }
             else
-            {
-                echo "<option value='"  .$linha['fonte_cd']. "'>" .$linha['fonte_cd']. " - "  .$linha['fonte_ds']. "</option>";
+            {  echo "<option value='"  .$linha['fonte_cd']. "'>" .$linha['fonte_cd']. " - "  .$linha['fonte_ds']. "</option>";
+
+
             }
         }
         else
         {
             if ($codigoEscolhido===($linha['fonte_cd']))
-            {
-                echo "<option value='".$linha['fonte_cd']. "' selected>" .$linha['fonte_cd']. " - " .$linha['fonte_ds']. "</option>";
+            {  echo "<option value='" .$linha['fonte_cd']. "' selected>" .$linha['fonte_cd']. " - " .$linha['fonte_ds']. "</option>";
+
+
             }
             else
-            {
-                echo "<option value='" .$linha['fonte_cd']. "' selected>" .$linha['fonte_cd']. " - " .$linha['fonte_ds']. "</option>";
+            { echo "<option value='" .$linha['fonte_cd']. "'>" .$linha['fonte_cd']. " - " .$linha['fonte_ds']. "</option>";
+
+
             }
         }
     }
