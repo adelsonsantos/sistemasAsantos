@@ -290,11 +290,11 @@ function f_ComboFonte($codigoEscolhido, $Tamanho, $FuncaoJavaScript)
         {
             if ($codigoEscolhido===($linha['fonte_cd']))
             {
-                echo "<option value='". $codigoEscolhido. "' selected>" .$linha['fonte_cd']. " - " .$linha['fonte_ds']. "</option>";
+                echo "<option value='".$linha['fonte_cd']. "' selected>" .$linha['fonte_cd']. " - " .$linha['fonte_ds']. "</option>";
             }
             else
             {
-                echo "<option value='" . $codigoEscolhido. "' selected>" .$linha['fonte_cd']. " - " .$linha['fonte_ds']. "</option>";
+                echo "<option value='" .$linha['fonte_cd']. "' selected>" .$linha['fonte_cd']. " - " .$linha['fonte_ds']. "</option>";
             }
         }
     }
