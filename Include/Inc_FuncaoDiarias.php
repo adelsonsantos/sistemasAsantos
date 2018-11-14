@@ -271,6 +271,8 @@ function f_ComboFonte($codigoEscolhido, $Tamanho, $FuncaoJavaScript)
     $sql = "SELECT * FROM diaria.fonte WHERE fonte_st = 0 ORDER BY fonte_cd";
     $rs=pg_query(abreConexao(),$sql);
     echo "<option value='0'>[--------------------------------------------------------------------------------------------------------- Selecione ---------------------------------------------------------------------------------------------------------]</option>";
+
+
     while($linha=pg_fetch_assoc($rs))
     {
 
