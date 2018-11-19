@@ -281,7 +281,7 @@ function GravarFormDiaria(frm)
             var checkFim = new Date(cf[2], parseInt(cf[1])-1, cf[0]);
             if((checkInicio > from && checkInicio < to) && (checkFim > from && checkFim < to)){
                 if(totalDiariasMensal > 20){
-                alert('aquii');
+
                     if($('#cmbBeneficiario').val() == 2219){
                         if(totalDiariasMensal > 23){
                             var qtdRestanteMes = 23 - parseFloat($('#QtdDiariaMes').val());
@@ -310,7 +310,7 @@ function GravarFormDiaria(frm)
             }
         }
         else {
-            if($('#cmbBeneficiario').val() == 2402 || $('#cmbBeneficiario').val() == 1427 || $('#cmbBeneficiario').val() == 5567){
+            if($('#cmbBeneficiario').val() == 2199){
 
             } else {
                 var qtdRestanteMes = 15 - parseFloat($('#QtdDiariaMes').val());
