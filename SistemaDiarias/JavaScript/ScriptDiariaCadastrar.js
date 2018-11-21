@@ -282,7 +282,7 @@ function GravarFormDiaria(frm)
             if((checkInicio > from && checkInicio < to) && (checkFim > from && checkFim < to)){
                 if(totalDiariasMensal > 20){
 
-                    if($('#cmbBeneficiario').val() == 2219){
+                    if($('#cmbBeneficiario').val() == 2219 || $('#cmbBeneficiario').val() == 5894){
                         if(totalDiariasMensal > 23){
                             var qtdRestanteMes = 23 - parseFloat($('#QtdDiariaMes').val());
                             qtdRestanteMes = qtdRestanteMes.toFixed(1);
