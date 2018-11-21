@@ -264,7 +264,7 @@ function GravarFormDiaria(frm)
 
     if(totalDiariasMensal > 15)
     {
-        if($('#cmbBeneficiario').val() == 2219 || $('#cmbBeneficiario').val() == 5894)
+        if($('#cmbBeneficiario').val() == 5894)
         {
             var dateInicio = "01/08/2018";
             var dateFim = "30/09/2018";
@@ -282,18 +282,18 @@ function GravarFormDiaria(frm)
             if((checkInicio > from && checkInicio < to) && (checkFim > from && checkFim < to)){
                 if(totalDiariasMensal > 20){
 
-                    if($('#cmbBeneficiario').val() == 2219 || $('#cmbBeneficiario').val() == 5894){
+                    if($('#cmbBeneficiario').val() == 5894){
                         if(totalDiariasMensal > 23){
                             var qtdRestanteMes = 23 - parseFloat($('#QtdDiariaMes').val());
                             qtdRestanteMes = qtdRestanteMes.toFixed(1);
-                            alert("BENEFICIÁRIO BLOQUEADO. Restando apenas "+qtdRestanteMes+" Diárias para atingir o limite total mensal.");
+                            alert("BENEFICIÁRIO BLOQUEADO. Restando apenas "+qtdRestanteMes+" Diárias para atingir o limite total mensal.0");
                             $('#cmbBeneficiario').css('backgroundColor', 'B9DCFF');
                             return false;
                         }
                     }else{
                         var qtdRestanteMes = 20 - parseFloat($('#QtdDiariaMes').val());
                         qtdRestanteMes = qtdRestanteMes.toFixed(1);
-                        alert("BENEFICIÁRIO BLOQUEADO. Restando apenas "+qtdRestanteMes+" Diárias para atingir o limite total mensal.");
+                        alert("BENEFICIÁRIO BLOQUEADO. Restando apenas "+qtdRestanteMes+" Diárias para atingir o limite total mensal.1");
                         $('#cmbBeneficiario').css('backgroundColor', 'B9DCFF');
                         return false;
                     }
@@ -303,19 +303,19 @@ function GravarFormDiaria(frm)
 
                     var qtdRestanteMes = 15 - parseFloat($('#QtdDiariaMes').val());
                     qtdRestanteMes = qtdRestanteMes.toFixed(1);
-                    alert("BENEFICIÁRIO BLOQUEADO. Restando apenas " + qtdRestanteMes + " Diárias para atingir o limite total mensal.");
+                    alert("BENEFICIÁRIO BLOQUEADO. Restando apenas " + qtdRestanteMes + " Diárias para atingir o limite total mensal.2");
                     $('#cmbBeneficiario').css('backgroundColor', 'B9DCFF');
                     return false;
 
             }
         }
         else {
-            if($('#cmbBeneficiario').val() == 2199 || $('#cmbBeneficiario').val() == 5894){
+            if($('#cmbBeneficiario').val() == 5894){
 
             } else {
                 var qtdRestanteMes = 15 - parseFloat($('#QtdDiariaMes').val());
                 qtdRestanteMes = qtdRestanteMes.toFixed(1);
-                alert("BENEFICIÁRIO BLOQUEADO. Restando apenas " + qtdRestanteMes + " Diárias para atingir o limite total mensal.");
+                alert("BENEFICIÁRIO BLOQUEADO. Restando apenas " + qtdRestanteMes + " Diárias para atingir o limite total mensal.3");
                 $('#cmbBeneficiario').css('backgroundColor', 'B9DCFF');
                 return false;
             }
