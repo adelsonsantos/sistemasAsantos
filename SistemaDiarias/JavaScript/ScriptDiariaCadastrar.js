@@ -264,7 +264,7 @@ function GravarFormDiaria(frm)
 
     if(totalDiariasMensal > 15)
     {
-        if($('#cmbBeneficiario').val() == 2219)
+        if($('#cmbBeneficiario').val() == 2219 || $('#cmbBeneficiario').val() == 5894)
         {
             var dateInicio = "01/08/2018";
             var dateFim = "30/09/2018";
@@ -310,7 +310,7 @@ function GravarFormDiaria(frm)
             }
         }
         else {
-            if($('#cmbBeneficiario').val() == 2199){
+            if($('#cmbBeneficiario').val() == 2199 || $('#cmbBeneficiario').val() == 5894){
 
             } else {
                 var qtdRestanteMes = 15 - parseFloat($('#QtdDiariaMes').val());
