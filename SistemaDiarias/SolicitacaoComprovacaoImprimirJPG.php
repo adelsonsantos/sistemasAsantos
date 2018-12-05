@@ -570,12 +570,12 @@ include "Classe/ClasseDiariaImpressao.php";
                         <td style="white-space: nowrap; text-align: center">
                             <?= $linharsEfetiva['diaria_comprovacao_dt_saida'] . " às " . $linharsEfetiva['diaria_comprovacao_hr_saida']; ?>
                             <hr>
-                            <?= $DiaSemanaPartida; ?>
+                            <?= diasemana($linharsEfetiva['diaria_comprovacao_dt_saida']);?>
                         </td>
                         <td style="white-space: nowrap; text-align: center">
                             <?= $linharsEfetiva['diaria_comprovacao_dt_chegada'] . " às " . $linharsEfetiva['diaria_comprovacao_hr_chegada']; ?>
                             <hr>
-                            <?= $DiaSemanaChegada; ?>
+                            <?=diasemana($linharsEfetiva['diaria_comprovacao_dt_chegada']);?>
                         </td>
                         <td style="white-space: nowrap; text-align: center">
                             <table class="table"
