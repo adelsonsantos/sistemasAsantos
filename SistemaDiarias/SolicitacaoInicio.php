@@ -102,7 +102,7 @@ else
                                                 $superSD          = $linhaDiaria['super_sd'];
                                                 $diariaLocal      = $linhaDiaria['diaria_local_solicitacao'];
 
-                                                if(strlen($nome)> 27){$nome = substr($nome, 0, 25).'...';}
+                                                if(strlen($nome)> 27){$nome = substr($nome,  0, 25).'...';}
 
                                                 include "IncludeLocal/Inc_StatusDiaria.php";
                                                 //var_dump($diariaDevolvida);
