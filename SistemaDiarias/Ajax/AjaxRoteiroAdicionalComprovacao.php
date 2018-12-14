@@ -273,7 +273,13 @@ $resultado = "  <input type='hidden' name='txtAlterouCalculo$cont' id='txtAltero
                                     <td height='21' width='199'>&nbsp;Dia da Semana</td>
                                 </tr>
                                 <tr class='dataField'>
-                                    <td height='21' width='80'><input id='dataPartida$cont' type='text' name='txtDataPartida$cont' maxlength='10' style=' width:75px;height:15px;'  value='".$dtSaida."' onchange='computeControle(this,1,$cont);PedeNovoCalculo($cont);'/></td>
+                                    <td height='21' width='80'><input id='dataPartida$cont' type='text' name='txtDataPartida$cont' maxlength='10' style=' width:75px;height:15px;'  value='".$dtSaida."' onchange='computeControle(this,1,$cont);PedeNovoCalculo($cont);'/>
+                                    
+                                    
+                                    <script>
+                                        var DtOld = document.getElementById('dataPartida$cont').value;
+                                    </script>
+                                    </td>
                                     <td height='21' width='20'><a href='#' onclick=\"javascript:displayCalendar(document.getElementById('dataPartida$cont'),'dd/mm/yyyy',this);\"><img src='../Icones/ico_calendario.gif' border='0' align='Mostrar Calendário' width='18' /></a></td>
                                     <td height='21' width='100'><input id='horaPartida$cont' type='text' name='txtHoraPartida$cont' maxlength='5' style=' width:75px;height:15px;' onkeyup='mascaraHora(this.value, document.Form.txtHoraPartida$cont);PedeNovoCalculo($cont);' onkeypress='mascaraNumero(event, this);' value='".$hrSaida."' onchange='PedeNovoCalculo($cont);'/></td>
                                     <td height='21' width='199'><input id='diaPartida$cont' type='text' name='txtPartidaSemana$cont' class='Oculto' value='".$diaSemanaSaida."'/></td>
@@ -342,7 +348,7 @@ $resultado = "  <input type='hidden' name='txtAlterouCalculo$cont' id='txtAltero
                                     </td>
                                 </tr>
                                 <tr class='dataLabelSemBold'>
-                                    <td height='21' width='798' colspan='7' align='right'><input id='calcular$cont' type='button' name='btnCalcular$cont' style='width:125px;height:18px;' value='Calcular Di&aacute;ria' onclick=\"Javascript:CalcularComprovacao($('#dataPartida$cont').val(), $('#dataChegada$cont').val(), $('#horaPartida$cont').val(), $('#horaChegada$cont').val(), ".$linhaDiaria['diaria_beneficiario'].", $('#chkDesconto$cont').is(':checked'), $('#txtDataAtual').val(), ".$valorDiariaPrevista.", $('#dataPartida$cont').val(), $cont);\"/></td>                                    
+                                    <td height='21' width='798' colspan='7' align='right'><input id='calcular$cont' type='button' name='btnCalcular$cont' style='width:125px;height:18px;' value='Calcular Di&aacute;ria' onclick=\"Javascript:CalcularComprovacao($('#dataPartida$cont').val(), $('#dataChegada$cont').val(), $('#horaPartida$cont').val(), $('#horaChegada$cont').val(), ".$linhaDiaria['diaria_beneficiario'].", $('#chkDesconto$cont').is(':checked'), $('#txtDataAtual').val(), ".$valorDiariaPrevista.", $('#dataPartida$cont').val(), $cont, DtOld);\"/></td>                                    
                                 </tr>
                             </table>
                             <table border='0' cellpadding='0' cellspacing='0' width='100%'>                

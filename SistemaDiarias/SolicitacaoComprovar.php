@@ -496,7 +496,8 @@ unset($_SESSION['Origem']);
                                                                                 <div id="diariaSaldo">
                                                                                     <table width="198" border="0" cellpadding="0" cellspacing="0">
                                                                                         <tr class="dataField">
-                                                                                            <?php                                                                                            
+                                                                                            <?php
+
                                                                                             if($linhaDiaria['diaria_comprovacao_saldo'] != '')
                                                                                             {
                                                                                                 $saldo = $linhaDiaria['diaria_comprovacao_saldo'];
@@ -509,6 +510,8 @@ unset($_SESSION['Origem']);
                                                                                             {
                                                                                                 $saldo = 'R$ 0,00';
                                                                                             }
+
+
                                                                                             if ($linhaDiaria['diaria_comprovacao_saldo_tipo'] == "D")
                                                                                             {                                                                                
                                                                                                 echo "<td height='21'>$saldo</td>";
@@ -527,13 +530,14 @@ unset($_SESSION['Origem']);
                                                                         </tr>
                                                                         <tr class="dataLabelSemBold">
                                                                             <td height="21" width="798" colspan="7" align="right">
-                                                                                <input id="calcular" type="button" name="btnCalcular" style=" width:125px;height:18px;" value="Calcular Di&aacute;ria" onclick="Javascript:CalcularComprovacao($('#dataPartida').val(), $('#dataChegada').val(), $('#horaPartida').val(), $('#horaChegada').val(), <?=$linhaDiaria['diaria_beneficiario']?>, $('#chkDesconto').is(':checked'), $('#txtDataAtual').val(), <?=$linhaDiaria['diaria_valor']?>, $('#dataPartida').val(),'');"/>
+                                                                                <input id="calcular" type="button" name="btnCalcular" style=" width:125px;height:18px;" value="Calcular Di&aacute;ria" onclick="Javascript:CalcularComprovacao($('#dataPartida').val(), $('#dataChegada').val(), $('#horaPartida').val(), $('#horaChegada').val(), <?=$linhaDiaria['diaria_beneficiario']?>, $('#chkDesconto').is(':checked'), $('#txtDataAtual').val(), <?=$linhaDiaria['diaria_valor']?>, $('#dataPartida').val(),'', 0);"/>
                                                                             </td>                                                                            
                                                                         </tr>
                                                                     </table>
                                                                     <?php
                                                                     if($controleRoteiro > 0)
                                                                     {
+
                                                                         include "../Include/Inc_Linha.php";
                                                                     ?>
                                                                         <table width="798" border="0" cellpadding="1" cellspacing="1">   
@@ -644,7 +648,7 @@ unset($_SESSION['Origem']);
                                                     <table width="798" border="0" cellpadding="1" cellspacing="1">                                                
                                                         <tr class="dataField"> 
                                                             <td height="21" colspan="2">
-                                                                <input type="checkbox" name="chkComplemento" id="chkComplemento" class="checkbox" onclick="Javascript:CalcularComprovacao($('#dataPartida').val(), $('#dataChegada').val(), $('#horaPartida').val(), $('#horaChegada').val(), <?=$linhaDiaria['diaria_beneficiario']?>, $('#chkDesconto').is(':checked'), $('#txtDataAtual').val(), <?=$linhaDiaria['diaria_valor']?>,$('#dataPartida').val(),'');"/>&nbsp;Complemento de di&aacute;ria, conforme Art. 4&deg; par&aacute;grafo 2&deg; do DECRETO N&deg; 5.910 de Outubro de 1996.
+                                                                <input type="checkbox" name="chkComplemento" id="chkComplemento" class="checkbox" onclick="Javascript:CalcularComprovacao($('#dataPartida').val(), $('#dataChegada').val(), $('#horaPartida').val(), $('#horaChegada').val(), <?=$linhaDiaria['diaria_beneficiario']?>, $('#chkDesconto').is(':checked'), $('#txtDataAtual').val(), <?=$linhaDiaria['diaria_valor']?>,$('#dataPartida').val(),'', 0);"/>&nbsp;Complemento de di&aacute;ria, conforme Art. 4&deg; par&aacute;grafo 2&deg; do DECRETO N&deg; 5.910 de Outubro de 1996.
                                                             </td>
                                                         </tr>
                                                         <tr class="dataLabel">

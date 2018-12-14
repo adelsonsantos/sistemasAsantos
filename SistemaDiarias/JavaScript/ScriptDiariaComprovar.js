@@ -354,8 +354,7 @@ function AdicionarDadosRoteiro(controle)
     var cmbUfOrigem         = $('#cmbRoteiroOrigemUF'+controle).val();    
     var cmbUfDestino        = $('#cmbRoteiroDestinoUF'+controle).val();
     var controleOrigem      = $('#hdnControleOrigem'+controle).val();    
-    var controleDestino     = $('#hdnControleDestino'+controle).val();  
-    
+    var controleDestino     = $('#hdnControleDestino'+controle).val();
     if ($('#cmbRoteiroOrigemMunicipio'+controle).val() == $('#cmbRoteiroDestinoMunicipio'+controle).val())
     {
         alert("ORIGEM e DESTINO são iguais.");
@@ -624,16 +623,24 @@ $(document).ready(function()
 
 });        
 
-function CalcularComprovacao(datasaida, datachegada, horasaida, horachegada, beneficiario, desconto, dataatual, valorOld, dataSolicitacao, controle)
+function CalcularComprovacao(datasaida, datachegada, horasaida, horachegada, beneficiario, desconto, dataatual, valorOld, dataSolicitacao, controle, dtSaida)
 {    
     $('#reCalcular'+controle).val('1');
     $('#txtAlterouRoteiro'+controle).val('0');
-    
+    console.log(dtSaida);
+
+
     var valor;   
     var ExisteCampo; 
     var percentual;
     var dataSaidaSolicitada = $('#txtDataSaidaSolicitada').val();
-    
+
+    if(datasaida<dtSaida){
+        alert("A Partida REALIZADA não pode ser MENOR que a Partida PREVISTA.");
+        $('#dataPartida'+controle).focus();
+        return false;
+    }
+
     if(desconto == true)
     {
         desconto = "on";
