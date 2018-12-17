@@ -627,8 +627,6 @@ function CalcularComprovacao(datasaida, datachegada, horasaida, horachegada, ben
 {    
     $('#reCalcular'+controle).val('1');
     $('#txtAlterouRoteiro'+controle).val('0');
-    console.log(dtSaida);
-
 
     var valor;   
     var ExisteCampo; 
@@ -667,15 +665,15 @@ function CalcularComprovacao(datasaida, datachegada, horasaida, horachegada, ben
     data2 = datachegada.substring(0,2)+"/"+datachegada.substring(3,5)+"/"+datachegada.substring(6,10);
     data3 = dataatual.substring(0,2)+"/"+dataatual.substring(3,5)+"/"+dataatual.substring(6,10);
     data4 = dtSaida.substring(0,2)+"/"+dtSaida.substring(3,5)+"/"+dtSaida.substring(6,10);
-    
+
     dataSaidaSolicitada = dataSaidaSolicitada.substring(0,2)+"/"+dataSaidaSolicitada.substring(3,5)+"/"+dataSaidaSolicitada.substring(6,10);
     
     data1 = parseInt(data1.split("/")[2].toString()+data1.split("/")[1].toString()+data1.split("/")[0].toString());
     data2 = parseInt(data2.split("/")[2].toString()+data2.split("/")[1].toString()+data2.split("/")[0].toString());
     data3 = parseInt(data3.split("/")[2].toString()+data3.split("/")[1].toString()+data3.split("/")[0].toString());
-    
-    dataSaidaSolicitada = parseInt(dataSaidaSolicitada.split("/")[2].toString()+dataSaidaSolicitada.split("/")[1].toString()+dataSaidaSolicitada.split("/")[0].toString());
+    data4 = parseInt(data4.split("/")[2].toString()+data4.split("/")[1].toString()+data4.split("/")[0].toString());
 
+    dataSaidaSolicitada = parseInt(dataSaidaSolicitada.split("/")[2].toString()+dataSaidaSolicitada.split("/")[1].toString()+dataSaidaSolicitada.split("/")[0].toString());
 
     if(data1<data4){
         alert("A Partida REALIZADA não pode ser MENOR que a Partida PREVISTA.");
