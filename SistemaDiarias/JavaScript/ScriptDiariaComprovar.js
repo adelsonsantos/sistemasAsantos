@@ -671,7 +671,7 @@ function CalcularComprovacao(datasaida, datachegada, horasaida, horachegada, ben
     data1 = parseInt(data1.split("/")[2].toString()+data1.split("/")[1].toString()+data1.split("/")[0].toString());
     data2 = parseInt(data2.split("/")[2].toString()+data2.split("/")[1].toString()+data2.split("/")[0].toString());
     data3 = parseInt(data3.split("/")[2].toString()+data3.split("/")[1].toString()+data3.split("/")[0].toString());
-    data4 = parseInt(data4.split("/")[2].toString()+data4.split("/")[1].toString()+data4.split("/")[0].toString());
+   // data4 = parseInt(data4.split("/")[2].toString()+data4.split("/")[1].toString()+data4.split("/")[0].toString());
 
     dataSaidaSolicitada = parseInt(dataSaidaSolicitada.split("/")[2].toString()+dataSaidaSolicitada.split("/")[1].toString()+dataSaidaSolicitada.split("/")[0].toString());
 
