@@ -632,7 +632,7 @@ function CalcularComprovacao(datasaida, datachegada, horasaida, horachegada, ben
     var ExisteCampo; 
     var percentual;
     var dataSaidaSolicitada = $('#txtDataSaidaSolicitada').val();
-
+    console.log(dataatual);
 
 
     if(desconto == true)
@@ -664,7 +664,7 @@ function CalcularComprovacao(datasaida, datachegada, horasaida, horachegada, ben
     data1 = datasaida.substring(0,2)+"/"+datasaida.substring(3,5)+"/"+datasaida.substring(6,10);
     data2 = datachegada.substring(0,2)+"/"+datachegada.substring(3,5)+"/"+datachegada.substring(6,10);
     data3 = dataatual.substring(0,2)+"/"+dataatual.substring(3,5)+"/"+dataatual.substring(6,10);
-    data4 = dtSaida.substring(0,2)+"/"+dtSaida.substring(3,5)+"/"+dtSaida.substring(6,10);
+  //  data4 = dtSaida.substring(0,2)+"/"+dtSaida.substring(3,5)+"/"+dtSaida.substring(6,10);
 
     dataSaidaSolicitada = dataSaidaSolicitada.substring(0,2)+"/"+dataSaidaSolicitada.substring(3,5)+"/"+dataSaidaSolicitada.substring(6,10);
     
@@ -674,12 +674,12 @@ function CalcularComprovacao(datasaida, datachegada, horasaida, horachegada, ben
    // data4 = parseInt(data4.split("/")[2].toString()+data4.split("/")[1].toString()+data4.split("/")[0].toString());
 
     dataSaidaSolicitada = parseInt(dataSaidaSolicitada.split("/")[2].toString()+dataSaidaSolicitada.split("/")[1].toString()+dataSaidaSolicitada.split("/")[0].toString());
-
+/*
     if(data1<data4){
         alert("A Partida REALIZADA não pode ser MENOR que a Partida PREVISTA.");
         $('#dataPartida'+controle).focus();
         return false;
-    }
+    }*/
 
     if (data2<data1)
     {
