@@ -237,7 +237,7 @@ if (isset($_GET["funcao"]))
                                                 <table width="798" border="0" cellpadding="0" cellspacing="1">
                                                     <tr class="dataLabel">
                                                         <td height="21" width="100">&nbsp;Redu&ccedil;&atilde;o 50%</td>
-                                                        <td height="21" width="102">&nbsp;Qtde D&aacute;rais</td>
+                                                        <td height="21" width="102">&nbsp;Qtde Di&aacute;rias</td>
                                                         <td height="21" width="195">&nbsp;Valor Refer&ecirc;ncia</td>
                                                         <td height="21" width="98">&nbsp;Valor</td>
                                                         <td>&nbsp;</td>
