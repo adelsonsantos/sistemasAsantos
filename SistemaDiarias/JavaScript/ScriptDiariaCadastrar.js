@@ -282,7 +282,7 @@ function GravarFormDiaria(frm)
             if((checkInicio > from && checkInicio < to) && (checkFim > from && checkFim < to)){
                 if(totalDiariasMensal > 20){
 
-                    if($('#cmbBeneficiario').val() == 5894){
+                    if($('#cmbBeneficiario').val() == 5894 ||$('#cmbBeneficiario').val() == 4808 ){
                         if(totalDiariasMensal > 23){
                             var qtdRestanteMes = 23 - parseFloat($('#QtdDiariaMes').val());
                             qtdRestanteMes = qtdRestanteMes.toFixed(1);
@@ -310,9 +310,9 @@ function GravarFormDiaria(frm)
             }
         }
         else {
-            if($('#cmbBeneficiario').val() == 5894 || $('#cmbBeneficiario').val() == 2219 || $('#cmbBeneficiario').val() == 1247 || $('#cmbBeneficiario').val() == 2105 || $('#cmbBeneficiario').val() == 1294 ){
+            if ($('#cmbBeneficiario').val() == 5894 || $('#cmbBeneficiario').val() == 2219 || $('#cmbBeneficiario').val() == 1247 || $('#cmbBeneficiario').val() == 1841 || $('#cmbBeneficiario').val() == 3122 ){
 
-            } else {
+                } else {
                 var qtdRestanteMes = 15 - parseFloat($('#QtdDiariaMes').val());
                 qtdRestanteMes = qtdRestanteMes.toFixed(1);
                 alert("BENEFICIÁRIO BLOQUEADO. Restando apenas " + qtdRestanteMes + " Diárias para atingir o limite total mensal.3");
