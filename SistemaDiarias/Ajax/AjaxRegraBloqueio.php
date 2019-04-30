@@ -254,7 +254,7 @@ if($qtdSoma >= 180)
 
 if($qtdSomaMes >= 15)
 {
-    if($Beneficiario == 5894 || $Beneficiario == 2219 || $Beneficiario == 1247 || $Beneficiario ==1841 || $Beneficiario ==3122){
+    if($Beneficiario == 5894 || $Beneficiario == 2219 || $Beneficiario == 1247 || $Beneficiario ==1841 || $Beneficiario ==3122 || $Beneficiario ==4985){
         if($qtdSomaMes >= 23){
             $PossuiBloqueio = 1;
 
