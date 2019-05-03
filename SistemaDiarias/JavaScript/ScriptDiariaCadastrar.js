@@ -310,7 +310,7 @@ function GravarFormDiaria(frm)
             }
         }
         else {
-            if ($('#cmbBeneficiario').val() == 5894 || $('#cmbBeneficiario').val() == 2219 || $('#cmbBeneficiario').val() == 1247 || $('#cmbBeneficiario').val() == 1841 || $('#cmbBeneficiario').val() == 3122 || $('#cmbBeneficiario').val() == 4985 ){
+            if ($('#cmbBeneficiario').val() == 5894 || $('#cmbBeneficiario').val() == 2219  ){
 
                 } else {
                 var qtdRestanteMes = 15 - parseFloat($('#QtdDiariaMes').val());
