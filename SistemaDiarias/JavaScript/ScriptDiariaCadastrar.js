@@ -310,7 +310,7 @@ function GravarFormDiaria(frm)
             }
         }
         else {
-            if($('#cmbBeneficiario').val() == 5894 ){
+            if($('#cmbBeneficiario').val() == 5894 || $('#cmbBeneficiario').val() == 3819 ){
                 } else {
                 var qtdRestanteMes = 15 - parseFloat($('#QtdDiariaMes').val());
                 qtdRestanteMes = qtdRestanteMes.toFixed(1);
