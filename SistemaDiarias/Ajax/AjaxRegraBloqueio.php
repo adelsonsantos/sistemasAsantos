@@ -254,7 +254,7 @@ if($qtdSoma >= 180)
 
 if($qtdSomaMes >= 15)
 {
-    if($Beneficiario == 5894 || $Beneficiario == 3819){
+    if($Beneficiario == 5894 ){
         if($qtdSomaMes >= 23){
             $PossuiBloqueio = 1;
 
@@ -264,7 +264,7 @@ if($qtdSomaMes >= 15)
                  </tr>
               </table> ";
         }
-    } elseif($Beneficiario == 5894 || $Beneficiario == 3819){
+    } elseif($Beneficiario == 5894 ){
         if($qtdSomaMes >= 20){
             $PossuiBloqueio = 1;
 

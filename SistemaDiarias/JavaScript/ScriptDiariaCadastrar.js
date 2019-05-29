@@ -282,7 +282,7 @@ function GravarFormDiaria(frm)
             if((checkInicio > from && checkInicio < to) && (checkFim > from && checkFim < to)){
                 if(totalDiariasMensal > 20){
 
-                    if($('#cmbBeneficiario').val() == 5894 || $('#cmbBeneficiario').val() == 3819 ){
+                    if($('#cmbBeneficiario').val() == 5894 ){
                         if(totalDiariasMensal > 23){
                             var qtdRestanteMes = 23 - parseFloat($('#QtdDiariaMes').val());
                             qtdRestanteMes = qtdRestanteMes.toFixed(1);
@@ -310,7 +310,7 @@ function GravarFormDiaria(frm)
             }
         }
         else {
-            if($('#cmbBeneficiario').val() == 5894 || $('#cmbBeneficiario').val() == 3819 ){
+            if($('#cmbBeneficiario').val() == 5894 ){
                 } else {
                 var qtdRestanteMes = 15 - parseFloat($('#QtdDiariaMes').val());
                 qtdRestanteMes = qtdRestanteMes.toFixed(1);

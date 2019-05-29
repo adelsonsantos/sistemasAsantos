@@ -21,12 +21,12 @@ function Cabecalho(FPDF $pdf,$DataComprovacao)
 	$pdf->Cell (55,22,"",1,0,"C");
 	$pdf->SETX (65);
 	$pdf->SetFont ("Times", "B",10);
-	$pdf->Cell (135,11,"RELATÓRIO SALDO POR PROJETO ",1,1,"C");
+	$pdf->Cell (135,11,"RELATï¿½RIO SALDO POR PROJETO ",1,1,"C");
 	$pdf->SetFont ("Times", "",8);
 	$pdf->Text (114, 20 ,"EMITIDO : " .date("d/m/Y")." ".date("H:i:s"));
 	$pdf->SetFont ("Times", "B",8);
 	$pdf->SETX (65);
-	$pdf->Cell (135,11,"Saldo até a data: ".$DataComprovacao,1,1,"C");
+	$pdf->Cell (135,11,"Saldo atï¿½ a data: ".$DataComprovacao,1,1,"C");
 	$pdf->SetFont ("Times", "B",8);
 	$pdf->image ("../SistemaDiarias/logo.jpg",14,16,40);
 	$pdf->Cell (155,5,"NOME PROJETO",1,0);
@@ -40,7 +40,7 @@ End Function
  */
 Cabecalho($pdf,$DataComprovacao);
 $contador = 1;
-$pdf->Text (180, 285 ,"PÁGINA: ");
+$pdf->Text (180, 285 ,"Pï¿½GINA: ");
 $pdf->Text (196, 285 , "1");
 $PAGINA = 1;
 $contatorReg = 0;
@@ -66,7 +66,7 @@ While ($linha=pg_fetch_assoc($rsConsulta))
 									 
 	$rsConsultaExtra = pg_query(abreConexao(),$sqlConsultaExtra);
 	
-	//$imprime = false; LINHA ORIGINAL
+	//$imprime = false;
 	$imprime = true;
 	$saldoProjeto = $linha["projeto_saldo"];
 	/*While ($row=pg_fetch_assoc($rsConsultaExtra))
@@ -74,7 +74,7 @@ While ($linha=pg_fetch_assoc($rsConsulta))
 		$imprime = true;
 		$saldoProjeto -= $row["diaria_valor"];
 	}
-	*/
+  */
 	if($imprime)
 	{
 		$pdf->SetFont ("Times", "",8);
@@ -96,7 +96,7 @@ While ($linha=pg_fetch_assoc($rsConsulta))
 		$contador = 1;
 		$PAGINA++;
 		Cabecalho($pdf,$DataComprovacao);
-		$pdf->Text (180, 285 ,"PÁGINA: ");
+		$pdf->Text (180, 285 ,"Pï¿½GINA: ");
 		$pdf->Text (196, 285 , $PAGINA);
 		$pdf->Cell (0,5,"",1,1);
 	}

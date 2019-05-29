@@ -59,6 +59,7 @@ else
                                             {
                                                 echo"<td height='20' colspan='12'><a href=\"SolicitacaoCadastrar.php?pagina=Solicitacao\"><font color=\"#000099\">Nova Solicita&ccedil;&atilde;o</font></a></td>";
                                             }
+
                                         ?>   
                                         </tr>
                                         <tr class="dataLabel">
