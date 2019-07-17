@@ -167,9 +167,9 @@ if($Erro == 1)
                             <td width="20"></td>
                             <td valign="top">
                                 <table align="center" width="300" cellspacing="0" cellpadding="0" border="0">     
-                                    <tr height="21">
-                                        <td class="dataLinha"><font size="2"> <img src="../Imagens/calendar.png" />&nbsp;<u>Data de implantação 22/11/2010</u></td>
-                                    </tr>
+                               <!--     <tr height="21">
+                                        <td class="dataLinha"><font size="2"> <img src="../Imagens/calendar.png" />&nbsp;<u>Data de implanta&ccedil;&otilde;o 22/11/2010</u></td>
+                                    </tr>-->
                                    <!-- <tr height="21">
                                         <td class="dataLinha"><font size="2"> <img src="../Imagens/pdf_button.png" />&nbsp;<u>Vers&atilde;o 01.09</u></font></td>
                                     </tr>-->
