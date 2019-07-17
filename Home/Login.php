@@ -167,23 +167,23 @@ if($Erro == 1)
                             <td width="20"></td>
                             <td valign="top">
                                 <table align="center" width="300" cellspacing="0" cellpadding="0" border="0">     
-                                    <tr height="21">                          
-                                        <td class="dataLinha"><font size="2"> <img src="../Imagens/calendar.png" />&nbsp;<u>Data de implanta&ccedil;&otilde;o 22/11/2010</u></td>
-                                    </tr>
-                                    <tr height="21">                          
-                                        <td class="dataLinha"><font size="2"> <img src="../Imagens/pdf_button.png" />&nbsp;<u>Vers&atilde;o 01.09</u></a></td>
-                                    </tr>                      
                                     <tr height="21">
-                                        <td class="dataLinha"><font size="2"> <img src="../Imagens/pdf_button.png" />   <a href="../SistemaDiarias/Pdf/Decreto 59101996.pdf"><u>Decreto N&ordm; 5.910 de 24 de Outubro de 1996</u></a></td>
+                                        <td class="dataLinha"><font size="2"> <img src="../Imagens/calendar.png" />&nbsp;<u>Data de implantação 22/11/2010</u></td>
                                     </tr>
+                                   <!-- <tr height="21">
+                                        <td class="dataLinha"><font size="2"> <img src="../Imagens/pdf_button.png" />&nbsp;<u>Vers&atilde;o 01.09</u></font></td>
+                                    </tr>-->
                                     <tr height="21">
+                                        <td class="dataLinha"><font size="2"> <img src="../Imagens/pdf_button.png" />   <a href="http://www2.uesb.br/proreitorias/asplan/wp-content/uploads/Decreto_13169_12Ago2011.pdf"><u>Decreto N&ordm; 13.169 de 12 de Agosto de 2011</u></a></td>
+                                    </tr>
+                                   <!-- <tr height="21">
                                         <td class="dataLinha"><font size="2"> <img src="../Imagens/pdf_button.png" /> <a href="../SistemaDiarias/Pdf/DECRETO80942002.pdf"><u>Decreto N&ordm; 8.094 de 07 de Janeiro de 2002</u></a></td>
                                     </tr>
                                     <tr height="21">
                                         <td class="dataLinha"><font size="2"> <img src="../Imagens/pdf_button.png" /> <a href="../SistemaDiarias/Pdf/DECRETO99602006.pdf"><u>Decreto N&ordm; 9.960 de 30 de Mar&ccedil;o de 2006</u></a></td>
                                     </tr>
                                     <tr height="21">
-                                        <td class="dataLinha"><font size="2">  <img src="../Imagens/pdf_button.png" /> <a href="../SistemaDiarias/Pdf/Manual.pdf"><u>Manual</u></a></td>
+                                        <td class="dataLinha"><font size="2">  <img src="../Imagens/pdf_button.png" /> <a href="../SistemaDiarias/Pdf/Manual.pdf"><u>Manual</u></a></td>-->
                                     </tr>
                                 </table>
                             </td>
