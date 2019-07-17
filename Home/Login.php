@@ -166,15 +166,17 @@ if($Erro == 1)
                             <td width="500" class="dataLinha" valign="top"><p align="justify"><font size="2">O portal de Sistemas &eacute; um canal &uacute;nico de acesso aos sistemas de informa&ccedil;&atilde;o  no da Ag&ecirc;ncia de Defesa Agropecu&aacute;ria da Bahia - ADAB, que visa centralizar e facilitar o acesso &agrave;s aplica&ccedil;&otilde;es, a partir de uma base de dados &uacute;nica.</p></td>
                             <td width="20"></td>
                             <td valign="top">
-                                <table align="center" width="300" cellspacing="0" cellpadding="0" border="0">     
-                               <!--     <tr height="21">
-                                        <td class="dataLinha"><font size="2"> <img src="../Imagens/calendar.png" />&nbsp;<u>Data de implanta&ccedil;&otilde;o 22/11/2010</u></td>
-                                    </tr>-->
+
+
+                                <table align="center" width="300" cellspacing="0" cellpadding="0" border="0">
+                                <tr height="21">
+                                        <td class="dataLinha"><font size="2"> <img src="../Imagens/calendar.png" />&nbsp;<u>Data de implanta&ccedil;&atilde;o 22/11/2010</u></td>
+                                    </tr>
                                    <!-- <tr height="21">
                                         <td class="dataLinha"><font size="2"> <img src="../Imagens/pdf_button.png" />&nbsp;<u>Vers&atilde;o 01.09</u></font></td>
                                     </tr>-->
-                                    <tr height="21">
-                                        <td class="dataLinha"><font size="2"> <img src="../Imagens/pdf_button.png" />   <a href="http://www2.uesb.br/proreitorias/asplan/wp-content/uploads/Decreto_13169_12Ago2011.pdf"><u>Decreto N&ordm; 13.169 de 12 de Agosto de 2011</u></a></td>
+                                   <tr height="30">
+                                        <td class="dataLinha"><font size="3"> <img src="../Imagens/pdf_button.png" />   <a href="http://www2.uesb.br/proreitorias/asplan/wp-content/uploads/Decreto_13169_12Ago2011.pdf"><u>Decreto N&ordm; 13.169 de 12 de Agosto de 2011</u></a></td>
                                     </tr>
                                    <!-- <tr height="21">
                                         <td class="dataLinha"><font size="2"> <img src="../Imagens/pdf_button.png" /> <a href="../SistemaDiarias/Pdf/DECRETO80942002.pdf"><u>Decreto N&ordm; 8.094 de 07 de Janeiro de 2002</u></a></td>
